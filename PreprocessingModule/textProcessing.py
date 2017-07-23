@@ -47,16 +47,16 @@ output:
 
 def get_txt_data(filepath, para):
     if para == 'lines':
-        txt_file1 = open(filepath, 'r',encoding='utf-8')
+        txt_file1 = open(filepath, 'r')
         txt_tmp1 = txt_file1.readlines()
         txt_tmp2 = ''.join(txt_tmp1)
-        txt_data1 = txt_tmp2.split('\n')
+        txt_data1 = txt_tmp2.decode('utf-8').split('\n')
         txt_file1.close()
         return txt_data1
     elif para == 'line':
         txt_file2 = open(filepath, 'r')
         txt_tmp = txt_file2.readline()
-        txt_data2 = txt_tmp
+        txt_data2 = txt_tmp.decode('utf-8')
         txt_file2.close()
         return txt_data2
 
@@ -93,8 +93,8 @@ output:
     (u'\u5408\u9002', ['a']), (u'\u3002', ['x'])]
     [('你', 'r'), ('是', 'v'), ('谁', 'r')]
 test code:
-str=postagger("你是谁",'list')
-print(str)
+str_list=postagger('我喜欢你','str')
+print str_list
 """
 
 
@@ -109,7 +109,7 @@ def postagger(sentence, para):
         pos_data2 = jieba.posseg.cut(sentence)
         pos_list2 = []
         for w2 in pos_data2:
-            pos_list2.extend([w2.word.encode('utf8'), w2.flag])
+            pos_list2.extend([w2.word, w2.flag])
         pos_str = ' '.join(pos_list2)
         return pos_str
 
@@ -154,7 +154,7 @@ def cut_sentence_2(words):
     i = 0 #i is the position of words
     token = 'meaningless'
     sents = []
-    punt_list = ',.!?;~，。！？；～… '
+    punt_list = ',.!?;~，。！？；～… '.decode('utf8')
     for word in words:
         if word not in punt_list:
             i += 1
@@ -247,5 +247,7 @@ def seg_fil_senti_excel(filepath, sheetnum, colnum,sentimenstopwordtxtfilepath):
     # Return filtered segment reviews
     return seg_fil_senti_result
 
-
+# seg_list=seg_fil_senti_excel('s.xlsx',0,0,'sentiment_stopword.txt')
+# for x in seg_list:
+#     print x
 

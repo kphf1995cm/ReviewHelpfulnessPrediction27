@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e9ae536d-8024-4564-9fd2-744297cdc5cf" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$posNegSentiDictFeature.coverage" NAME="posNegSentiDictFeature Coverage Results" MODIFIED="1500824248314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction$numpy_usage.coverage" NAME="numpy_usage Coverage Results" MODIFIED="1500693422459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestModel" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction$posNegSentiDictFeature.coverage" NAME="posNegSentiDictFeature Coverage Results" MODIFIED="1500778077543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction$posNegMlFeature.coverage" NAME="posNegMlFeature Coverage Results" MODIFIED="1500779415709" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$textProcessing.coverage" NAME="textProcessing Coverage Results" MODIFIED="1500823592469" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PreprocessingModule" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction$textProcessing.coverage" NAME="textProcessing Coverage Results" MODIFIED="1500695210876" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PreprocessingModule" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="textProcessing.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PreprocessingModule/textProcessing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1178">
+              <caret line="230" column="0" lean-forward="false" selection-start-line="230" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
+              <folding>
+                <element signature="e#41#179#1" expanded="false" />
+                <element signature="e#181#192#0" expanded="true" />
+                <element signature="e#371#629#1" expanded="false" />
+                <element signature="e#688#920#0" expanded="false" />
+                <element signature="e#1029#1274#1" expanded="false" />
+                <element signature="e#1314#1758#0" expanded="false" />
+                <element signature="e#1761#1989#1" expanded="false" />
+                <element signature="e#2029#2330#0" expanded="false" />
+                <element signature="e#2720#3198#0" expanded="false" />
+                <element signature="e#3201#3732#1" expanded="false" />
+                <element signature="e#3834#4424#0" expanded="false" />
+                <element signature="e#4559#5184#0" expanded="false" />
+                <element signature="e#5187#5595#1" expanded="false" />
+                <element signature="e#5649#6374#0" expanded="false" />
+                <element signature="e#6377#6863#1" expanded="false" />
+                <element signature="e#6950#7686#0" expanded="false" />
+                <element signature="e#7688#7757#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utf_8.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Python27/Lib/encodings/utf_8.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="160">
+              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="posNegSentiDictFeature.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="9" column="47" lean-forward="true" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+              <folding>
+                <element signature="n#!!doc" expanded="false" />
+                <element signature="e#412#444#0" expanded="false" />
+                <element signature="e#2092#2106#0" expanded="false" />
+                <element signature="e#2366#2706#0" expanded="false" />
+                <element signature="e#2708#2767#0" expanded="false" />
+                <element signature="e#2881#3323#0" expanded="false" />
+                <element signature="e#3326#3375#0" expanded="false" />
+                <element signature="e#3491#3969#0" expanded="false" />
+                <element signature="e#3971#4007#0" expanded="false" />
+                <element signature="e#4187#5418#0" expanded="false" />
+                <element signature="e#5420#5429#0" expanded="false" />
+                <element signature="e#5524#5617#1" expanded="false" />
+                <element signature="e#5661#7185#0" expanded="false" />
+                <element signature="e#6130#6895#0" expanded="false" />
+                <element signature="e#7228#7375#1" expanded="false" />
+                <element signature="e#7430#7845#0" expanded="false" />
+                <element signature="e#7951#8201#0" expanded="false" />
+                <element signature="e#8203#8441#1" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="posNegMlFeature.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature/posNegMlFeature.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="627">
+              <caret line="68" column="61" lean-forward="false" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
+              <folding>
+                <element signature="e#228#275#0" expanded="true" />
+                <element signature="e#926#2388#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="numpy_usage.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/TestModel/numpy_usage.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#244#353#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/TestModel/numpy_usage.py" />
+        <option value="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature/posNegMlFeature.py" />
+        <option value="$PROJECT_DIR$/PreprocessingModule/textProcessing.py" />
+        <option value="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="754" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ReviewHelpfulnessPrediction27" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ReviewHelpfulnessPrediction27" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js.eslint.eslintPackage" value="" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\PycharmProjects\ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SentimentReviewSet" />
+      <recent name="G:\PycharmProjects\ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature" />
+      <recent name="G:\PycharmProjects\ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary" />
+      <recent name="C:\Users\kuangp@wangsu.com\PycharmProjects\ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures" />
+      <recent name="C:\Users\kuangp@wangsu.com\PycharmProjects\ReviewHelpfulnessPrediction\PreprocessingModule\OriginSegmentationDictionarySource" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.posNegSentiDictFeature">
+    <configuration default="false" name="textProcessing" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PreprocessingModule" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PreprocessingModule/textProcessing.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="posNegSentiDictFeature" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="numpy_usage" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/TestModel" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TestModel/numpy_usage.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="posNegMlFeature" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature/posNegMlFeature.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Attests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ReviewHelpfulnessPrediction" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
+    <list size="4">
+      <item index="0" class="java.lang.String" itemvalue="Python.textProcessing" />
+      <item index="1" class="java.lang.String" itemvalue="Python.posNegSentiDictFeature" />
+      <item index="2" class="java.lang.String" itemvalue="Python.numpy_usage" />
+      <item index="3" class="java.lang.String" itemvalue="Python.posNegMlFeature" />
+    </list>
+    <recent_temporary>
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.posNegSentiDictFeature" />
+        <item index="1" class="java.lang.String" itemvalue="Python.textProcessing" />
+        <item index="2" class="java.lang.String" itemvalue="Python.posNegMlFeature" />
+        <item index="3" class="java.lang.String" itemvalue="Python.numpy_usage" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e9ae536d-8024-4564-9fd2-744297cdc5cf" name="Default" comment="" />
+      <created>1500627858126</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1500627858126</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21010248" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18449612" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290938" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/PreprocessingModule/textProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="37" column="1" lean-forward="false" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
+          <folding>
+            <element signature="e#41#179#1" expanded="false" />
+            <element signature="e#181#192#0" expanded="true" />
+            <element signature="e#371#629#1" expanded="false" />
+            <element signature="e#688#920#0" expanded="false" />
+            <element signature="e#1029#1274#1" expanded="false" />
+            <element signature="e#1314#1758#0" expanded="false" />
+            <element signature="e#1761#1989#1" expanded="false" />
+            <element signature="e#2029#2330#0" expanded="false" />
+            <element signature="e#2720#3198#0" expanded="false" />
+            <element signature="e#3201#3732#1" expanded="false" />
+            <element signature="e#3834#4424#0" expanded="false" />
+            <element signature="e#4559#5184#0" expanded="false" />
+            <element signature="e#5187#5595#1" expanded="false" />
+            <element signature="e#5649#6374#0" expanded="false" />
+            <element signature="e#6377#6863#1" expanded="false" />
+            <element signature="e#6950#7686#0" expanded="false" />
+            <element signature="e#7688#7757#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="8" column="3" lean-forward="true" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#412#444#0" expanded="false" />
+            <element signature="e#2092#2106#0" expanded="false" />
+            <element signature="e#2366#2706#0" expanded="false" />
+            <element signature="e#2708#2767#0" expanded="false" />
+            <element signature="e#2881#3323#0" expanded="false" />
+            <element signature="e#3326#3375#0" expanded="false" />
+            <element signature="e#3491#3969#0" expanded="false" />
+            <element signature="e#3971#4007#0" expanded="false" />
+            <element signature="e#4187#5418#0" expanded="false" />
+            <element signature="e#5420#5429#0" expanded="false" />
+            <element signature="e#5524#5617#1" expanded="false" />
+            <element signature="e#5661#7185#0" expanded="false" />
+            <element signature="e#6130#6895#0" expanded="false" />
+            <element signature="e#7228#7375#1" expanded="false" />
+            <element signature="e#7430#7845#0" expanded="false" />
+            <element signature="e#7951#8201#0" expanded="false" />
+            <element signature="e#8203#8441#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature/posNegMlFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#228#275#0" expanded="true" />
+            <element signature="e#926#2388#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestModel/numpy_usage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#244#353#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PreprocessingModule/textProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="37" column="1" lean-forward="false" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
+          <folding>
+            <element signature="e#41#179#1" expanded="false" />
+            <element signature="e#181#192#0" expanded="true" />
+            <element signature="e#371#629#1" expanded="false" />
+            <element signature="e#688#920#0" expanded="false" />
+            <element signature="e#1029#1274#1" expanded="false" />
+            <element signature="e#1314#1758#0" expanded="false" />
+            <element signature="e#1761#1989#1" expanded="false" />
+            <element signature="e#2029#2330#0" expanded="false" />
+            <element signature="e#2720#3198#0" expanded="false" />
+            <element signature="e#3201#3732#1" expanded="false" />
+            <element signature="e#3834#4424#0" expanded="false" />
+            <element signature="e#4559#5184#0" expanded="false" />
+            <element signature="e#5187#5595#1" expanded="false" />
+            <element signature="e#5649#6374#0" expanded="false" />
+            <element signature="e#6377#6863#1" expanded="false" />
+            <element signature="e#6950#7686#0" expanded="false" />
+            <element signature="e#7688#7757#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1254">
+          <caret line="169" column="41" lean-forward="false" selection-start-line="169" selection-start-column="41" selection-end-line="169" selection-end-column="41" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#412#444#0" expanded="false" />
+            <element signature="e#2092#2106#0" expanded="false" />
+            <element signature="e#2366#2706#0" expanded="false" />
+            <element signature="e#2708#2767#0" expanded="false" />
+            <element signature="e#2881#3323#0" expanded="false" />
+            <element signature="e#3326#3375#0" expanded="false" />
+            <element signature="e#3491#3969#0" expanded="false" />
+            <element signature="e#3971#4007#0" expanded="false" />
+            <element signature="e#4187#5418#0" expanded="false" />
+            <element signature="e#5420#5429#0" expanded="false" />
+            <element signature="e#5524#5617#1" expanded="false" />
+            <element signature="e#5661#7185#0" expanded="false" />
+            <element signature="e#6130#6895#0" expanded="false" />
+            <element signature="e#7228#7375#1" expanded="false" />
+            <element signature="e#7430#7845#0" expanded="false" />
+            <element signature="e#7951#8201#0" expanded="false" />
+            <element signature="e#8203#8441#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestModel/numpy_usage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#244#353#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PreprocessingModule/textProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#41#179#1" expanded="false" />
+            <element signature="e#181#192#0" expanded="true" />
+            <element signature="e#371#629#1" expanded="false" />
+            <element signature="e#688#920#0" expanded="false" />
+            <element signature="e#1029#1274#1" expanded="false" />
+            <element signature="e#1314#1758#0" expanded="false" />
+            <element signature="e#1761#1989#1" expanded="false" />
+            <element signature="e#2029#2330#0" expanded="false" />
+            <element signature="e#2720#3198#0" expanded="false" />
+            <element signature="e#3201#3732#1" expanded="false" />
+            <element signature="e#3834#4424#0" expanded="false" />
+            <element signature="e#4559#5184#0" expanded="false" />
+            <element signature="e#5187#5595#1" expanded="false" />
+            <element signature="e#5649#6374#0" expanded="false" />
+            <element signature="e#6377#6863#1" expanded="false" />
+            <element signature="e#6950#7686#0" expanded="false" />
+            <element signature="e#7688#7757#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#412#444#0" expanded="false" />
+            <element signature="e#2092#2106#0" expanded="false" />
+            <element signature="e#2366#2706#0" expanded="false" />
+            <element signature="e#2708#2767#0" expanded="false" />
+            <element signature="e#2881#3323#0" expanded="false" />
+            <element signature="e#3326#3375#0" expanded="false" />
+            <element signature="e#3491#3969#0" expanded="false" />
+            <element signature="e#3971#4007#0" expanded="false" />
+            <element signature="e#4187#5418#0" expanded="false" />
+            <element signature="e#5420#5429#0" expanded="false" />
+            <element signature="e#5524#5617#1" expanded="false" />
+            <element signature="e#5661#7185#0" expanded="false" />
+            <element signature="e#6130#6895#0" expanded="false" />
+            <element signature="e#7228#7375#1" expanded="false" />
+            <element signature="e#7430#7845#0" expanded="false" />
+            <element signature="e#7951#8201#0" expanded="false" />
+            <element signature="e#8203#8441#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PreprocessingModule/textProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="97" column="3" lean-forward="false" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="3" />
+          <folding>
+            <element signature="e#41#179#1" expanded="false" />
+            <element signature="e#181#192#0" expanded="true" />
+            <element signature="e#371#629#1" expanded="false" />
+            <element signature="e#688#920#0" expanded="false" />
+            <element signature="e#1029#1274#1" expanded="false" />
+            <element signature="e#1314#1758#0" expanded="false" />
+            <element signature="e#1761#1989#1" expanded="false" />
+            <element signature="e#2029#2330#0" expanded="false" />
+            <element signature="e#2720#3198#0" expanded="false" />
+            <element signature="e#3201#3732#1" expanded="false" />
+            <element signature="e#3834#4424#0" expanded="false" />
+            <element signature="e#4559#5184#0" expanded="false" />
+            <element signature="e#5187#5595#1" expanded="false" />
+            <element signature="e#5649#6374#0" expanded="false" />
+            <element signature="e#6377#6863#1" expanded="false" />
+            <element signature="e#6950#7686#0" expanded="false" />
+            <element signature="e#7688#7757#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#412#444#0" expanded="false" />
+            <element signature="e#2092#2106#0" expanded="false" />
+            <element signature="e#2366#2706#0" expanded="false" />
+            <element signature="e#2708#2767#0" expanded="false" />
+            <element signature="e#2881#3323#0" expanded="false" />
+            <element signature="e#3326#3375#0" expanded="false" />
+            <element signature="e#3491#3969#0" expanded="false" />
+            <element signature="e#3971#4007#0" expanded="false" />
+            <element signature="e#4187#5418#0" expanded="false" />
+            <element signature="e#5420#5429#0" expanded="false" />
+            <element signature="e#5524#5617#1" expanded="false" />
+            <element signature="e#5661#7185#0" expanded="false" />
+            <element signature="e#6130#6895#0" expanded="false" />
+            <element signature="e#7228#7375#1" expanded="false" />
+            <element signature="e#7430#7845#0" expanded="false" />
+            <element signature="e#7951#8201#0" expanded="false" />
+            <element signature="e#8203#8441#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PreprocessingModule/OriginSegmentationDictionarySource/口语方言.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/情感分析/RHP/Review-Helpfulness-Prediction-master/Review-Helpfulness-Prediction-master/main/Preprocessing module/textprocessing.py" />
+    <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python36/site-packages/numpy/__init__.py" />
+    <entry file="file://D:/ProgramFiles/python-3.6.2-embed-amd64/Lib/site-packages/numpy/__init__.py" />
+    <entry file="file://D:/ProgramFiles/python-3.6.2-embed-amd64/Lib/site-packages/numpy/setup.py" />
+    <entry file="file://D:/ProgramFiles/python-3.6.2-embed-amd64/Lib/site-packages/numpy/core/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/SentimentDictionary/AdverbsOfDegreeDictionary/ish.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature/posNegMlFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="68" column="61" lean-forward="false" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
+          <folding>
+            <element signature="e#228#275#0" expanded="true" />
+            <element signature="e#926#2388#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestModel/numpy_usage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#244#353#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/encodings/utf_8.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PreprocessingModule/textProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1178">
+          <caret line="230" column="0" lean-forward="false" selection-start-line="230" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
+          <folding>
+            <element signature="e#41#179#1" expanded="false" />
+            <element signature="e#181#192#0" expanded="true" />
+            <element signature="e#371#629#1" expanded="false" />
+            <element signature="e#688#920#0" expanded="false" />
+            <element signature="e#1029#1274#1" expanded="false" />
+            <element signature="e#1314#1758#0" expanded="false" />
+            <element signature="e#1761#1989#1" expanded="false" />
+            <element signature="e#2029#2330#0" expanded="false" />
+            <element signature="e#2720#3198#0" expanded="false" />
+            <element signature="e#3201#3732#1" expanded="false" />
+            <element signature="e#3834#4424#0" expanded="false" />
+            <element signature="e#4559#5184#0" expanded="false" />
+            <element signature="e#5187#5595#1" expanded="false" />
+            <element signature="e#5649#6374#0" expanded="false" />
+            <element signature="e#6377#6863#1" expanded="false" />
+            <element signature="e#6950#7686#0" expanded="false" />
+            <element signature="e#7688#7757#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures/posNegSentiDictFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="9" column="47" lean-forward="true" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#412#444#0" expanded="false" />
+            <element signature="e#2092#2106#0" expanded="false" />
+            <element signature="e#2366#2706#0" expanded="false" />
+            <element signature="e#2708#2767#0" expanded="false" />
+            <element signature="e#2881#3323#0" expanded="false" />
+            <element signature="e#3326#3375#0" expanded="false" />
+            <element signature="e#3491#3969#0" expanded="false" />
+            <element signature="e#3971#4007#0" expanded="false" />
+            <element signature="e#4187#5418#0" expanded="false" />
+            <element signature="e#5420#5429#0" expanded="false" />
+            <element signature="e#5524#5617#1" expanded="false" />
+            <element signature="e#5661#7185#0" expanded="false" />
+            <element signature="e#6130#6895#0" expanded="false" />
+            <element signature="e#7228#7375#1" expanded="false" />
+            <element signature="e#7430#7845#0" expanded="false" />
+            <element signature="e#7951#8201#0" expanded="false" />
+            <element signature="e#8203#8441#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

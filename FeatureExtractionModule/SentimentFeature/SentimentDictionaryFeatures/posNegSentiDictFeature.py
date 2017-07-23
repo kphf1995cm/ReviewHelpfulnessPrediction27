@@ -8,6 +8,7 @@ Sentiment analysis based on sentiment dictionary.
 
 """
 import PreprocessingModule.textProcessing as tp
+#import textProcessing as np
 import numpy as np
 
 # 1. Load dictionary and dataset
