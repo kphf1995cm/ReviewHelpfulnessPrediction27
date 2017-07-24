@@ -7,7 +7,7 @@ This module aim to extract review sentiment probability as review helpfulness fe
 
 """
 
-import PreprocessingModule.textprocessing as tp
+import ProgramCode.textprocessing as tp
 import pickle
 import itertools
 from random import shuffle

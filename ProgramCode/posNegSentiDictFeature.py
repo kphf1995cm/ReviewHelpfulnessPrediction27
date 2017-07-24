@@ -203,9 +203,12 @@ def store_sentiment_dictionary_score(review_set, storepath):
 	sentiment_score = all_review_sentiment_score(sentence_sentiment_score(review_set))
 
 	f = open(storepath,'w')
+	reviewCount=0
 	for i in sentiment_score:
-	    f.write(str(i[0])+'\t'+str(i[1])+'\t'+str(i[2])+'\t'+str(i[3])+'\t'+str(i[4])+'\t'+str(i[5])+'\n')
+		f.write(str(i[0])+'\t'+str(i[1])+'\t'+str(i[2])+'\t'+str(i[3])+'\t'+str(i[4])+'\t'+str(i[5])+'\n')
+		reviewCount+=1
 	f.close()
+	return reviewCount
 
 '''
 function: read review data set and store score data
@@ -214,6 +217,7 @@ read_review_set_and_store_score("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z7
 '''
 def read_review_set_and_store_score(dataSetPath,sheetNum,colNum,scoreStorePath):
 	review = tp.get_excel_data(dataSetPath, sheetNum, colNum, "data")
-	store_sentiment_dictionary_score(review,scoreStorePath)
+	return store_sentiment_dictionary_score(review,scoreStorePath)
 
-read_review_set_and_store_score("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4,'D:/ReviewHelpfulnessPrediction/ReviewSetScore/HTC.txt')
+recordNum=read_review_set_and_store_score("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4,'D:/ReviewHelpfulnessPrediction\ReviewDataFeature/HTC_SentiDictFea.txt')
+print recordNum
