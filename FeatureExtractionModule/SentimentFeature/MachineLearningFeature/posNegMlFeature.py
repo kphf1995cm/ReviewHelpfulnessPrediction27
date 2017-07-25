@@ -85,7 +85,6 @@ def extract_features(dataset):
         feat.append(best_word_features(i))
     return feat
 
-
 # 4. Load classifier
 clf = pickle.load(open('D:/code/sentiment_test/sentiment_classifier.pkl'))
 

@@ -79,3 +79,11 @@ def centroid(datapath, storepath):
     for i in review_centroid:
         centroid_file.write(str(i)+'\n')
     centroid_file.close()
+
+# 存在问题  warnings.warn("detected Windows; aliasing chunkize to chunkize_serial")
+reviewDataSetPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
+minResPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_seg_fill_result.txt'
+dstFeaPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_CenScoFea.txt'
+store_seg_fil_result(reviewDataSetPath,1,4,minResPath)
+centroid(minResPath,dstFeaPath)
+

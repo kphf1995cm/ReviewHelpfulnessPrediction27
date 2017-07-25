@@ -72,20 +72,23 @@ def bigram_words(words, score_fn=BigramAssocMeasures.chi_sq, n=200):
 # 2.4 Use chi_sq to find most informative features of the review
 # 2.4.1 First we should compute words or bigrams information score
 def create_word_scores():
-    posdata = tp.seg_fil_senti_excel("D:/code/sentiment_test/pos_review.xlsx", 1, 1)
-    negdata = tp.seg_fil_senti_excel("D:/code/sentiment_test/neg_review.xlsx", 1, 1)
-    
+    posNegDir = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
+    posdata = tp.seg_fil_senti_excel(posNegDir + '/pos_review.xlsx', 1, 1,
+                                        'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+    negdata = tp.seg_fil_senti_excel(posNegDir + '/neg_review.xlsx', 1, 1,
+                                        'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+
     posWords = list(itertools.chain(*posdata))
     negWords = list(itertools.chain(*negdata))
 
     word_fd = FreqDist()
     cond_word_fd = ConditionalFreqDist()
     for word in posWords:
-        word_fd.inc(word)
-        cond_word_fd['pos'].inc(word)
+        word_fd[word] += 1
+        cond_word_fd['pos'][word] += 1
     for word in negWords:
-        word_fd.inc(word)
-        cond_word_fd['neg'].inc(word)
+        word_fd[word] += 1
+        cond_word_fd['neg'][word] += 1
 
     pos_word_count = cond_word_fd['pos'].N()
     neg_word_count = cond_word_fd['neg'].N()
@@ -100,9 +103,12 @@ def create_word_scores():
     return word_scores
 
 def create_bigram_scores():
-    posdata = tp.seg_fil_senti_excel("D:/code/sentiment_test/pos_review.xlsx", 1, 1)
-    negdata = tp.seg_fil_senti_excel("D:/code/sentiment_test/neg_review.xlsx", 1, 1)
-    
+    posNegDir = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
+    posdata = tp.seg_fil_senti_excel(posNegDir + '/pos_review.xlsx', 1, 1,
+                                     'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+    negdata = tp.seg_fil_senti_excel(posNegDir + '/neg_review.xlsx', 1, 1,
+                                     'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+
     posWords = list(itertools.chain(*posdata))
     negWords = list(itertools.chain(*negdata))
 
@@ -117,11 +123,11 @@ def create_bigram_scores():
     word_fd = FreqDist()
     cond_word_fd = ConditionalFreqDist()
     for word in pos:
-        word_fd.inc(word)
-        cond_word_fd['pos'].inc(word)
+        word_fd[word] += 1
+        cond_word_fd['pos'][word] += 1
     for word in neg:
-        word_fd.inc(word)
-        cond_word_fd['neg'].inc(word)
+        word_fd[word] += 1
+        cond_word_fd['neg'][word] += 1
 
     pos_word_count = cond_word_fd['pos'].N()
     neg_word_count = cond_word_fd['neg'].N()
@@ -137,9 +143,12 @@ def create_bigram_scores():
 
 # Combine words and bigrams and compute words and bigrams information scores
 def create_word_bigram_scores():
-    posdata = tp.seg_fil_senti_excel("D:/code/sentiment_test/pos_review.xlsx", 1, 1)
-    negdata = tp.seg_fil_senti_excel("D:/code/sentiment_test/neg_review.xlsx", 1, 1)
-    
+    posNegDir = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
+    posdata = tp.seg_fil_senti_excel(posNegDir + '/pos_review.xlsx', 1, 1,
+                                     'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+    negdata = tp.seg_fil_senti_excel(posNegDir + '/neg_review.xlsx', 1, 1,
+                                     'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+
     posWords = list(itertools.chain(*posdata))
     negWords = list(itertools.chain(*negdata))
 
@@ -154,11 +163,11 @@ def create_word_bigram_scores():
     word_fd = FreqDist()
     cond_word_fd = ConditionalFreqDist()
     for word in pos:
-        word_fd.inc(word)
-        cond_word_fd['pos'].inc(word)
+        word_fd[word] += 1
+        cond_word_fd['pos'][word] += 1
     for word in neg:
-        word_fd.inc(word)
-        cond_word_fd['neg'].inc(word)
+        word_fd[word] += 1
+        cond_word_fd['neg'][word] += 1
 
     pos_word_count = cond_word_fd['pos'].N()
     neg_word_count = cond_word_fd['neg'].N()
@@ -173,9 +182,9 @@ def create_word_bigram_scores():
     return word_scores
 
 # Choose word_scores extaction methods
-# word_scores = create_word_scores()
+#word_scores = create_word_scores()
 # word_scores = create_bigram_scores()
-# word_scores = create_word_bigram_scores()
+word_scores = create_word_bigram_scores()
 
 
 # 2.4.2 Second we should extact the most informative words or bigrams based on the information score
@@ -186,15 +195,15 @@ def find_best_words(word_scores, number):
 
 # 2.4.3 Third we could use the most informative words and bigrams as machine learning features
 # Use chi_sq to find most informative words of the review
-def best_word_features(words):
+def best_word_features(words,best_words):
     return dict([(word, True) for word in words if word in best_words])
 
 # Use chi_sq to find most informative bigrams of the review
-def best_word_features_bi(words):
+def best_word_features_bi(words,best_words):
     return dict([(word, True) for word in nltk.bigrams(words) if word in best_words])
 
 # Use chi_sq to find most informative words and bigrams of the review
-def best_word_features_com(words):
+def best_word_features_com(words,best_words):
     d1 = dict([(word, True) for word in words if word in best_words])
     d2 = dict([(word, True) for word in nltk.bigrams(words) if word in best_words])
     d3 = dict(d1, **d2)
@@ -203,19 +212,35 @@ def best_word_features_com(words):
 
 
 # 3. Transform review to features by setting labels to words in review
-def pos_features(feature_extraction_method):
+def pos_features(feature_extraction_method,best_words):
     posFeatures = []
     for i in pos:
-        posWords = [feature_extraction_method(i),'pos']
+        posWords = [feature_extraction_method(i,best_words),'pos']
         posFeatures.append(posWords)
     return posFeatures
 
-def neg_features(feature_extraction_method):
+def neg_features(feature_extraction_method,best_words):
     negFeatures = []
     for j in neg:
-        negWords = [feature_extraction_method(j),'neg']
+        negWords = [feature_extraction_method(j,best_words),'neg']
         negFeatures.append(negWords)
     return negFeatures
+
+def get_trainset_testset_testtag(dimension):
+    word_scores = create_word_bigram_scores()
+    best_words=find_best_words(word_scores,dimension) #排序 挑前dimension个
+    posFeatures = pos_features(best_word_features_com,best_words)
+    negFeatures = neg_features(best_word_features_com,best_words)
+    shuffle(posFeatures)  # 将序列的所有元素随机排列
+    shuffle(negFeatures)
+    size_pos = int(len(pos_review) * 0.75)
+    size_neg = int(len(neg_review) * 0.75)
+
+    train_set = posFeatures[:size_pos] + negFeatures[:size_neg]
+    test_set = posFeatures[size_pos:] + negFeatures[size_neg:]
+
+    test, tag_test = zip(*test_set)  # 将特征和分类结果分离开
+    return train_set,test,tag_test
 
 
 best_words = find_best_words(word_scores, 1500) # Set dimension and initiallize most informative words
@@ -226,9 +251,23 @@ best_words = find_best_words(word_scores, 1500) # Set dimension and initiallize 
 # posFeatures = pos_features(bigram_words)
 # negFeatures = neg_features(bigram_words)
 
-posFeatures = pos_features(best_word_features)
-negFeatures = neg_features(best_word_features)
+posFeatures = pos_features(best_word_features,best_words)
+negFeatures = neg_features(best_word_features,best_words)
 
+'''
+test posFeatures:
+for x in posFeatures:
+    for k,v in x[0].iteritems():
+        print k,v,
+    print x[1]
+for x in negFeatures:
+    for k,v in x[0].iteritems():
+        print k,v,
+    print x[1]
+output:
+
+[{不能:True,手机:True,力:True,机:True,后悔:True,比较:True,软件:True},neg]
+'''
 # posFeatures = pos_features(best_word_features_com)
 # negFeatures = neg_features(best_word_features_com)
 
@@ -236,27 +275,32 @@ negFeatures = neg_features(best_word_features)
 
 # 4. Train classifier and examing classify accuracy
 # Make the feature set ramdon
-shuffle(posFeatures)
+shuffle(posFeatures) # 将序列的所有元素随机排列
 shuffle(negFeatures)
 
-# 75% of features used as training set (in fact, it have a better way by using cross validation function)
+# 75% of data items used as training set (in fact, it have a better way by using cross validation function)
 size_pos = int(len(pos_review) * 0.75)
 size_neg = int(len(neg_review) * 0.75)
 
 train_set = posFeatures[:size_pos] + negFeatures[:size_neg]
 test_set = posFeatures[size_pos:] + negFeatures[size_neg:]
 
-test, tag_test = zip(*test_set)
+test, tag_test = zip(*test_set) # 将特征和分类结果分离开
+# print test[0]
+# for x in test:
+#     print x,
+# print ''
+# for x in tag_test:
+#     print x,
 
 def clf_score(classifier):
     classifier = SklearnClassifier(classifier)
     classifier.train(train_set)
-
     predict = classifier.batch_classify(test)
     return accuracy_score(tag_test, predict)
 
 print 'BernoulliNB`s accuracy is %f' %clf_score(BernoulliNB())
-print 'GaussianNB`s accuracy is %f' %clf_score(GaussianNB())
+#print 'GaussianNB`s accuracy is %f' %clf_score(GaussianNB())
 print 'MultinomiaNB`s accuracy is %f' %clf_score(MultinomialNB())
 print 'LogisticRegression`s accuracy is %f' %clf_score(LogisticRegression())
 print 'SVC`s accuracy is %f' %clf_score(SVC(gamma=0.001, C=100., kernel='linear'))
@@ -266,42 +310,129 @@ print 'NuSVC`s accuracy is %f' %clf_score(NuSVC())
 
 
 # 5. After finding the best classifier, then check different dimension classification accuracy
-def score(classifier):
+def score(classifier,train_set,test,tag_test):
     classifier = SklearnClassifier(classifier)
-    classifier.train(trainset)
+    classifier.train(train_set)
 
     pred = classifier.batch_classify(test)
     return accuracy_score(tag_test, pred)
 
-dimention = ['500','1000','1500','2000','2500','3000']
+def get_best_classfier_and_dimention():
+    bestClassfier = ''
+    bestDimention = '0'
+    curAccuracy = 0.0
+    dimention = ['500', '1000', '1500', '2000', '2500', '3000']
 
-for d in dimention:
-    word_scores = create_word_bigram_scores()
-    best_words = find_best_words(word_scores, int(d))
+    for d in dimention:
+        word_scores = create_word_bigram_scores()  # 创建单个词 二元词 字典序列{word1:score1,word2:score2,}
+        best_words = find_best_words(word_scores, int(d))  # 找到上述字典序列里面得分最高的 d 个词[word1,word2,]
 
-    posFeatures = pos_features(best_word_features_com)
-    negFeatures = neg_features(best_word_features_com)
+        posFeatures = pos_features(best_word_features_com,best_words)  # 得到[[{word1:true,word2:true},'pos'],[]]
+        negFeatures = neg_features(best_word_features_com,best_words)  # 得到[[{word1:true,word2:true},'neg'],[]]
 
-    # Make the feature set ramdon
-    shuffle(posFeatures)
-    shuffle(negFeatures)
+        # Make the feature set ramdon
+        shuffle(posFeatures)
+        shuffle(negFeatures)
+        # 75% of features used as training set (in fact, it have a better way by using cross validation function)
+        size_pos = int(len(pos_review) * 0.75)
+        size_neg = int(len(neg_review) * 0.75)
 
-    # 75% of features used as training set (in fact, it have a better way by using cross validation function)
-    size_pos = int(len(pos_review) * 0.75)
-    size_neg = int(len(neg_review) * 0.75)
+        trainset = posFeatures[:size_pos] + negFeatures[:size_neg]
+        testset = posFeatures[size_pos:] + negFeatures[size_neg:]
 
-    trainset = posFeatures[:size_pos] + negFeatures[:size_neg]
-    testset = posFeatures[size_pos:] + negFeatures[size_neg:]
+        test, tag_test = zip(*testset)
+        BernoulliNBScore=score(BernoulliNB(),trainset,test,tag_test)
+        MultinomialNBScore=score(MultinomialNB(),trainset,test,tag_test)
+        LogisticRegressionScore=score(LogisticRegression(),trainset,test,tag_test)
+        SVCScore=score(SVC(),trainset,test,tag_test)
+        LinearSVCScore=score(LinearSVC(),trainset,test,tag_test)
+        NuSVCScore=score(NuSVC(),trainset,test,tag_test)
+        if BernoulliNBScore>curAccuracy:
+            curAccuracy=BernoulliNBScore
+            bestClassfier='BernoulliNB()'
+            bestDimention=d
+        if MultinomialNBScore>curAccuracy:
+            curAccuracy=MultinomialNBScore
+            bestClassfier='MultinomialNB()'
+            bestDimention=d
+        if LogisticRegressionScore>curAccuracy:
+            curAccuracy=LogisticRegressionScore
+            bestClassfier='LogisticRegression()'
+            bestDimention=d
+        if SVCScore>curAccuracy:
+            curAccuracy=SVCScore
+            bestClassfier='SVC()'
+            bestDimention=d
+        if LinearSVCScore>curAccuracy:
+            curAccuracy=LinearSVCScore
+            bestClassfier='LinearSVC()'
+            bestDimention=d
+        if NuSVCScore>curAccuracy:
+            curAccuracy=NuSVCScore
+            bestClassfier='NuSVC()'
+            bestDimention=d
+        classifierNameList=['BernoulliNB()'.decode('utf-8'),'MultinomialNB()'.decode('utf-8'),'LogisticRegression()'.decode('utf-8'),'SVC()'.decode('utf-8'),'LinearSVC()'.decode('utf-8'),'NuSVC()'.decode('utf-8')]
+        classifierAccList=[str(BernoulliNBScore).decode('utf-8'),str(MultinomialNBScore).decode('utf-8'),str(LogisticRegressionScore).decode('utf-8'),str(SVCScore).decode('utf-8'),str(LinearSVCScore).decode('utf-8'),str(NuSVCScore).decode('utf-8')]
+        f = open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + 'classifierDimenAcc.txt', 'a')
+        for pos in range(len(classifierAccList)):
+            f.write(classifierNameList[pos]+'\t'+str(d).decode('utf-8')+'\t'+classifierAccList[pos]+'\n')
+        f.close()
 
-    test, tag_test = zip(*testset)
 
-    print 'BernoulliNB`s accuracy is %f' %score(BernoulliNB())
-    print 'MultinomiaNB`s accuracy is %f' %score(MultinomialNB())
-    print 'LogisticRegression`s accuracy is %f' %score(LogisticRegression())
-    print 'SVC`s accuracy is %f' %score(SVC())
-    print 'LinearSVC`s accuracy is %f' %score(LinearSVC())
-    print 'NuSVC`s accuracy is %f' %score(NuSVC())
-    print 
+        print 'BernoulliNB`s accuracy is %f' % BernoulliNBScore
+        print 'MultinomiaNB`s accuracy is %f' % MultinomialNBScore
+        print 'LogisticRegression`s accuracy is %f' % LogisticRegressionScore
+        print 'SVC`s accuracy is %f' % SVCScore
+        print 'LinearSVC`s accuracy is %f' % LinearSVCScore
+        print 'NuSVC`s accuracy is %f' % NuSVCScore
+        print
+
+    return bestClassfier,bestDimention,curAccuracy
+
+bestClassfier,bestDimention,bestAccuracy=get_best_classfier_and_dimention()
+print bestClassfier,bestDimention,bestAccuracy
+def storeClassifierDimenAcc(classifier,dimen,acc):
+    f=open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt','w')
+    f.write(classifier+'\t'+dimen+'\t'+acc);
+    f.close()
+
+storeClassifierDimenAcc(bestClassfier.decode('utf-8'),bestDimention.decode('utf-8'),str(bestAccuracy).decode('utf-8'))
+#storeClassifierDimenAcc('BernoulliNB()'.decode('utf-8'),'1500'.decode('utf-8'),'0.940298507463'.decode('utf-8'))
+
+
+
+# bestClassfier=''
+# bestDimention='0'
+# curAccuracy=0.0
+# dimention = ['500','1000','1500','2000','2500','3000']
+#
+# for d in dimention:
+#     word_scores = create_word_bigram_scores() #创建单个词 二元词 字典序列{word1:score1,word2:score2,}
+#     best_words = find_best_words(word_scores, int(d)) # 找到上述字典序列里面得分最高的 d 个词[word1,word2,]
+#
+#     posFeatures = pos_features(best_word_features_com) # 得到[[{word1:true,word2:true},'pos'],[]]
+#     negFeatures = neg_features(best_word_features_com) # 得到[[{word1:true,word2:true},'neg'],[]]
+#
+#     # Make the feature set ramdon
+#     shuffle(posFeatures)
+#     shuffle(negFeatures)
+#
+#     # 75% of features used as training set (in fact, it have a better way by using cross validation function)
+#     size_pos = int(len(pos_review) * 0.75)
+#     size_neg = int(len(neg_review) * 0.75)
+#
+#     trainset = posFeatures[:size_pos] + negFeatures[:size_neg]
+#     testset = posFeatures[size_pos:] + negFeatures[size_neg:]
+#
+#     test, tag_test = zip(*testset)
+#
+#     print 'BernoulliNB`s accuracy is %f' %score(BernoulliNB())
+#     print 'MultinomiaNB`s accuracy is %f' %score(MultinomialNB())
+#     print 'LogisticRegression`s accuracy is %f' %score(LogisticRegression())
+#     print 'SVC`s accuracy is %f' %score(SVC())
+#     print 'LinearSVC`s accuracy is %f' %score(LinearSVC())
+#     print 'NuSVC`s accuracy is %f' %score(NuSVC())
+#     print
 
 
 
@@ -311,3 +442,8 @@ def store_classifier(clf, trainset, filepath):
     classifier.train(trainset)
     # use pickle to store classifier
     pickle.dump(classifier, open(filepath,'w'))
+
+# MultinomialNB() 1500 0.940298507463
+#BernoulliNB() 1500 0.940298507463
+# 存储性能最佳的分类器
+store_classifier(BernoulliNB(),train_set,'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'BernoulliNB.pkl')

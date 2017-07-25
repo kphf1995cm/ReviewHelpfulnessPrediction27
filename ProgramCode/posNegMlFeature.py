@@ -25,8 +25,8 @@ from nltk.probability import FreqDist, ConditionalFreqDist
 
 # 1. Load data
 reviewDataSetPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
-review = tp.get_excel_data(reviewDataSetPath, 1, 5, "data")
-sentiment_review = tp.seg_fil_senti_excel(reviewDataSetPath, 1, 5,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+review = tp.get_excel_data(reviewDataSetPath, 1, 4, "data")
+sentiment_review = tp.seg_fil_senti_excel(reviewDataSetPath, 1, 4,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
 
 
 # 2. Feature extraction method
@@ -134,32 +134,58 @@ def find_best_words(word_scores, number):
 word_scores = create_words_bigrams_scores()
 best_words = find_best_words(word_scores, 2000) # Be aware of the dimentions
 #print len(best_words)
+# for x in best_words:
+#     print x,
 
 # 把选出的这些词作为特征（这就是选择了信息量丰富的特征）
+'''
+test code:
+for x in sentiment_review[1]:
+    print x,
+print ''
+bwf=best_word_features(sentiment_review[1])
+for x,b in bwf.iteritems():
+    print x,b,
+'''
 def best_word_features(words):
     return dict([(word, True) for word in words if word in best_words])
 
 
 # 3. Function that making the reviews to a feature set
 # 数据集应处理成这种形式：[[明天,阳光],[],[],[],]
+'''
+test code:
+feat=extract_features(sentiment_review)
+for x in feat:
+    for w,b in x.iteritems():
+        print w,
+    print ''
+# 4. Load classifier
+'''
 def extract_features(dataset):
     feat = []
     for i in dataset:
         feat.append(best_word_features(i))
     return feat
 
-
 # 4. Load classifier
+#  装载分类器，得到SklearnClassifier
 clf = pickle.load(open('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'))
 
+
+# test_features=[{'about':1},{'that':0},{'this':0}]
+# clf.prob_classify_many(test_features)
+
 # Testing single review
-pred = clf.batch_prob_classify(extract_features(sentiment_review[:2])) # An object contian positive and negative probabiliy
+#pred = clf.batch_classify(extract_features(sentiment_review[:2])) # An object contian positive and negative probabiliy
+pred = clf.batch_prob_classify(extract_features(sentiment_review)) # An object contian positive and negative probabiliy
+#pred = clf.prob_classify_many(extract_features(sentiment_review)) # An object contian positive and negative probabiliy
 
 pred2 = []
 for i in pred:
     pred2.append([i.prob('pos'), i.prob('neg')])
 
-for r in review[:2]:
+for r in review:
     print r
     print "pos probability score: %f" %pred2[review.index(r)][0]
     print "neg probability score: %f" %pred2[review.index(r)][1]
@@ -168,8 +194,15 @@ for r in review[:2]:
     
 # 5. Store review sentiment probabilty socre as review helpfulness features
 def store_sentiment_prob_feature(sentiment_dataset, storepath):
-	pred = clf.batch_prob_classify(extract_features(sentiment_dataset))
-	p_file = open(storepath, 'w')
-	for i in pred:
-	    p_file.write(str(i.prob('pos')) + ' ' + str(i.prob('neg')) + '\n')
-	p_file.close()
+    pred = clf.batch_prob_classify(extract_features(sentiment_dataset))
+    p_file = open(storepath, 'w')
+    reviewCount=0
+    for i in pred:
+        reviewCount+=1
+        p_file.write(str(i.prob('pos')) + ' ' + str(i.prob('neg')) + '\n')
+    p_file.close()
+    return reviewCount
+storeProPath='D:/ReviewHelpfulnessPrediction\ReviewDataFeature/HTC_SenProbFea.txt'
+recordNum=store_sentiment_prob_feature(sentiment_review,storeProPath)
+print recordNum
+
