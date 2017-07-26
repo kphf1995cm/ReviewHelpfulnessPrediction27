@@ -188,10 +188,15 @@ word_scores = create_word_bigram_scores()
 
 
 # 2.4.2 Second we should extact the most informative words or bigrams based on the information score
+# number 为特征选取的维度
 def find_best_words(word_scores, number):
     best_vals = sorted(word_scores.iteritems(), key=lambda (w, s): s, reverse=True)[:number]
     best_words = set([w for w, s in best_vals])
     return best_words
+
+def sort_word_score(word_scores):
+    words=sorted(word_scores.iteritems(), key=lambda (w, s): s, reverse=True)
+    return words
 
 # 2.4.3 Third we could use the most informative words and bigrams as machine learning features
 # Use chi_sq to find most informative words of the review
@@ -212,13 +217,14 @@ def best_word_features_com(words,best_words):
 
 
 # 3. Transform review to features by setting labels to words in review
+# 提取积极评论里的特征
 def pos_features(feature_extraction_method,best_words):
     posFeatures = []
     for i in pos:
         posWords = [feature_extraction_method(i,best_words),'pos']
         posFeatures.append(posWords)
     return posFeatures
-
+# 提取消极评论里的特征
 def neg_features(feature_extraction_method,best_words):
     negFeatures = []
     for j in neg:
@@ -226,11 +232,12 @@ def neg_features(feature_extraction_method,best_words):
         negFeatures.append(negWords)
     return negFeatures
 
+# 构建训练集和测试集 选取单词+二元词形式
 def get_trainset_testset_testtag(dimension):
-    word_scores = create_word_bigram_scores()
+    word_scores = create_word_bigram_scores() # 计算 词+二元词 信息得分
     best_words=find_best_words(word_scores,dimension) #排序 挑前dimension个
-    posFeatures = pos_features(best_word_features_com,best_words)
-    negFeatures = neg_features(best_word_features_com,best_words)
+    posFeatures = pos_features(best_word_features_com,best_words) #提取积极文本里面的数据
+    negFeatures = neg_features(best_word_features_com,best_words) #提取消极文本里面的数据
     shuffle(posFeatures)  # 将序列的所有元素随机排列
     shuffle(negFeatures)
     size_pos = int(len(pos_review) * 0.75)
@@ -242,6 +249,19 @@ def get_trainset_testset_testtag(dimension):
     test, tag_test = zip(*test_set)  # 将特征和分类结果分离开
     return train_set,test,tag_test
 
+# 构建训练集 选取 单词+二元词形式
+# 将所有数据作为训练数据
+def get_trainset(dimension):
+    word_scores = create_word_bigram_scores() # 计算 词+二元词 信息得分
+    best_words=find_best_words(word_scores,dimension) #排序 挑前dimension个
+    posFeatures = pos_features(best_word_features_com,best_words) #提取积极文本里面的数据
+    negFeatures = neg_features(best_word_features_com,best_words) #提取消极文本里面的数据
+    shuffle(posFeatures)  # 将序列的所有元素随机排列
+    shuffle(negFeatures)
+    size_pos = int(len(pos_review))
+    size_neg = int(len(neg_review))
+    train_set = posFeatures[:size_pos] + negFeatures[:size_neg]
+    return train_set
 
 best_words = find_best_words(word_scores, 1500) # Set dimension and initiallize most informative words
 
@@ -286,12 +306,6 @@ train_set = posFeatures[:size_pos] + negFeatures[:size_neg]
 test_set = posFeatures[size_pos:] + negFeatures[size_neg:]
 
 test, tag_test = zip(*test_set) # 将特征和分类结果分离开
-# print test[0]
-# for x in test:
-#     print x,
-# print ''
-# for x in tag_test:
-#     print x,
 
 def clf_score(classifier):
     classifier = SklearnClassifier(classifier)
@@ -322,11 +336,19 @@ def get_best_classfier_and_dimention():
     bestDimention = '0'
     curAccuracy = 0.0
     dimention = ['500', '1000', '1500', '2000', '2500', '3000']
-
+    word_scores = create_word_bigram_scores()  # 创建单个词 二元词 字典序列{word1:score1,word2:score2,}
+    # for w,s in word_scores.iteritems():
+    #     print w,s,
+    # print ''
+    sort_word=sort_word_score(word_scores)
+    for w,s in sort_word:
+        print w,s,
+    print ''
     for d in dimention:
-        word_scores = create_word_bigram_scores()  # 创建单个词 二元词 字典序列{word1:score1,word2:score2,}
         best_words = find_best_words(word_scores, int(d))  # 找到上述字典序列里面得分最高的 d 个词[word1,word2,]
-
+        for x in best_words:
+            print x,
+        print ''
         posFeatures = pos_features(best_word_features_com,best_words)  # 得到[[{word1:true,word2:true},'pos'],[]]
         negFeatures = neg_features(best_word_features_com,best_words)  # 得到[[{word1:true,word2:true},'neg'],[]]
 
@@ -396,7 +418,7 @@ def storeClassifierDimenAcc(classifier,dimen,acc):
     f.write(classifier+'\t'+dimen+'\t'+acc);
     f.close()
 
-storeClassifierDimenAcc(bestClassfier.decode('utf-8'),bestDimention.decode('utf-8'),str(bestAccuracy).decode('utf-8'))
+#storeClassifierDimenAcc(bestClassfier.decode('utf-8'),bestDimention.decode('utf-8'),str(bestAccuracy).decode('utf-8'))
 #storeClassifierDimenAcc('BernoulliNB()'.decode('utf-8'),'1500'.decode('utf-8'),'0.940298507463'.decode('utf-8'))
 
 
@@ -446,4 +468,6 @@ def store_classifier(clf, trainset, filepath):
 # MultinomialNB() 1500 0.940298507463
 #BernoulliNB() 1500 0.940298507463
 # 存储性能最佳的分类器
-store_classifier(BernoulliNB(),train_set,'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'BernoulliNB.pkl')
+trainSet=get_trainset(1500) #将所有数据作为训练数据
+store_classifier(BernoulliNB(),trainSet,'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'BernoulliNB.pkl')
+

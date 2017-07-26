@@ -9,6 +9,7 @@ This module is the last part of review helpfulness prediction research.
 
 
 import numpy as np
+import xlwt
 from random import shuffle
 
 from sklearn import svm
@@ -82,33 +83,43 @@ helpfulness_feature = data[:, 1:] # The rest of the dataset is review helpfulnes
 
 # 3. Load classifier
 # 3.1 Classifier for binary classifiy
+'''
 clf = svm.SVC(gamma=0.001, C=100.)
-# clf = svm.SVR()
-# clf = LogisticRegression(penalty='l1', tol=0.01)
-# clf = tree.DecisionTreeClassifier()
-# clf = GaussianNB()
-# clf = BernoulliNB()
-# clf = RandomForestClassifier(n_estimators=20, max_depth=None, min_samples_split=1, random_state=0)
-
-# 3.2 Classifier for mulit classify
-# clf = OneVsOneClassifier(svm.SVC(gamma=0.001, C=100.))
-# clf = OneVsOneClassifier(svm.SVR())
-# clf = OneVsRestClassifier(LogisticRegression(penalty='l1', tol=0.01))
-
+clf = svm.SVR() # have bug
+clf = LogisticRegression(penalty='l1', tol=0.01)
+clf = tree.DecisionTreeClassifier()
+clf = GaussianNB()
+clf = BernoulliNB()
+clf = RandomForestClassifier(n_estimators=20, max_depth=None, min_samples_split=1, random_state=0) # have bug
+'''
+#
+# # 3.2 Classifier for mulit classify
+# # clf = OneVsOneClassifier(svm.SVC(gamma=0.001, C=100.))
+# # clf = OneVsOneClassifier(svm.SVR())
+# # clf = OneVsRestClassifier(LogisticRegression(penalty='l1', tol=0.01))
+#
+#
 
 # 4. Cross validate classifier's accuracy
 k_fold = cross_validation.KFold(len(helpfulness_feature), n_folds=10)
-clf_accuracy = cross_validation.cross_val_score(clf, helpfulness_feature, helpfulness_target, cv=k_fold)
-print(clf_accuracy.mean())
+#clf_accuracy = cross_validation.cross_val_score(clf, helpfulness_feature, helpfulness_target, cv=k_fold)
+#print(clf_accuracy.mean())
 
 
 # 5. Cross validate for all metrics, include precision, recall and f1 measure (macro, micro)
-def metric_evaluation(feature, target):
+
+'''
+功能：获取分类器的分类效果
+参数：分类特征 类标签 分类器
+
+'''
+
+def metric_evaluation(feature, target,clf):
 	k_fold = cross_validation.KFold(len(feature), n_folds=10) # 10-fold cross validation
 
 	metric = []
 	for train, test in k_fold:
-		target_pred = clf.fit(feature[train], target[train]).predict(feature[test])
+		target_pred = clf.fit(feature[train], target[train]).predict(feature[test]) # 训练分类器并预测测试集类标签
 		p = precision_score(target[test], target_pred)
 		r = recall_score(target[test], target_pred)
 		f1_macro = f1_score(target[test], target_pred, average='macro')
@@ -116,11 +127,53 @@ def metric_evaluation(feature, target):
 		metric.append([p,r,f1_macro,f1_micro])
 
 	metric_array = np.array(metric)
-	print(np.mean(metric_array[:, 0]))  # Precision score
-	print(np.mean(metric_array[:, 1]))  # Recall score
-	print(np.mean(metric_array[:, 2]))  # F1-macro score
-	print(np.mean(metric_array[:, 3]))  # F1-micro score
+	presionScore=np.mean(metric_array[:, 0])  # Precision score
+	recallScore=np.mean(metric_array[:, 1])  # Recall score
+	f1MacroScore=np.mean(metric_array[:, 2])  # F1-macro score
+	f1MicroScore=np.mean(metric_array[:, 3])  # F1-micro score
+	return [str(clf),presionScore,recallScore,f1MacroScore,f1MicroScore]
 
 
-# Testing
-metric_evaluation(helpfulness_feature, helpfulness_target)
+#print metric_evaluation(helpfulness_feature,helpfulness_target,clf)
+
+'''
+功能：存储各个分类器的分类效果 精度 召回率 f1-macro f1-micro
+参数：存储路径
+执行过程：
+读取txt数据（每一行为 类标签 特征 的形式）
+数据随机化
+取类标签 取分类特征 
+获取分类器的分类效果
+
+'''
+def store_classify_metric(storePath):
+	#classifyList=[svm.SVC(gamma=0.001, C=100.),svm.SVR(),LogisticRegression(penalty='l1', tol=0.01),tree.DecisionTreeClassifier(),GaussianNB(),BernoulliNB(),RandomForestClassifier(n_estimators=20, max_depth=None, min_samples_split=1, random_state=0)]
+	classifyList = [svm.SVC(gamma=0.001, C=100.), LogisticRegression(penalty='l1', tol=0.01),
+					tree.DecisionTreeClassifier(), GaussianNB(), BernoulliNB()]
+	# 读取txt数据 每一行为 类标签 特征 的形式
+	data = read_data("D:/ReviewHelpfulnessPrediction\HelpfulnessPredictionModule\FeatureSetWithDifferentThreshold/f5.txt")
+	shuffle(data)  # Make data ramdon
+	helpfulness_target = data[:, 0] #取类标签，第一列作为类标签
+	helpfulness_feature = data[:, 1:] #取分类特征，其余列
+	rowHeader=['classifier','precision','recall','f1macro','f1micro']
+	classifyMetric=[]
+	classifyMetric.append(rowHeader)
+	for classifier in classifyList:
+		classifyMetric.append(metric_evaluation(helpfulness_feature,helpfulness_target,classifier))
+	workbook=xlwt.Workbook()
+	sheet=workbook.add_sheet('classifier result')
+	for rowPos in range(len(classifyMetric)):
+		for colPos in range(len(classifyMetric[rowPos])):
+			sheet.write(rowPos,colPos,classifyMetric[rowPos][colPos])
+	workbook.save(storePath)
+
+# rowHeader=['classifier','precision','recall','f1macro','f1micro']
+# workbook=xlwt.Workbook()
+# sheet=workbook.add_sheet('classifier result')
+# for pos in range(len(rowHeader)):
+# 	sheet.write(0,pos,rowHeader[pos])
+# workbook.save('test.xls')
+#Testing
+#metric_evaluation(helpfulness_feature, helpfulness_target,clf)
+
+store_classify_metric('D:/ReviewHelpfulnessPrediction\BuildedClassifier/classifierResult.xls')
