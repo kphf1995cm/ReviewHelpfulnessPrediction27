@@ -8,6 +8,7 @@ This module aim to extract review's word number and sentence number and review l
 """
 
 import textProcessing as tp
+import time
 
 
 # Function counting review word number, sentence number and review length
@@ -24,19 +25,26 @@ def word_sent_count(dataset):
 
 
 # Store features
-def store_word_sent_num_features(filepath, sheetnum, colnum, storepath):
-    data = tp.get_excel_data(filepath, sheetnum, colnum, 'data')
+# 词语数量 句子数量 每个句子平均词语数
+def store_word_sent_num_features(dataSetDir,dataSetName,dataSetFileType,sheetNum,colNum,dstDir):
+    start = time.clock()
+    filepath = dataSetDir + '/' + dataSetName + dataSetFileType
+    storepath = dstDir + '/' + dataSetName + 'WordSentNumFea.txt'
+    data = tp.get_excel_data(filepath, sheetNum, colNum, 'data')
     word_sent_num = word_sent_count(data) # Need initiallized
 
     f = open(storepath,'w')
     reviewNum=0
     for i in word_sent_num:
-        f.write(str(i[0])+' '+str(i[1])+' '+str(i[2])+'\n')
+        f.write(str(i[0])+'\t'+str(i[1])+'\t'+str(i[2])+'\n')
         reviewNum+=1
     f.close()
-    return reviewNum
+    end=time.clock()
+    return reviewNum,end-start
 
-reviewDataSetPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
-storeAdjPath='D:/ReviewHelpfulnessPrediction\ReviewDataFeature/HTC_WordSenLenFea.txt'
-recordNum=store_word_sent_num_features(reviewDataSetPath,1,4,storeAdjPath)
-print recordNum
+# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewSet'
+# reviewDataSetName='HTC_Z710t_review_2013.6.5'
+# reviewDataSetFileType='.xlsx'
+# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# recordNum,runningTime=store_word_sent_num_features(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,4,desDir)
+# print 'handle sentences num:',recordNum,' running time:',runningTime

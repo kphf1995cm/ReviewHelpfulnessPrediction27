@@ -8,6 +8,7 @@ This module aim to extract adjective words, adverbs and verbs number features.
 """
 
 import textProcessing as tp
+import time
 import chardet
 
 # Function of counting review adjectives adverbs and verbs numbers
@@ -34,19 +35,27 @@ def count_adj_adv(dataset):
 
 
 # Store features
-def store_adj_adv_v_num_feature(filepath, sheetnum, colnum,storepath):
-    data = tp.get_excel_data(filepath,sheetnum,colnum,'data')
+# 形容词 副词 动词
+def store_adj_adv_v_num_feature(dataSetDir,dataSetName,dataSetFileType,sheetNum,colNum,dstDir):
+    start=time.clock()
+    filepath=dataSetDir+'/'+dataSetName+dataSetFileType
+    storepath=dstDir+'/'+dataSetName+'AdjAdvVFea.txt'
+    data = tp.get_excel_data(filepath,sheetNum,colNum,'data')
     adj_adv_num = count_adj_adv(data)
 
     f = open(storepath,'w')
     reviewCount=0
     for i in adj_adv_num:
-        f.write(str(i[0])+' '+str(i[1])+' '+str(i[2])+'\n')
+        f.write(str(i[0])+'\t'+str(i[1])+'\t'+str(i[2])+'\n')
         reviewCount+=1
     f.close()
-    return reviewCount
+    end=time.clock()
+    return reviewCount,end-start
 
-reviewDataSetPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
-storeAdjPath='D:/ReviewHelpfulnessPrediction\ReviewDataFeature/HTC_AdjAdvVFea.txt'
-recordNum=store_adj_adv_v_num_feature(reviewDataSetPath,1,4,storeAdjPath)
-print recordNum
+
+# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
+# reviewDataSetName='neg_review'
+# reviewDataSetFileType='.xlsx'
+# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# recordNum,runningTime=store_adj_adv_v_num_feature(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,1,desDir)
+# print 'handle sentences num:',recordNum,' running time:',runningTime

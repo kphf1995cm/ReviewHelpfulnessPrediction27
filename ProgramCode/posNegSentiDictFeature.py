@@ -5,18 +5,23 @@
 Compute a review's positive and negative score, their average score and standard deviation.
 This module aim to extract review positive/negative score, average score and standard deviation features (all 6 features).
 Sentiment analysis based on sentiment dictionary.
-
 """
-#import PreprocessingModule.textProcessing as tp
+'''
+计算一条评论 积极、消极得分，平均得分，标准偏差
+模块目标是提取一条评论的 positive/negative score, average score and standard deviation features (all 6 features)
+情感分析依赖于情感词典
+'''
+
 import textProcessing as tp
 import numpy as np
+import time
 
-# 1. Load dictionary and dataset
-# Load sentiment dictionary
+'''1 导入情感词典以及数据集'''
+'''导入情感词典'''
 posdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/posdict.txt","lines")
 negdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/negdict.txt","lines")
 
-# Load AdverbsOfDegreeDictionary
+'''导入形容词、副词、否定词等程度词字典'''
 mostdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/most.txt', 'lines')
 verydict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/very.txt', 'lines')
 moredict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/more.txt', 'lines')
@@ -24,11 +29,13 @@ ishdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModul
 insufficientdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/insufficiently.txt', 'lines')
 inversedict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/inverse.txt', 'lines')
 
-# Load dataset
-#review = tp.get_excel_data("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4, "data")
+'''导入数据集'''
+review = tp.get_excel_data("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4, "data")
 
-# 2. Sentiment dictionary analysis basic function
-# Function of matching adverbs of degree and set weights
+'''2 基于字典的情感分析 基本功能'''
+
+'''匹配程度词并设置权重'''
+'''parm：word  当前情感词的前面词语 sentiment_value 当前情感词的情感值'''
 def match(word, sentiment_value):
 	if word in mostdict:
 		sentiment_value *= 2.0
@@ -44,9 +51,7 @@ def match(word, sentiment_value):
 	    sentiment_value *= -1
 	return sentiment_value
 
-# Function of transforming negative score to positive score
-# Example: [5, -2] →  [7, 0]; [-4, 8] →  [0, 12]
-# 可能有bug
+'''将得分正数化 Example: [5, -2] →  [7, 0]; [-4, 8] →  [0, 12]'''
 def transform_to_positive_num(poscount, negcount):
     pos_count = 0
     neg_count = 0
@@ -65,8 +70,10 @@ def transform_to_positive_num(poscount, negcount):
     return [pos_count, neg_count]
 
 
-# 3.1 Single review's positive and negative score
-# Function of calculating review's every sentence sentiment score
+'''3 计算评论的情感特征'''
+
+'''计算单条评论的情感特征，单条评论可能还有多个句子 score_list=[[pos1,neg1],[pos2,neg2],]'''
+'''返回 [Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg]'''
 def sumup_sentence_sentiment_score(score_list):
 	score_array = np.array(score_list) # Change list to a numpy array
 	Pos = np.sum(score_array[:,0]) # Compute positive score
@@ -75,7 +82,6 @@ def sumup_sentence_sentiment_score(score_list):
 	AvgNeg = np.mean(score_array[:,1])
 	StdPos = np.std(score_array[:,0]) # Compute review positive standard deviation score
 	StdNeg = np.std(score_array[:,1])
-
 	return [Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg]
 
 # 代码有问题,它是按照情感词个数来计算的，它更强调的是位于后面的情感词
@@ -83,12 +89,14 @@ def sumup_sentence_sentiment_score(score_list):
 # input：除了电池不给力 都很好
 # output:[1.5, 0.0, 0.75, 0.0, 0.75, 0.0]
 # test code:print(single_review_sentiment_score(review[1]))
+'''计算单条评论的得分列表 '''
+'''返回 [Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg]'''
 def single_review_sentiment_score(review):
 	single_review_senti_score = []
-	cuted_review = tp.cut_sentence_2(review)
+	cuted_review = tp.cut_sentence_2(review)# 将评论切割成句子
 
 	for sent in cuted_review:
-		seg_sent = tp.segmentation(sent, 'list')
+		seg_sent = tp.segmentation(sent, 'list')# 将句子做分词处理
 		i = 0 # word position counter
 		s = 0 # sentiment word position
 		poscount = 0 # count a positive word
@@ -107,7 +115,7 @@ def single_review_sentiment_score(review):
 		        	negcount = match(w, negcount)
 		        s = i + 1 # a是什么
 
-		    # Match "!" in the review, every "!" has a weight of +2
+		    # Match "!" in the review, every "!" has a weight of +2 ！强调句子情感
 		    elif word == "！".decode('utf8') or word == "!".decode('utf8'):
 		        for w2 in seg_sent[::-1]:
 		            if w2 in posdict:
@@ -124,17 +132,8 @@ def single_review_sentiment_score(review):
 
 	return review_sentiment_score
 
-# Testing
-#print(single_review_sentiment_score(review[1]))
-
-
-# 3.2 All review dataset's sentiment score
-'''
-test code:
-score_list=sentence_sentiment_score(review)
-for x in score_list:
-	print(x)
-'''
+'''计算全部评论的情感得分列表'''
+'''返回 [[[pos,neg],[pos,neg],],[],]'''
 def sentence_sentiment_score(dataset):
     cuted_review = []
     for cell in dataset:
@@ -177,13 +176,8 @@ def sentence_sentiment_score(dataset):
 
     return all_review_count
 
-# Compute a all review's sentiment score
-'''
-function:Compute a all review's sentiment score
-test code:
-for i in all_review_sentiment_score(sentence_sentiment_score(review)):
-	print(i)
-'''
+'''计算全部评论的特征列表'''
+'''返回[[Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg],[],]'''
 def all_review_sentiment_score(senti_score_list):
     score = []
     for review in senti_score_list:
@@ -198,7 +192,9 @@ def all_review_sentiment_score(senti_score_list):
     return score
 
 
-# 4. Store sentiment dictionary features
+'''4 存储情感字典特征'''
+
+'''parm@review_set; 评论列表，每条评论可以含有多个句子 '''
 def store_sentiment_dictionary_score(review_set, storepath):
 	sentiment_score = all_review_sentiment_score(sentence_sentiment_score(review_set))
 
@@ -209,15 +205,22 @@ def store_sentiment_dictionary_score(review_set, storepath):
 		reviewCount+=1
 	f.close()
 	return reviewCount
-
 '''
 function: read review data set and store score data
 test code:
 read_review_set_and_store_score("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4,'D:/ReviewHelpfulnessPrediction\ReviewSetScore/HTC.txt')
 '''
-def read_review_set_and_store_score(dataSetPath,sheetNum,colNum,scoreStorePath):
+def read_review_set_and_store_score(dataSetDir,dataSetName,dataSetFileType,sheetNum,colNum,dstDir):
+	start=time.clock()
+	dataSetPath=dataSetDir+'/'+dataSetName+dataSetFileType
+	dstPath=dstDir+'/'+dataSetName+'SentiDictFea.txt'
 	review = tp.get_excel_data(dataSetPath, sheetNum, colNum, "data")
-	return store_sentiment_dictionary_score(review,scoreStorePath)
+	end=time.clock()
+	return store_sentiment_dictionary_score(review,dstPath),end-start
 
-recordNum=read_review_set_and_store_score("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4,'D:/ReviewHelpfulnessPrediction\ReviewDataFeature/HTC_SentiDictFea.txt')
-print recordNum
+# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewSet'
+# reviewDataSetName='HTC_Z710t_review_2013.6.5'
+# reviewDataSetFileType='.xlsx'
+# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# recordNum,runningTime=read_review_set_and_store_score(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,4,desDir)
+# print 'handle sentences num:',recordNum,' running time:',runningTime

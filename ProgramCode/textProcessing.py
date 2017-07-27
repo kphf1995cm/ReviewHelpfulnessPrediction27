@@ -4,15 +4,18 @@
 """ 
 Read data from excel file and txt file.
 Chinese word segmentation, postagger, sentence cutting and stopwords filtering function.
-
 """
+'''
+从excel文件和txt文件中读取数据
+中文分词 词性标注 句子切割 停用词过滤
+'''
 
 import xlrd
 import jieba
 import jieba.posseg
 
-jieba.load_userdict('D:/ReviewHelpfulnessPrediction/PreprocessingModule/userdict.txt') #Load user dictionary to increse segmentation accuracy
-
+'''导入用户词典增加中文分词的准确性'''
+jieba.load_userdict('D:/ReviewHelpfulnessPrediction/PreprocessingModule/userdict.txt')
 
 """
 input: An excel file with product review
@@ -24,6 +27,8 @@ input: An excel file with product review
 output:
     parameter_1: Every cell is a value of the data list. (unicode) 获取excel某一列值列表
     parameter_2: Excel row number. (int) 获取行数量
+test code：
+print(get_excel_data('D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx',1,4,'data'))
 """
 def get_excel_data(filepath, sheetnum, colnum, para):
     table = xlrd.open_workbook(filepath)
@@ -35,7 +40,6 @@ def get_excel_data(filepath, sheetnum, colnum, para):
     elif para == 'rownum':
         return rownum
 
-#print(get_excel_data('D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx',1,4,'data'))
 """
 input:
     parameter_1: A txt file with many lines
@@ -43,8 +47,9 @@ input:
 output:
     parameter_1: Every line is a value of the txt_data list. (unicode) 获取行数据列表
     parameter_2: Txt data is a string. (str)
+test code:
+print get_txt_data('C:/Users\kuangp@wangsu.com\ReviewHelpfulnessPrediction27\PreprocessingModule\stopword.txt','lines')
 """
-
 def get_txt_data(filepath, para):
     if para == 'lines':
         txt_file1 = open(filepath, 'r')
@@ -69,7 +74,6 @@ output:
     parameter_2: [u'\u8fd9', u'\u6b3e', u'\u624b\u673a', u'\u5927\u5c0f', u'\u5408\u9002', u'\uff0c']
                   返回unicode字符串列表
 """
-
 def segmentation(sentence, para):
     if para == 'str':
         seg_list = jieba.cut(sentence)
@@ -82,13 +86,15 @@ def segmentation(sentence, para):
             seg_result2.append(w)
         return seg_result2
 
+#print segmentation('66666666666666666666666666666','str')
+
 
 """
-获取词语词性
+词性标注
 input: '这款手机大小合适。'
 output:
-    parameter_1: 这 r 款 m 手机 n 大小 b 合适 a 。 x
-    parameter_2: [(u'\u8fd9', ['r']), (u'\u6b3e', ['m']),
+    parameter_1 str: 这 r 款 m 手机 n 大小 b 合适 a 。 x
+    parameter_2 list: [(u'\u8fd9', ['r']), (u'\u6b3e', ['m']),
     (u'\u624b\u673a', ['n']), (u'\u5927\u5c0f', ['b']),
     (u'\u5408\u9002', ['a']), (u'\u3002', ['x'])]
     [('你', 'r'), ('是', 'v'), ('谁', 'r')]
@@ -96,8 +102,6 @@ test code:
 str_list=postagger('我喜欢你','str')
 print str_list
 """
-
-
 def postagger(sentence, para):
     if para == 'list':
         pos_data1 = jieba.posseg.cut(sentence)
@@ -113,10 +117,8 @@ def postagger(sentence, para):
         pos_str = ' '.join(pos_list2)
         return pos_str
 
-str_list=postagger('我喜欢你,但是我讨厌他','str')
-print str_list
-
 """
+切割句子
 input: A review like this
     '这款手机大小合适，配置也还可以，很好用，只是屏幕有点小。。。总之，戴妃+是一款值得购买的智能手机。'
 output: A multidimentional list
@@ -125,10 +127,9 @@ output: A multidimentional list
     u'\u53ea\u662f\u5c4f\u5e55\u6709\u70b9\u5c0f\u3002', u'\u603b\u4e4b\uff0c',
     u'\u6234\u5983+\u662f\u4e00\u6b3e\u503c\u5f97\u8d2d\u4e70\u7684\u667a\u80fd\u624b\u673a\u3002']
     输出 ['。', '这款手机大小合适，', '配置也还可以，', '很好用，', '只是屏幕有点小。。。', '总之，', '戴妃+是一款值得购买的智能手机。']
+Maybe this algorithm will have bugs in it 
+无法处理标点符号出现在句首情况
 """
-
-""" Maybe this algorithm will have bugs in it """
-# 无法处理标点符号出现在句首情况
 def cut_sentences_1(words):
     #words = (words).decode('utf8')
     start = 0
@@ -147,9 +148,7 @@ def cut_sentences_1(words):
     if start < len(words):
         sents.append(words[start:])
     return sents
-
-""" Sentence cutting algorithm without bug, but a little difficult to explain why"""
-# 可能需要删除掉.decode
+""" 没有问题 Sentence cutting algorithm without bug, but a little difficult to explain why"""
 def cut_sentence_2(words):
     #words = (words).decode('utf8')
     start = 0
@@ -175,6 +174,7 @@ def cut_sentence_2(words):
 
 
 """
+中文分词并去停用词
 input: An excel file with product reviews
     一个手机很好，很喜欢吧。
     三防出色，操作系统垃圾！
@@ -189,9 +189,7 @@ test code:
      seg_list=seg_fil_excel('s.xlsx',0,0)
 for x in seg_list:
     print(x)
-
 """
- 
 def seg_fil_excel(filepath, sheetnum, colnum):
     # Read product review data from excel file and segment every review
     review_data = []
@@ -210,9 +208,9 @@ def seg_fil_excel(filepath, sheetnum, colnum):
  
     # Return filtered segment reviews
     return seg_fil_result
-
-
 """
+中文分词并去停用词
+参数里面需要加入停用词目录
 input: An excel file with product reviews
     手机很好，很喜欢。
     三防出色，操作系统垃圾！
@@ -229,7 +227,6 @@ for x in seg_list:
     print(x)
 
 """
-
 def seg_fil_senti_excel(filepath, sheetnum, colnum,sentimenstopwordtxtfilepath):
     # Read product review data from excel file and segment every review
     review_data = []
@@ -249,7 +246,36 @@ def seg_fil_senti_excel(filepath, sheetnum, colnum,sentimenstopwordtxtfilepath):
     # Return filtered segment reviews
     return seg_fil_senti_result
 
-# seg_list=seg_fil_senti_excel('s.xlsx',0,0,'sentiment_stopword.txt')
-# for x in seg_list:
-#     print x
+'''
+中文分词并去停用词
+将txt文件里所有数据当做一条记录处理
+para：line 表示txt文件只有一行
+      lines表示txt文件有多行
+test code:
+data=seg_fil_txt('C:/Users\kuangp@wangsu.com\ReviewHelpfulnessPrediction27\TestModel/testdata.txt','lines')
+for x in data:
+    print x,
+'''
+def seg_fil_txt(filepath,para):
+    txt_sent=''
+    if para == 'lines':
+        txt_file1 = open(filepath, 'r')
+        txt_tmp1 = txt_file1.readlines()
+        txt_sent = ''.join(txt_tmp1)
+        txt_file1.close()
+    elif para == 'line':
+        txt_file2 = open(filepath, 'r')
+        txt_tmp = txt_file2.readline()
+        txt_sent = ''.join(txt_tmp)
+        txt_file2.close()
+    seg_sent=segmentation(txt_sent, 'list')
+    stopwords = get_txt_data('D:/ReviewHelpfulnessPrediction/PreprocessingModule/stopword.txt', 'lines')
+    seg_sent_fil = [word for word in seg_sent if word not in stopwords and word != ' ' and word!='\n']
+    return seg_sent_fil
+
+
+
+
+
+
 

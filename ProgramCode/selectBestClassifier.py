@@ -1,12 +1,10 @@
 #! /usr/bin/env python2.7
 #coding=utf-8
-
-"""
-Use positive and negative review set as corpus to train a sentiment classifier.
-This module use labeled positive and negative reviews as training set, then use nltk scikit-learn api to do classification task.
-Aim to train a classifier automatically identifiy review's positive or negative sentiment, and use the probability as review helpfulness feature.
-
-"""
+''''''
+'''
+使用积极和消极的评论作为语料库训练一个情感分类器
+使用了带标记的评论作为训练集
+'''
 
 import textProcessing as tp
 import pickle
@@ -61,6 +59,12 @@ def bigram_words(words, score_fn=BigramAssocMeasures.chi_sq, n=200):
     bigram_finder = BigramCollocationFinder.from_words(words)
     bigrams = bigram_finder.nbest(score_fn, n)
     return bag_of_words(words + bigrams)
+def get_all_words():
+    posdata = pos_review
+    negdata = neg_review
+    posWords = list(itertools.chain(*posdata))
+    negWords = list(itertools.chain(*negdata))
+    return posWords+negWords
 
 '''
 方式2：降维处理，选取信息量大的 词语或二元词语或词语+二元词语 作为特征
@@ -113,10 +117,10 @@ def create_bigram_scores():
     posWords = list(itertools.chain(*posdata))
     negWords = list(itertools.chain(*negdata))
 
-    bigram_finder = BigramCollocationFinder.from_words(posWords)
-    bigram_finder = BigramCollocationFinder.from_words(negWords)
-    posBigrams = bigram_finder.nbest(BigramAssocMeasures.chi_sq, 8000)
-    negBigrams = bigram_finder.nbest(BigramAssocMeasures.chi_sq, 8000)
+    bigram_pos_finder = BigramCollocationFinder.from_words(posWords)
+    posBigrams = bigram_pos_finder.nbest(BigramAssocMeasures.chi_sq, 8000)
+    bigram_neg_finder = BigramCollocationFinder.from_words(negWords)
+    negBigrams = bigram_neg_finder.nbest(BigramAssocMeasures.chi_sq, 8000)
 
     pos = posBigrams
     neg = negBigrams
@@ -153,10 +157,10 @@ def create_word_bigram_scores():
     posWords = list(itertools.chain(*posdata))
     negWords = list(itertools.chain(*negdata))
 
-    bigram_finder = BigramCollocationFinder.from_words(posWords)
-    bigram_finder = BigramCollocationFinder.from_words(negWords)
-    posBigrams = bigram_finder.nbest(BigramAssocMeasures.chi_sq, 5000)
-    negBigrams = bigram_finder.nbest(BigramAssocMeasures.chi_sq, 5000)
+    bigram_pos_finder = BigramCollocationFinder.from_words(posWords)
+    posBigrams = bigram_pos_finder.nbest(BigramAssocMeasures.chi_sq, 5000)
+    bigram_neg_finder = BigramCollocationFinder.from_words(negWords)
+    negBigrams = bigram_neg_finder.nbest(BigramAssocMeasures.chi_sq, 5000)
 
     pos = posWords + posBigrams
     neg = negWords + negBigrams
@@ -184,6 +188,7 @@ def create_word_bigram_scores():
 
 '''word_scores 作为全局变量，其是字典类型，表示每个词语的信息得分 {词语：得分，}'''
 word_scores = create_word_bigram_scores()
+#word_scores=create_word_scores()
 
 '''
 方式2的步骤二：根据信息量得分进行排序，选取排名靠前的number个作为特征
@@ -385,7 +390,7 @@ bestClassfier,bestDimention,bestAccuracy=get_best_classfier_and_dimention()
 print str(bestClassfier),bestDimention,bestAccuracy
 '''存储最佳分类器 最优维度 相应精度'''
 def storeClassifierDimenAcc(classifier,dimen,acc):
-    f=open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt','a')
+    f=open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt','w')
     f.write(classifier+'\t'+dimen+'\t'+acc+'\n');
     f.close()
 
