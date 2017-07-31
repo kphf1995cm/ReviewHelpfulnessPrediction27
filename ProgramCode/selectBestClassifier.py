@@ -26,9 +26,9 @@ from sklearn.metrics import accuracy_score
 
 '''1 导入数据模块'''
 
-posNegDir = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
-pos_review = tp.seg_fil_senti_excel(posNegDir + '/pos_review.xlsx', 1, 1, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-neg_review = tp.seg_fil_senti_excel(posNegDir + '/neg_review.xlsx', 1, 1, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
+pos_review = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+neg_review = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
 
 pos = pos_review
 neg = neg_review
@@ -313,6 +313,7 @@ def get_accuracy_score(classifier,train_set,test,tag_test):
 '''
   挑选出最佳分类器以及最优特征维度
   返回分类器 维度 精度
+  分类结果保存在 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + 'classifierDimenAcc.txt'
 '''
 def get_best_classfier_and_dimention():
     bestClassfier = ''
@@ -389,6 +390,7 @@ def get_best_classfier_and_dimention():
 bestClassfier,bestDimention,bestAccuracy=get_best_classfier_and_dimention()
 print str(bestClassfier),bestDimention,bestAccuracy
 '''存储最佳分类器 最优维度 相应精度'''
+'''D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt'''
 def storeClassifierDimenAcc(classifier,dimen,acc):
     f=open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt','w')
     f.write(classifier+'\t'+dimen+'\t'+acc+'\n');

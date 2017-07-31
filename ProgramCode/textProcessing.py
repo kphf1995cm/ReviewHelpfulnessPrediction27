@@ -13,6 +13,7 @@ Chinese word segmentation, postagger, sentence cutting and stopwords filtering f
 import xlrd
 import jieba
 import jieba.posseg
+import xlwt
 
 '''导入用户词典增加中文分词的准确性'''
 jieba.load_userdict('D:/ReviewHelpfulnessPrediction/PreprocessingModule/userdict.txt')
@@ -56,6 +57,7 @@ def get_txt_data(filepath, para):
         txt_tmp1 = txt_file1.readlines()
         txt_tmp2 = ''.join(txt_tmp1)
         txt_data1 = txt_tmp2.decode('utf-8').split('\n')
+        txt_data1.pop(len(txt_data1)-1) #去掉最后一行，因为最后一行有可能为空
         txt_file1.close()
         return txt_data1
     elif para == 'line':
@@ -245,7 +247,29 @@ def seg_fil_senti_excel(filepath, sheetnum, colnum,sentimenstopwordtxtfilepath):
  
     # Return filtered segment reviews
     return seg_fil_senti_result
+'''
+中文分词并去停用词
+从txt文件读取数据
+每行代表一个数据项(可以改进 可尝试每一百行代表一个数据)
+参数 para：line 表示只有一行数据，lines 表示有多行数据
+'''
+def seg_fil_txt(filepath,para):
+    raw_data=get_txt_data(filepath,para)
+    review_data=[]
+    for single_data in raw_data:
+        review_data.append(segmentation(single_data,'list'))
+        # Read txt file contain stopwords
+    stopwords = get_txt_data('D:/ReviewHelpfulnessPrediction/PreprocessingModule/stopword.txt', 'lines')
 
+    # Filter stopwords from reviews
+    seg_fil_result = []
+    for review in review_data:
+        fil = [word for word in review if word not in stopwords and word != ' ']
+        seg_fil_result.append(fil)
+        fil = []
+
+    # Return filtered segment reviews
+    return seg_fil_result
 '''
 中文分词并去停用词
 将txt文件里所有数据当做一条记录处理
@@ -256,7 +280,7 @@ data=seg_fil_txt('C:/Users\kuangp@wangsu.com\ReviewHelpfulnessPrediction27\TestM
 for x in data:
     print x,
 '''
-def seg_fil_txt(filepath,para):
+def seg_fil_txt_one_record(filepath,para):
     txt_sent=''
     if para == 'lines':
         txt_file1 = open(filepath, 'r')
@@ -272,6 +296,136 @@ def seg_fil_txt(filepath,para):
     stopwords = get_txt_data('D:/ReviewHelpfulnessPrediction/PreprocessingModule/stopword.txt', 'lines')
     seg_sent_fil = [word for word in seg_sent if word not in stopwords and word != ' ' and word!='\n']
     return seg_sent_fil
+
+
+'''将每一行txt文本数据写入到excel文件中 col_pos为要写入的excel文件列标'''
+'''单个sheet最大行数是65535 如果txt文件行数过多，得将其存在多个sheet中'''
+def save_txt_to_excel(txtpath,excelpath,col_pos):
+    txt_file = open(txtpath, 'r')
+    txt_tmp = txt_file.readlines()
+    txt_tmp = ''.join(txt_tmp)
+    txt_data= txt_tmp.decode('utf-8').split('\n')
+    txt_file.close()
+    excel_file=xlwt.Workbook(encoding='utf-8')
+    sheet_name='label_data'
+    sheet_pos=1
+    excel_sheet=excel_file.add_sheet(sheet_name+str(sheet_pos))
+    row_pos=0
+    col_pos-=1
+    excel_sheet.write(row_pos,col_pos,'review_data')
+    row_pos+=1
+    for x in txt_data:
+        if row_pos==65536:
+            sheet_pos+=1
+            excel_sheet=excel_file.add_sheet(sheet_name+str(sheet_pos))
+            row_pos=0
+            excel_sheet.write(row_pos,col_pos,'review_data')
+            row_pos=1
+            excel_sheet.write(row_pos, col_pos, x)
+            row_pos+=1
+        excel_sheet.write(row_pos,col_pos,x)
+        row_pos+=1
+
+    excel_file.save(excelpath)
+
+#save_txt_to_excel('D:/ReviewHelpfulnessPrediction\ReviewDataFeature/newoutOriData.txt','D:/ReviewHelpfulnessPrediction\LabelReviewData/test.xls',1)
+#save_txt_to_excel('D:/ReviewHelpfulnessPrediction\ReviewDataFeature/FiltnewoutOriData.txt','D:/ReviewHelpfulnessPrediction\LabelReviewData/FiltData.xls',1)
+
+'''检查标记数据 看看是否出现格式错误，如出现，显示出现错误的行数,并返回正确标记的数据'''
+'''参数 labelRowNum为已标记的行数量'''
+'''将标记数据按照主客观 积消极 鉴黄 分类存储在labelDataDir目录下'''
+def judge_label_data(labelDataPath, labelRowNum, labelDataDir):
+	table = xlrd.open_workbook(labelDataPath)
+	sheet = table.sheets()[0]
+	errorRow = []  # 错误行
+	subjectiveSubDataItem = []  # 主观数据项
+	subjectiveObjDataItem = []  # 客观数据项
+	sentimentPosDataItem = []  # 积极数据项
+	sentimentNegDataItem = []  # 消极数据项
+	eroticEroDataItem = []  # 鉴黄
+	eroticNorDataItem = []
+	srcDataColPos = 0
+	subjectiveColPos = 2
+	sentimentColPos = 3
+	eroticColPos = 4
+	excelData = []
+	for rowPos in range(1, labelRowNum):
+		excelData.append(sheet.row_values(rowPos))
+	for rowPos in range(0, labelRowNum - 1):
+		if excelData[rowPos][subjectiveColPos] == 1:
+			if excelData[rowPos][sentimentColPos] == 0:
+				sentimentNegDataItem.append(excelData[rowPos][srcDataColPos])
+			elif excelData[rowPos][sentimentColPos] == 1:
+				sentimentPosDataItem.append(excelData[rowPos][srcDataColPos])
+			else:
+				errorRow.append([rowPos + 2, 'sentiment_tendency value error'])
+			subjectiveSubDataItem.append(excelData[rowPos][srcDataColPos])
+		elif excelData[rowPos][subjectiveColPos] == 0:
+			subjectiveObjDataItem.append(excelData[rowPos][srcDataColPos])
+		else:
+			errorRow.append([rowPos + 2, 'is_subjective value error'])
+		if excelData[rowPos][eroticColPos] == 1:
+			eroticEroDataItem.append(excelData[rowPos][srcDataColPos])
+		elif excelData[rowPos][eroticColPos] == 0:
+			eroticNorDataItem.append(excelData[rowPos][srcDataColPos])
+		else:
+			errorRow.append([rowPos + 2, 'is_erotic value error'])
+	for x in errorRow:
+		print x
+	print 'subjective and objective num:', len(subjectiveSubDataItem), len(subjectiveObjDataItem)
+	print 'postive and negtive num:', len(sentimentPosDataItem), len(sentimentNegDataItem)
+	print 'erotic and normal num:', len(eroticEroDataItem), len(eroticNorDataItem)
+	colPos = 0
+	'''存储主客观标注的数据'''
+	subObjFile = xlwt.Workbook(encoding='utf-8')
+	subjectiveSheet = subObjFile.add_sheet('subjective_data')
+	for rowPos in range(len(subjectiveSubDataItem)):
+		subjectiveSheet.write(rowPos, colPos, subjectiveSubDataItem[rowPos])
+	objectiveSheet = subObjFile.add_sheet('objective_data')
+	for rowPos in range(len(subjectiveObjDataItem)):
+		objectiveSheet.write(rowPos, colPos, subjectiveObjDataItem[rowPos])
+	subObjFile.save(labelDataDir + '/' + 'subObjLabelData.xls')
+
+	'''存储积消极标注的数据'''
+	posNegFile = xlwt.Workbook(encoding='utf-8')
+	postiveSheet = posNegFile.add_sheet('postive_data')
+	for rowPos in range(len(sentimentPosDataItem)):
+		postiveSheet.write(rowPos, colPos, sentimentPosDataItem[rowPos])
+	negtiveSheet = posNegFile.add_sheet('negtive_data')
+	for rowPos in range(len(sentimentNegDataItem)):
+		negtiveSheet.write(rowPos, colPos, sentimentNegDataItem[rowPos])
+	posNegFile.save(labelDataDir + '/' + 'posNegLabelData.xls')
+
+	'''存储鉴黄标注数据'''
+	eroNorFile=xlwt.Workbook(encoding='utf-8')
+	eroticSheet=eroNorFile.add_sheet('erotic_data')
+	for rowPos in range(len(eroticEroDataItem)):
+		eroticSheet.write(rowPos,colPos,eroticEroDataItem[rowPos])
+	normalSheet=eroNorFile.add_sheet('normal_data')
+	for rowPos in range(len(eroticNorDataItem)):
+		normalSheet.write(rowPos,colPos,eroticNorDataItem[rowPos])
+	eroNorFile.save(labelDataDir + '/' + 'eroNorLabelData.xls')
+
+
+
+
+#judge_label_data('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls',1200,'D:/ReviewHelpfulnessPrediction\LabelReviewData')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

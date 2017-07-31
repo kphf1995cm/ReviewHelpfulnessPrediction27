@@ -11,6 +11,7 @@ import itertools
 import numpy as np
 import time
 import chardet
+import xlwt
 from random import shuffle
 
 import nltk
@@ -182,17 +183,113 @@ def predDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,she
     reviewCount = 0
     for i in pred:
         reviewCount += 1
-        p_file.write(str(i.prob('pos')) + ' ' + str(i.prob('neg')) + '\n')
+        p_file.write(str(i.prob('pos')) + '\t' + str(i.prob('neg')) + '\n')
     p_file.close()
     end=time.clock()
     return reviewCount,end-start
 
-# reviewDataSetPath = 'D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
-# reviewDataSetPath='D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet/pos_review.xlsx'
-# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewSet'
-# reviewDataSetName='HTC_Z710t_review_2013.6.5'
-# reviewDataSetFileType='.xlsx'
-# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
-# recordNum,runningTime=predictDataSentimentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,4,desDir)
-# print 'handle sentences num:',recordNum,' classify time:',runningTime
+def predTxtDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir):
+    reviewDataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
+    oriDataPath = desDir + '/' + reviewDataSetName + 'OriData.txt'
+    oriDataFeaPath = desDir + '/' + reviewDataSetName + 'OriFea.txt'
+    preResStorePath = desDir + '/' + reviewDataSetName + 'ClassPro.txt'
+    preTagStorePath = desDir + '/' + reviewDataSetName + 'ClassTag.txt'
+    start = time.clock()
+    # reviewDataSetPath = 'D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
+    # reviewDataSetPath='D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet/pos_review.xlsx'
+    review = tp.get_txt_data(reviewDataSetPath, "lines")  # 读取待分类数据
+    # 将待分类数据进行分词以及去停用词处理
+    sentiment_review = tp.seg_fil_txt(reviewDataSetPath,'lines')
+    # 提取待分类数据特征
+    review_feature = extract_features(sentiment_review, best_words)
+    # classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
+    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + best_classifier + '.pkl'
+    # 装载分类器
+    clf = pickle.load(open(classifierPath))
+    # 分类之预测数据类标签
+    data_tag = clf.batch_classify(review_feature)
+    p_file = open(preTagStorePath, 'w')
+    for i in data_tag:
+        p_file.write(str(i) + '\n')
+    p_file.close()
+    # 分类之预测数据积极、消极可能性
+    pred = clf.batch_prob_classify(review_feature)
+    # 记录分类结果 积极可能性 消极可能性
+    p_file = open(preResStorePath, 'w')
+    reviewCount = 0
+    for i in pred:
+        reviewCount += 1
+        p_file.write(str(i.prob('pos')) + '\t' + str(i.prob('neg')) + '\n')
+    p_file.close()
+    # 记录原始数据
+    p_file = open(oriDataPath, 'w')
+    for d in review:
+        p_file.write(d.encode('utf-8') + '\n')
+    p_file.close()
+    p_file = open(oriDataFeaPath, 'w')
+    # 记录原始数据特征提取结果
+    for d in review_feature:
+        for w, b, in d.iteritems():
+            p_file.write(w.encode('utf-8') + ' ' + str(b) + '\t')
+        p_file.write('\n')
+    p_file.close()
+    end = time.clock()
+    return reviewCount, end - start
 
+
+
+# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# reviewDataSetName='FiltnewoutOriData'
+# reviewDataSetFileType='.txt'
+# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# recordNum,runningTime=predTxtDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir)
+# print 'handle sentences num:',recordNum,' running time:',runningTime
+
+'''输出类标签 分类概率 原始数据 原始数据特征 将结果保存在excel文件中'''
+def predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,sheetNum,colNum,desDir):
+    reviewDataSetPath=reviewDataSetDir+'/'+reviewDataSetName+reviewDataSetFileType
+    preDataResPath=desDir+'/'+reviewDataSetName+'RawDataTagProFea.xls'
+    start=time.clock()
+    review = tp.get_excel_data(reviewDataSetPath, sheetNum, colNum, "data")# 读取待分类数据
+    #将待分类数据进行分词以及去停用词处理
+    sentiment_review = tp.seg_fil_senti_excel(reviewDataSetPath, sheetNum, colNum, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+    #提取待分类数据特征
+    review_feature = extract_features(sentiment_review, best_words)
+    #classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
+    classifierPath='D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+best_classifier+'.pkl'
+    #装载分类器
+    clf = pickle.load(open(classifierPath))
+    dataItemCount=len(sentiment_review)
+    #分类之预测数据类标签
+    data_tag=clf.batch_classify(review_feature)
+    #分类之预测数据积极、消极可能性
+    res_pro = clf.batch_prob_classify(review_feature)
+    # 记录分类结果 积极可能性 消极可能性
+    # 记录原始数据
+    # 记录原始数据特征提取结果
+    # for d in review_feature:
+    #     for w,b,in d.iteritems():
+    #         p_file.write(w.encode('utf-8') + ' '+str(b)+'\t')
+    #     p_file.write('\n')
+    # p_file.close()
+    preResFile=xlwt.Workbook(encoding='utf-8')
+    preResSheet=preResFile.add_sheet('RawDataTagProFea')
+    for rowPos in range(dataItemCount):
+        preResSheet.write(rowPos,0,review[rowPos])
+        preResSheet.write(rowPos,1,data_tag[rowPos])
+        preResSheet.write(rowPos,2,str(res_pro[rowPos].prob('pos')))
+        preResSheet.write(rowPos, 3, str(res_pro[rowPos].prob('neg')))
+        preResSheet.write(rowPos, 4, review_feature[rowPos].keys())
+    preResFile.save(preDataResPath)
+
+
+
+    end=time.clock()
+    return dataItemCount,end-start
+
+reviewDataSetDir='D:/ReviewHelpfulnessPrediction\LabelReviewData'
+reviewDataSetName='label_review_count_data'
+reviewDataSetFileType='.xls'
+desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+recordNum,runningTime=predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,1,desDir)
+print 'handle sentences num:',recordNum,' classify time:',runningTime

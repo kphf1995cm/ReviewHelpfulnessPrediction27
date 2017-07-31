@@ -19,6 +19,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.multiclass import OneVsOneClassifier, OneVsRestClassifier
 from sklearn import cross_validation
 from sklearn.metrics import f1_score, precision_score, recall_score
+import time
 
 
 # 1. Load data
@@ -34,7 +35,7 @@ def read_data(datapath):
 	data = np.loadtxt(f)
 	return data
 
-data = read_data("D:/ReviewHelpfulnessPrediction\HelpfulnessPredictionModule\FeatureSetWithDifferentThreshold/f5.txt")
+data = read_data("D:/ReviewHelpfulnessPrediction\ReviewDataFeature/AllFeatureLabelData.txt")
 # for x in data:
 # 	for y in x:
 # 		print y,
@@ -148,11 +149,13 @@ def metric_evaluation(feature, target,clf):
 
 '''
 def store_classify_metric(storePath):
+	begin=time.clock()
 	#classifyList=[svm.SVC(gamma=0.001, C=100.),svm.SVR(),LogisticRegression(penalty='l1', tol=0.01),tree.DecisionTreeClassifier(),GaussianNB(),BernoulliNB(),RandomForestClassifier(n_estimators=20, max_depth=None, min_samples_split=1, random_state=0)]
 	classifyList = [svm.SVC(gamma=0.001, C=100.), LogisticRegression(penalty='l1', tol=0.01),
 					tree.DecisionTreeClassifier(), GaussianNB(), BernoulliNB()]
 	# 读取txt数据 每一行为 类标签 特征 的形式
 	data = read_data("D:/ReviewHelpfulnessPrediction\HelpfulnessPredictionModule\FeatureSetWithDifferentThreshold/f5.txt")
+	dataNum=len(data)
 	shuffle(data)  # Make data ramdon
 	helpfulness_target = data[:, 0] #取类标签，第一列作为类标签
 	helpfulness_feature = data[:, 1:] #取分类特征，其余列
@@ -167,6 +170,8 @@ def store_classify_metric(storePath):
 		for colPos in range(len(classifyMetric[rowPos])):
 			sheet.write(rowPos,colPos,classifyMetric[rowPos][colPos])
 	workbook.save(storePath)
+	end=time.clock()
+	return dataNum,end-begin
 
 # rowHeader=['classifier','precision','recall','f1macro','f1micro']
 # workbook=xlwt.Workbook()
@@ -175,6 +180,6 @@ def store_classify_metric(storePath):
 # 	sheet.write(0,pos,rowHeader[pos])
 # workbook.save('test.xls')
 #Testing
-#metric_evaluation(helpfulness_feature, helpfulness_target,clf)
+#metric_evaluation(helpfulness_feature, helpfulness_target,clf
 
-store_classify_metric('D:/ReviewHelpfulnessPrediction\BuildedClassifier/classifierResult.xls')
+recordNum,runningTime=store_classify_metric('D:/ReviewHelpfulnessPrediction\BuildedClassifier/classifierResult.xls')
