@@ -154,7 +154,7 @@ def store_classify_metric(storePath):
 	classifyList = [svm.SVC(gamma=0.001, C=100.), LogisticRegression(penalty='l1', tol=0.01),
 					tree.DecisionTreeClassifier(), GaussianNB(), BernoulliNB()]
 	# 读取txt数据 每一行为 类标签 特征 的形式
-	data = read_data("D:/ReviewHelpfulnessPrediction\HelpfulnessPredictionModule\FeatureSetWithDifferentThreshold/f5.txt")
+	data = read_data("D:/ReviewHelpfulnessPrediction\ReviewDataFeature/AllFeatureLabelData.txt")
 	dataNum=len(data)
 	shuffle(data)  # Make data ramdon
 	helpfulness_target = data[:, 0] #取类标签，第一列作为类标签

@@ -19,18 +19,24 @@ from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
 from nltk.probability import FreqDist, ConditionalFreqDist
 
+'''几点注意说明'''
+'''
+如果人工标注的数据（训练数据）发生更改，需要更改create_word_bigram_scores()函数里面的posdata，negdata来重新计算词语信息得分
+需要以要预测数据所在的路劲作为参数
+'''
+
 '''1 导入要预测的数据，并将数据做分词以及去停用词处理，得到[[word1,word2,],[],]'''
 #reviewDataSetPath='D:/ReviewHelpfulnessPrediction\ReviewSet/HTC_Z710t_review_2013.6.5.xlsx'
 #sentiment_review = tp.seg_fil_senti_excel(reviewDataSetPath, 1, 4,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
 
 
 '''计算 单个词语以及二元词语的信息增量得分'''
-'''注意 需要导入带标签的积极以及消极评论语料库'''
+'''注意 需要导入带标签的积极以及消极评论语料库(如果训练数据发生修改的话，里面的相应参数需要修改)'''
 def create_word_bigram_scores():
-    posNegDir = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
-    posdata = tp.seg_fil_senti_excel(posNegDir + '/pos_review.xlsx', 1, 1,
+    posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
+    posdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1,
                                      'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-    negdata = tp.seg_fil_senti_excel(posNegDir + '/neg_review.xlsx', 1, 1,
+    negdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1,
                                      'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
 
     posWords = list(itertools.chain(*posdata))
@@ -236,8 +242,6 @@ def predTxtDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,
     end = time.clock()
     return reviewCount, end - start
 
-
-
 # reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
 # reviewDataSetName='FiltnewoutOriData'
 # reviewDataSetFileType='.txt'
@@ -275,21 +279,29 @@ def predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSe
     preResFile=xlwt.Workbook(encoding='utf-8')
     preResSheet=preResFile.add_sheet('RawDataTagProFea')
     for rowPos in range(dataItemCount):
-        preResSheet.write(rowPos,0,review[rowPos])
-        preResSheet.write(rowPos,1,data_tag[rowPos])
-        preResSheet.write(rowPos,2,str(res_pro[rowPos].prob('pos')))
-        preResSheet.write(rowPos, 3, str(res_pro[rowPos].prob('neg')))
-        preResSheet.write(rowPos, 4, review_feature[rowPos].keys())
+        preResSheet.write(rowPos,0,review[rowPos])#原始数据
+        preResSheet.write(rowPos,1,data_tag[rowPos])#类标签
+        preResSheet.write(rowPos,2,str(res_pro[rowPos].prob('pos')))#积极概率
+        preResSheet.write(rowPos, 3, str(res_pro[rowPos].prob('neg')))#消极概率
+        feature=''
+        #feature='_'.join(review_feature[rowPos].keys())
+       # print type(review_feature[rowPos].keys()),
+        # 特征里面可能出现二元词的情况
+        for x in review_feature[rowPos].keys():
+            if type(x) is not nltk.types.TupleType:
+                feature+=x
+            else:
+                feature+='_'.join(x)
+            feature+=' '
+        preResSheet.write(rowPos, 4, feature)#特征
     preResFile.save(preDataResPath)
-
-
-
     end=time.clock()
     return dataItemCount,end-start
 
 reviewDataSetDir='D:/ReviewHelpfulnessPrediction\LabelReviewData'
-reviewDataSetName='label_review_count_data'
+reviewDataSetName='pdd_label_data'
 reviewDataSetFileType='.xls'
 desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
 recordNum,runningTime=predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,1,desDir)
 print 'handle sentences num:',recordNum,' classify time:',runningTime
+

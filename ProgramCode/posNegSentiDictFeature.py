@@ -253,6 +253,7 @@ def read_txt_review_set_and_store_score(dataSetDir,dataSetName,dataSetFileType,d
 '''过滤器 过滤掉不含主观情感的语句 客观语句'''
 '''构建情感词典 这里只简单地分为积极和消极'''
 sentiment_dict=posdict+negdict
+
 '''判断单条评论是否为具备情感倾向语句 如果评论里有一个词位于情感词典中，则可认为该句具备情感倾向'''
 def is_single_review_sentiment(review):
 	cuted_review = tp.cut_sentence_2(review)# 将评论切割成句子
@@ -262,7 +263,8 @@ def is_single_review_sentiment(review):
 		    if word in  sentiment_dict:
 		        return True
 	return False
-
+'''过滤掉不含情感词的客观评论'''
+'''源数据为txt文件格式 目标数据也为txt文件格式'''
 def filt_objective_sentence(srcpath,para,dstpath):
 	begin=time.clock()
 	raw_data=tp.get_txt_data(srcpath,para)
@@ -276,7 +278,7 @@ def filt_objective_sentence(srcpath,para,dstpath):
 	end=time.clock()
 	return end-begin,count
 
-'''删除重复评论'''
+'''删除已过滤的重复评论'''
 '''将评论保存在excel文件中 格式为 评论：出现次数'''
 def remove_duplicate_comment(srcpath,para,excelpath):
 	begin = time.clock()
@@ -324,11 +326,12 @@ def remove_duplicate_comment(srcpath,para,excelpath):
 
 #print filt_objective_sentence('D:/ReviewHelpfulnessPrediction\ReviewDataFeature/newoutOriData.txt','lines','D:/ReviewHelpfulnessPrediction\ReviewDataFeature/FiltnewoutOriData.txt')
 
+filt_objective_sentence('D:/ReviewHelpfulnessPrediction\BulletData/pdd.txt','lines','D:/ReviewHelpfulnessPrediction\BulletData/pddFilt.txt')
+remove_duplicate_comment('D:/ReviewHelpfulnessPrediction\BulletData/pddFilt.txt','lines','D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_data.xls')
+
 '''检查标记数据 看看是否出现格式错误，如出现，显示出现错误的行数,并返回正确标记的数据'''
 '''参数 labelRowNum为已标记的行数量'''
 '''将标记数据按照主客观 积消极 鉴黄 分类存储在labelDataDir目录下'''
-
-
 def judge_label_data(labelDataPath, labelRowNum, labelDataDir):
 	table = xlrd.open_workbook(labelDataPath)
 	sheet = table.sheets()[0]
@@ -402,8 +405,8 @@ def judge_label_data(labelDataPath, labelRowNum, labelDataDir):
 	eroNorFile.save(labelDataDir + '/' + 'eroNorLabelData.xls')
 
 
-judge_label_data('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls', 1200,
-				 'D:/ReviewHelpfulnessPrediction\LabelReviewData')
+# judge_label_data('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls', 1200,
+# 				 'D:/ReviewHelpfulnessPrediction\LabelReviewData')
 
 
 

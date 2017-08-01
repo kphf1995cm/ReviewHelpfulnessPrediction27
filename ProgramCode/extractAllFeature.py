@@ -1,19 +1,22 @@
 #! /usr/bin/env python2.7
 #coding=utf-8
 
-# import adjAdvVFeature
-# import centroidScoreFeature
-# import predictDataPosNegProbility
-# import wordSentenceLengthFeature
-# import posNegSentiDictFeature
+import adjAdvVFeature
+import centroidScoreFeature
+import predictDataPosNegProbility
+import wordSentenceLengthFeature
+import posNegSentiDictFeature
 import numpy as np
+import time
 
+'''提取所有的特征 将其保存在D:/ReviewHelpfulnessPrediction\ReviewDataFeature/AllFeatureLabelData.txt'''
 def getLabelDataFeature():
-    reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature\SenimentReviewSet'
-    reviewDataSetName = ['pos_review','neg_review']
+    begin=time.clock()
+    reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
+    reviewDataSetName = ['posNegLabelData','posNegLabelData']
     classify_tag=['1','0']# pos 为 1，neg 为 0
-    reviewDataSetFileType = '.xlsx'
-    desDir = 'D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+    reviewDataSetFileType = '.xls'
+    desDir = 'D:\ReviewHelpfulnessPrediction\ReviewDataFeature'
     sheetNum=1
     sheetColNum=1
     # 存储积极评论里的特征
@@ -21,12 +24,13 @@ def getLabelDataFeature():
     feature_txt_name = ['AdjAdvVFea.txt', 'ClassPro.txt', 'WordSentNumFea.txt',
                         'SentiDictFea.txt']
     all_data_tag_feature=[]
-    for pos in range(len(classify_tag)):
-        # adjAdvVFeature.store_adj_adv_v_num_feature(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType, sheetNum,sheetColNum, desDir)
-        # centroidScoreFeature.store_centroid_score(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType, sheetNum,sheetColNum, desDir)
-        # predictDataPosNegProbility.predictDataSentimentPro(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType,sheetNum, sheetColNum, desDir)
-        # wordSentenceLengthFeature.store_word_sent_num_features(reviewDataSetDir, reviewDataSetName[pos],reviewDataSetFileType, sheetNum, sheetColNum, desDir)
-        # posNegSentiDictFeature.read_review_set_and_store_score(reviewDataSetDir, reviewDataSetName[pos],reviewDataSetFileType, sheetNum, sheetColNum, desDir)
+    for sheetNum in range(len(classify_tag)):
+        pos=sheetNum
+        adjAdvVFeature.store_adj_adv_v_num_feature(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType, sheetNum,sheetColNum, desDir)
+        centroidScoreFeature.store_centroid_score(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType, sheetNum,sheetColNum, desDir)
+        predictDataPosNegProbility.predictDataSentimentPro(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType,sheetNum, sheetColNum, desDir)
+        wordSentenceLengthFeature.store_word_sent_num_features(reviewDataSetDir, reviewDataSetName[pos],reviewDataSetFileType, sheetNum, sheetColNum, desDir)
+        posNegSentiDictFeature.read_review_set_and_store_score(reviewDataSetDir, reviewDataSetName[pos],reviewDataSetFileType, sheetNum, sheetColNum, desDir)
         src_feature=[]
         for x in feature_txt_name:
             feature_txt_path=desDir+'/'+reviewDataSetName[pos]+x
@@ -53,5 +57,8 @@ def getLabelDataFeature():
             f.write(str(y)+'\t')
         f.write('\n')
     f.close()
-getLabelDataFeature()
+    end=time.clock()
+    return colNum,end-begin
+recordNum,runningTime=getLabelDataFeature()
+print recordNum,runningTime
 
