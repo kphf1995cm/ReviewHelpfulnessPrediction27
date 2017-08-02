@@ -10,6 +10,13 @@ import numpy as np
 import time
 
 '''提取所有的特征 将其保存在D:/ReviewHelpfulnessPrediction\ReviewDataFeature/AllFeatureLabelData.txt'''
+'''如果训练数据（人工标注数据）发生更改，需要修改相应的数据所在的目录,即以下几项需要更改
+    reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
+    reviewDataSetName = ['posNegLabelData','posNegLabelData']
+    classify_tag=['1','0']# pos 为 1，neg 为 0
+    reviewDataSetFileType = '.xls'
+   注意：predictDataPosNegProbility这个模块里面的训练数据也需要更改，以修正best_words
+'''
 def getLabelDataFeature():
     begin=time.clock()
     reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
@@ -24,8 +31,8 @@ def getLabelDataFeature():
     feature_txt_name = ['AdjAdvVFea.txt', 'ClassPro.txt', 'WordSentNumFea.txt',
                         'SentiDictFea.txt']
     all_data_tag_feature=[]
-    for sheetNum in range(len(classify_tag)):
-        pos=sheetNum
+    for pos in range(len(classify_tag)):
+        sheetNum=pos+1
         adjAdvVFeature.store_adj_adv_v_num_feature(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType, sheetNum,sheetColNum, desDir)
         centroidScoreFeature.store_centroid_score(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType, sheetNum,sheetColNum, desDir)
         predictDataPosNegProbility.predictDataSentimentPro(reviewDataSetDir, reviewDataSetName[pos], reviewDataSetFileType,sheetNum, sheetColNum, desDir)

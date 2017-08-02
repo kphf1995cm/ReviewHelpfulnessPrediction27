@@ -1,5 +1,7 @@
 #! /usr/bin/env python2.7
 #coding=utf-8
+from sklearn.metrics import accuracy_score
+from sklearn.naive_bayes import BernoulliNB
 
 import textProcessing as tp
 import time
@@ -12,24 +14,35 @@ import nltk
 from nltk.collocations import BigramCollocationFinder
 from nltk.metrics import BigramAssocMeasures
 from nltk.probability import FreqDist, ConditionalFreqDist
-
+from random import shuffle
+from nltk import SklearnClassifier
+from sklearn import svm
+from sklearn.linear_model import LogisticRegression
+from sklearn import tree
+from sklearn.naive_bayes import GaussianNB, BernoulliNB
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.multiclass import OneVsOneClassifier, OneVsRestClassifier
+from sklearn import cross_validation
+from sklearn.metrics import f1_score, precision_score, recall_score
 '''
                                        注意事项
 如果训练数据（标记数据）发生更改，需要修改特征提取模块下d提取积极消极可能性特征的create_word_bigram_scores()函数里面的以下部分：
 posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
 posdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
 negdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-如果待预测数据发生更改，需要修改以下部分：
-rawDataPath='D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_data.xls'
-sheetNum=1
-colNum=1
 '''
 
-'''预测未标记数据的类别 大致过程如下：'''
-'''1  装载数据，数据预处理（分词及去停用词)'''
+'''  训练分类器大致过程如下：'''
+'''1  装载标记数据，数据预处理（分词及去停用词)'''
 '''2  提取特征(程度词性个数特征、句子个数及词语数量特征、基于词典的情感得分特征、积极消极可能性特征)'''
-'''3  装载分类器 分类预测'''
-'''4  保存结果，并绘制情感波动曲线'''
+'''3  训练分类器 '''
+'''装载数据模块'''
+
+posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
+posdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+negdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+posRawData=tp.get_excel_data(posNegDir + '/posNegLabelData.xls', 1, 1,'data')
+negRawData=tp.get_excel_data(posNegDir + '/posNegLabelData.xls', 2, 1,'data')
 
 '''特征提取模块的函数'''
 
@@ -199,12 +212,6 @@ def get_sent_score_fea(rawData):
 '''计算 单个词语以及二元词语的信息增量得分'''
 '''注意 需要导入带标签的积极以及消极评论语料库(如果训练数据发生修改的话，里面的相应参数需要修改)'''
 def create_word_bigram_scores():
-    posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
-    posdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1,
-                                     'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-    negdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1,
-                                     'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-
     posWords = list(itertools.chain(*posdata))
     negWords = list(itertools.chain(*negdata))
 
@@ -295,7 +302,6 @@ def get_pos_neg_pro_fea(segFiltData):
     print 'extract pro_neg_pro feature time is:', end - begin, 'handle data item num is:', len(segFiltData)
     return posNegPro
 
-
 '''装载数据,提取特征'''
 '''原始数据保存格式为excel  第sheetNum第colNum列的每一行代表一项数据 '''
 '''rawDataPath 为数据目录'''
@@ -323,94 +329,92 @@ def extractAllFea(unlabedRawData,unlabedSegFiltData):
     print 'load data and extract all feature time is:', end - begin, 'handle data item num is:', dataItemNum
     return dataItemFea
 
-'''读取最佳分类器'''
-def read_best_classifier():
-    f = open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/bestClassifierAcc.txt')
-    clf_dim_acc=f.readline()
-    data=clf_dim_acc.split('\t')
-    best_classifier=data[0]
-    return best_classifier
+'''得到积极、消极数据特征'''
+posDataFeaList=extractAllFea(posRawData,posdata)
+negDataFeaList=extractAllFea(negRawData,negdata)
+data=[]
+for x in posDataFeaList:
+    x.insert(0,1)
+    data.append(x)
+for x in negDataFeaList:
+    x.insert(0,0)
+    data.append(x)
+data=np.array(data)
 
-'''装载分类器，预测分类结果'''
-def loadClassifierPreRes(bestClassifier,rawData,dataAllFea,preResPath):
-    begin=time.clock()
-    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+str(bestClassifier)[0:15]+'.pkl'
-    print 'classifierPath:',classifierPath
-    # 装载分类器
-    clf = pickle.load(open(classifierPath))
-    preRes=clf.predict(dataAllFea)
-    preResPro = clf.predict_proba(dataAllFea)
-    dataItemCount=len(rawData)
-    preResFile = xlwt.Workbook(encoding='utf-8')
-    preResSheet = preResFile.add_sheet('RawDataTagProFea')
-    for rowPos in range(dataItemCount):
-        preResSheet.write(rowPos, 0, rawData[rowPos])  # 原始数据
-        preResSheet.write(rowPos, 1, preRes[rowPos])  # 类标签
-        preResSheet.write(rowPos, 2, preResPro[rowPos][0])  # 类标签
-        preResSheet.write(rowPos, 3, preResPro[rowPos][1])  # 类标签
+def get_f1_score_evaluation(feature, target,clf):
+	k_fold = cross_validation.KFold(len(feature), n_folds=10)  # 10-fold cross validation
+	metric = []
+	for train, test in k_fold:
+		target_pred = clf.fit(feature[train], target[train]).predict(feature[test])  # 训练分类器并预测测试集类标签
+		f1Score = f1_score(target[test], target_pred, average='macro')
+		metric.append(f1Score)
+	metric_array = np.array(metric)
+	f1MacroScore = np.mean(metric_array[0:])  # F1-macro score
+	return f1MacroScore
 
-        feature=''
-        for x in dataAllFea[rowPos]:
-            feature+=str(x)
-            feature+=' '
-        preResSheet.write(rowPos, 4,feature)  # 类标签
-    preResFile.save(preResPath)
-    end=time.clock()
-    print 'load classifier and predict data time is:',end-begin,'handle data item num is:',dataItemCount
+def get_precision_evaluation(feature, target,clf):
+	k_fold = cross_validation.KFold(len(feature), n_folds=10)  # 10-fold cross validation
+	metric = []
+	for train, test in k_fold:
+		target_pred = clf.fit(feature[train], target[train]).predict(feature[test])  # 训练分类器并预测测试集类标签
+		preciosnScore = precision_score(target[test], target_pred, average='macro')#按照实际值权重求取各个类别精度平均值
+		metric.append(preciosnScore)
+	metric_array = np.array(metric)
+	Score = np.mean(metric_array[0:])  # F1-macro score
+	return Score
 
-'''提取特征，预测分类结果 原始数据保存格式为excel'''
-'''时间性能：大致为3s可处理1000条数据'''
-def extractFeaPreUnlabelExcelData(rawDataPath,sheetNum,colNum,preResPath):
-    begin=time.clock()
-    '''获取原始数据列表'''
-    unlabedRawData = tp.get_excel_data(rawDataPath, sheetNum, colNum, 'data')
-    '''获取经分词及去停用词处理后的数据列表'''
-    unlabedSegFiltData = tp.seg_fil_excel(rawDataPath, sheetNum, colNum)
-    '''提取数据特征'''
-    dataAllFea = extractAllFea(unlabedRawData, unlabedSegFiltData)
-    '''读取最佳分类器（最佳分类器名字位于D:/ReviewHelpfulnessPrediction\BuildedClassifier/bestClassifierAcc.txt里面）'''
-    bestClassifier = read_best_classifier()
-    print bestClassifier
-    '''装载分类器，预测分类结果'''
-    loadClassifierPreRes(bestClassifier, unlabedRawData, dataAllFea, preResPath)
-    end=time.clock()
-    print 'extract feature and predict data time is:',end-begin,'handle data item num is:',len(unlabedRawData)
-''' 功能同上，原始数据格式为txt'''
-def extractFeaPreUnlabelTxtData(rawDataPath,preResPath):
-    begin=time.clock()
-    '''获取原始数据列表'''
-    unlabedRawData = tp.get_txt_data(rawDataPath, 'lines')
-    '''获取经分词及去停用词处理后的数据列表'''
-    unlabedSegFiltData = tp.seg_fil_txt(rawDataPath,'lines')
-    '''提取数据特征'''
-    dataAllFea = extractAllFea(unlabedRawData, unlabedSegFiltData)
-    '''读取最佳分类器（最佳分类器名字位于D:/ReviewHelpfulnessPrediction\BuildedClassifier/bestClassifierAcc.txt里面）'''
-    bestClassifier = read_best_classifier()
-    print bestClassifier
-    '''装载分类器，预测分类结果'''
-    loadClassifierPreRes(bestClassifier, unlabedRawData, dataAllFea, preResPath)
-    end=time.clock()
-    print 'extract feature and predict data time is:',end-begin,'handle data item num is:',len(unlabedRawData)
+def get_neg_precision_evaluation(feature, target,clf):
+	k_fold = cross_validation.KFold(len(feature), n_folds=10)  # 10-fold cross validation
+	metric = []
+	for train, test in k_fold:
+		target_pred = clf.fit(feature[train], target[train]).predict(feature[test])  # 训练分类器并预测测试集类标签
+		preciosnScore = precision_score(target[test], target_pred, average=None)[0] #获取消极类精度
+		#preciosnScore = precision_score(target[test], target_pred) # 获取积极类精度
+		metric.append(preciosnScore)
+	metric_array = np.array(metric)
+	Score = np.mean(metric_array[0:])  # F1-macro score
+	return Score
+'''获得最佳分类器名字以及精度'''
+def get_best_classifier():
+	begin = time.clock()
+	# classifyList=[svm.SVC(gamma=0.001, C=100.),svm.SVR(),LogisticRegression(penalty='l1', tol=0.01),tree.DecisionTreeClassifier(),GaussianNB(),BernoulliNB(),RandomForestClassifier(n_estimators=20, max_depth=None, min_samples_split=1, random_state=0)]
+	classifyList = [svm.SVC(gamma=0.001, C=100.), LogisticRegression(penalty='l1', tol=0.01),
+                    tree.DecisionTreeClassifier(), GaussianNB(), BernoulliNB()]
+	# 读取txt数据 每一行为 类标签 特征 的形式
+	dataNum = len(data)
+	shuffle(data)
+	helpfulness_target = data[:,0]  # 取类标签，第一列作为类标签
+	helpfulness_feature = data[:,1:]  # 取分类特征，其余列
+	bestClassifier=''
+	bestScore=0.0
+	for classifier in classifyList:
+		curScore=get_precision_evaluation(helpfulness_feature, helpfulness_target, classifier)
+		print classifier,curScore
+		if bestScore<curScore:
+			bestScore=curScore
+			bestClassifier=classifier
 
+	end = time.clock()
+	print 'data item num:',dataNum,'running time:',end-begin
+	return bestClassifier,bestScore
+'''存储最佳分类器名字以及精度'''
+def store_classifier_acc_name(classifier,acc):
+    f=open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierAcc.txt','w')
+    f.write(classifier+'\t'+acc+'\n');
+    f.close()
+'''存储最佳分类器'''
+'''feature:[[f1,f2,f3,],[],[],]'''
+'''target[c1,c2,]'''
+def store_classifier(clf, filepath):
+	shuffle(data)  # Make data ramdon
+	target = data[:, 0]  # First column of the dataset is review helpfulness label 第一列作为类标签
+	feature = data[:, 1:]  # The rest of the dataset is review helpfulness features 其余列作为分类特征
+	clf.fit(feature, target)
+	pickle.dump(clf, open(filepath, 'w'))
 
-
-rawDataPath='D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_data.xls'
-sheetNum=1
-colNum=1
-preResPath='D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_dataPreRes.xls'
-extractFeaPreUnlabelExcelData(rawDataPath,sheetNum,colNum,preResPath)
-
-
-
-'''
-      使用说明
-直接调用extractFeaPreUnlabelExcelData()或extractFeaPreUnlabelTxtData()来预测数据类别
-
-如果训练数据（标记数据）发生更改，需要修改特征提取模块下d提取积极消极可能性特征的create_word_bigram_scores()函数里面的以下部分：
-posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
-posdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-negdata = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1,'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
-如果想要寻找最佳分类器，可运行extractLabedDataFeaTrainClf模块，它会自动寻找出最优分类器并将其保存在默认目录下
-'''
-
+bestClassifier,bestScore=get_best_classifier()
+print 'bestClassifier:',bestClassifier,bestScore
+store_classifier_acc_name(str(bestClassifier).decode('utf-8'),str(bestScore).decode('utf-8'))
+store_classifier(bestClassifier,'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+str(bestClassifier)[0:15]+'.pkl')
+print 'classifierPath','D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+str(bestClassifier)[0:15]+'.pkl'
 

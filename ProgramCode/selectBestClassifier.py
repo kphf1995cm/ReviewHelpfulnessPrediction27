@@ -5,6 +5,11 @@
 使用积极和消极的评论作为语料库训练一个情感分类器
 使用了带标记的评论作为训练集
 '''
+'''
+                                           注意事项
+如果训练数据（标记数据）发生更改，需要修改posNegDir ，pos_review，neg_review，使得pos_review，neg_review指向标注的积极以及消极评论
+最佳分类器 最佳维度保存在D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt目录下
+'''
 
 import textProcessing as tp
 import pickle
@@ -24,14 +29,20 @@ from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.metrics import accuracy_score
 
 
+
 '''1 导入数据模块'''
 
 posNegDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
 pos_review = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 1, 1, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
 neg_review = tp.seg_fil_senti_excel(posNegDir + '/posNegLabelData.xls', 2, 1, 'D:/ReviewHelpfulnessPrediction/PreprocessingModule/sentiment_stopword.txt')
+print 'postive review num is:',len(pos_review),'negtive review num is:',len(neg_review)
+
+shuffle(pos_review)
+shuffle(neg_review)
 
 pos = pos_review
 neg = neg_review
+
 
 """
 # Cut positive review to make it the same number of nagtive review (optional)
@@ -309,7 +320,8 @@ def get_accuracy_score(classifier,train_set,test,tag_test):
     classifier = SklearnClassifier(classifier)
     classifier.train(train_set)
     pred = classifier.batch_classify(test)
-    return accuracy_score(tag_test, pred)
+    return accuracy_score(tag_test, pred,'macro')#积极类 消极类精度加权平均值
+    #return accuracy_score(tag_test, pred)#只考虑积极类精度
 '''
   挑选出最佳分类器以及最优特征维度
   返回分类器 维度 精度
@@ -321,23 +333,6 @@ def get_best_classfier_and_dimention():
     curAccuracy = 0.0
     dimention = ['500', '1000','1300', '1500','1700', '2000','2200', '2500', '3000']
     for d in dimention:
-        # for x in best_words:
-        #     print x,
-        # print ''
-        # posFeatures = pos_features(best_word_features_com,best_words)  # 得到[[{word1:true,word2:true},'pos'],[]]
-        # negFeatures = neg_features(best_word_features_com,best_words)  # 得到[[{word1:true,word2:true},'neg'],[]]
-        #
-        # # Make the feature set ramdon
-        # shuffle(posFeatures)
-        # shuffle(negFeatures)
-        # # 75% of features used as training set (in fact, it have a better way by using cross validation function)
-        # size_pos = int(len(pos_review) * 0.75)
-        # size_neg = int(len(neg_review) * 0.75)
-        #
-        # trainset = posFeatures[:size_pos] + negFeatures[:size_neg]
-        # testset = posFeatures[size_pos:] + negFeatures[size_neg:]
-        #
-        # test, tag_test = zip(*testset)
         train_set_pos, train_set_neg, test_fea, test_tag=get_trainset_testset_testtag(int(d))
         trainset,test,tag_test=get_dev_train_test_data(train_set_pos,train_set_neg)
         BernoulliNBScore=get_accuracy_score(BernoulliNB(),trainset,test,tag_test)
@@ -393,7 +388,7 @@ print str(bestClassfier),bestDimention,bestAccuracy
 '''D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt'''
 def storeClassifierDimenAcc(classifier,dimen,acc):
     f=open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt','w')
-    f.write(classifier+'\t'+dimen+'\t'+acc+'\n');
+    f.write(classifier+'$'+dimen+'$'+acc+'\n');
     f.close()
 
 storeClassifierDimenAcc(str(bestClassfier).decode('utf-8'),bestDimention.decode('utf-8'),str(bestAccuracy).decode('utf-8'))
@@ -407,7 +402,7 @@ def store_classifier(clf, trainset, filepath):
 
 
 trainSet=get_trainset(int(bestDimention)) #将所有数据作为训练数据
-store_classifier(bestClassfier,trainSet,'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+str(bestClassfier)+'.pkl')
+store_classifier(bestClassfier,trainSet,'D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+str(bestClassfier)[0:15]+'.pkl')
 '''根据测试集测试在最佳分类器以及最优特征维度下的分类精度'''
 def getFinalClassifyAccuration(classifier,dimension):
     train_set_pos, train_set_neg, test_fea, test_tag = get_trainset_testset_testtag(int(dimension))

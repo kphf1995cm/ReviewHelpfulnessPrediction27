@@ -326,8 +326,8 @@ def remove_duplicate_comment(srcpath,para,excelpath):
 
 #print filt_objective_sentence('D:/ReviewHelpfulnessPrediction\ReviewDataFeature/newoutOriData.txt','lines','D:/ReviewHelpfulnessPrediction\ReviewDataFeature/FiltnewoutOriData.txt')
 
-filt_objective_sentence('D:/ReviewHelpfulnessPrediction\BulletData/pdd.txt','lines','D:/ReviewHelpfulnessPrediction\BulletData/pddFilt.txt')
-remove_duplicate_comment('D:/ReviewHelpfulnessPrediction\BulletData/pddFilt.txt','lines','D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_data.xls')
+# filt_objective_sentence('D:/ReviewHelpfulnessPrediction\BulletData/pdd.txt','lines','D:/ReviewHelpfulnessPrediction\BulletData/pddFilt.txt')
+# remove_duplicate_comment('D:/ReviewHelpfulnessPrediction\BulletData/pddFilt.txt','lines','D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_data.xls')
 
 '''检查标记数据 看看是否出现格式错误，如出现，显示出现错误的行数,并返回正确标记的数据'''
 '''参数 labelRowNum为已标记的行数量'''
@@ -405,8 +405,116 @@ def judge_label_data(labelDataPath, labelRowNum, labelDataDir):
 	eroNorFile.save(labelDataDir + '/' + 'eroNorLabelData.xls')
 
 
-# judge_label_data('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls', 1200,
+# judge_label_data('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls', 1400,
 # 				 'D:/ReviewHelpfulnessPrediction\LabelReviewData')
+'''检查标记数据 看看是否出现格式错误，如出现，显示出现错误的行数,并返回正确标记的数据'''
+'''参数 labelRowNum为已标记的行数量'''
+'''将标记数据按照主客观 积消极 鉴黄 分类存储在labelDataDir目录下speName下'''
+def save_label_data_to_spe_name(labelDataPath, labelRowNum, labelDataDir,speName):
+	table = xlrd.open_workbook(labelDataPath)
+	sheet = table.sheets()[0]
+	errorRow = []  # 错误行
+	subjectiveSubDataItem = []  # 主观数据项
+	subjectiveObjDataItem = []  # 客观数据项
+	sentimentPosDataItem = []  # 积极数据项
+	sentimentNegDataItem = []  # 消极数据项
+	eroticEroDataItem = []  # 鉴黄
+	eroticNorDataItem = []
+	srcDataColPos = 0
+	subjectiveColPos = 2
+	sentimentColPos = 3
+	eroticColPos = 4
+	excelData = []
+	for rowPos in range(1, labelRowNum):
+		excelData.append(sheet.row_values(rowPos))
+	for rowPos in range(0, labelRowNum - 1):
+		if excelData[rowPos][subjectiveColPos] == 1:
+			if excelData[rowPos][sentimentColPos] == 0:
+				sentimentNegDataItem.append(excelData[rowPos][srcDataColPos])
+			elif excelData[rowPos][sentimentColPos] == 1:
+				sentimentPosDataItem.append(excelData[rowPos][srcDataColPos])
+			else:
+				errorRow.append([rowPos + 2, 'sentiment_tendency value error'])
+			subjectiveSubDataItem.append(excelData[rowPos][srcDataColPos])
+		elif excelData[rowPos][subjectiveColPos] == 0:
+			subjectiveObjDataItem.append(excelData[rowPos][srcDataColPos])
+		else:
+			errorRow.append([rowPos + 2, 'is_subjective value error'])
+		if excelData[rowPos][eroticColPos] == 1:
+			eroticEroDataItem.append(excelData[rowPos][srcDataColPos])
+		elif excelData[rowPos][eroticColPos] == 0:
+			eroticNorDataItem.append(excelData[rowPos][srcDataColPos])
+		else:
+			errorRow.append([rowPos + 2, 'is_erotic value error'])
+	for x in errorRow:
+		print x
+	print 'subjective and objective num:', len(subjectiveSubDataItem), len(subjectiveObjDataItem)
+	print 'postive and negtive num:', len(sentimentPosDataItem), len(sentimentNegDataItem)
+	print 'erotic and normal num:', len(eroticEroDataItem), len(eroticNorDataItem)
+	colPos = 0
+	'''存储主客观标注的数据'''
+	subObjFile = xlwt.Workbook(encoding='utf-8')
+	subjectiveSheet = subObjFile.add_sheet('subjective_data')
+	for rowPos in range(len(subjectiveSubDataItem)):
+		subjectiveSheet.write(rowPos, colPos, subjectiveSubDataItem[rowPos])
+	objectiveSheet = subObjFile.add_sheet('objective_data')
+	for rowPos in range(len(subjectiveObjDataItem)):
+		objectiveSheet.write(rowPos, colPos, subjectiveObjDataItem[rowPos])
+	subObjFile.save(labelDataDir + '/' +speName+ 'subObjLabelData.xls')
+
+	'''存储积消极标注的数据'''
+	posNegFile = xlwt.Workbook(encoding='utf-8')
+	postiveSheet = posNegFile.add_sheet('postive_data')
+	for rowPos in range(len(sentimentPosDataItem)):
+		postiveSheet.write(rowPos, colPos, sentimentPosDataItem[rowPos])
+	negtiveSheet = posNegFile.add_sheet('negtive_data')
+	for rowPos in range(len(sentimentNegDataItem)):
+		negtiveSheet.write(rowPos, colPos, sentimentNegDataItem[rowPos])
+	posNegFile.save(labelDataDir + '/' +speName+  'posNegLabelData.xls')
+
+	'''存储鉴黄标注数据'''
+	eroNorFile=xlwt.Workbook(encoding='utf-8')
+	eroticSheet=eroNorFile.add_sheet('erotic_data')
+	for rowPos in range(len(eroticEroDataItem)):
+		eroticSheet.write(rowPos,colPos,eroticEroDataItem[rowPos])
+	normalSheet=eroNorFile.add_sheet('normal_data')
+	for rowPos in range(len(eroticNorDataItem)):
+		normalSheet.write(rowPos,colPos,eroticNorDataItem[rowPos])
+	eroNorFile.save(labelDataDir + '/' +speName+  'eroNorLabelData.xls')
+
+# save_label_data_to_spe_name('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls', 1400,
+# 				 'D:/ReviewHelpfulnessPrediction\LabelReviewData','lsj')
+# save_label_data_to_spe_name('D:/ReviewHelpfulnessPrediction\LabelReviewData/pdd_label_data.xls', 200,
+# 				 'D:/ReviewHelpfulnessPrediction\LabelReviewData','pdd')
+'''将多个主播房间标记数据合并在一起'''
+'''speNameList=['lsj','pdd']'''
+def unionFewLabelData(labelDataDir,speNameList):
+	dataTypeList=['subObjLabelData.xls','posNegLabelData.xls','eroNorLabelData.xls']
+	sheetNameList=[['subjective_data','objective_data'],['postive_data','negtive_data'],['erotic_data','normal_data']]
+	for dataTypePos in range(len(dataTypeList)):
+		posDataList=[]
+		negDataList=[]
+		for name in speNameList:
+			labelDataPath=labelDataDir+'/'+name+dataTypeList[dataTypePos]
+			print labelDataPath
+			curPosData=tp.get_excel_data(labelDataPath,1,1,'data')
+			curNegData=tp.get_excel_data(labelDataPath,2,1,'data')
+			print len(curPosData),len(curNegData)
+			for x in curPosData:
+				posDataList.append(x)
+			for x in curNegData:
+				negDataList.append(x)
+		workbook=xlwt.Workbook(encoding='utf-8')
+		sheetNameOne=workbook.add_sheet(sheetNameList[dataTypePos][0])
+		sheetNameTwo=workbook.add_sheet(sheetNameList[dataTypePos][1])
+		print len(posDataList),len(negDataList)
+		for rowPos in range(len(posDataList)):
+			sheetNameOne.write(rowPos,0,posDataList[rowPos])
+		for rowPos in range(len(negDataList)):
+			sheetNameTwo.write(rowPos,0,negDataList[rowPos])
+		workbook.save(labelDataDir+'/'+dataTypeList[dataTypePos])
+
+unionFewLabelData('D:/ReviewHelpfulnessPrediction\LabelReviewData',['lsj','pdd'])
 
 
 

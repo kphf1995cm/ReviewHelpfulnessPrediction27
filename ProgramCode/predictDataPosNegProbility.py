@@ -13,6 +13,7 @@ import time
 import chardet
 import xlwt
 from random import shuffle
+import types
 
 import nltk
 from nltk.collocations import BigramCollocationFinder
@@ -102,10 +103,14 @@ def extract_features(dataset,best_words):
 '''读取最佳分类器 最佳分类维度'''
 def read_best_classifier_dimension():
     f = open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/bestClassifierDimenAcc.txt')
-    clf_dim_acc=f.readline()
-    data=clf_dim_acc.split('\t')
+    clf_dim_acc=f.readlines()
+    src_data=''
+    for x in clf_dim_acc:
+        src_data+=x
+    data=src_data.split('$')
     best_classifier=data[0]
     best_dimension=data[1]
+    print best_classifier,best_dimension
     return best_classifier,best_dimension
 
 start=time.clock()
@@ -130,7 +135,7 @@ def predictDataSentimentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFile
     #提取待分类数据特征
     review_feature = extract_features(sentiment_review, best_words)
     #classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
-    classifierPath='D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+best_classifier+'.pkl'
+    classifierPath='D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+str(best_classifier)[0:15]+'.pkl'
     #装载分类器
     clf = pickle.load(open(classifierPath))
     #分类之预测数据类标签
@@ -157,7 +162,11 @@ def predictDataSentimentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFile
     # 记录原始数据特征提取结果
     for d in review_feature:
         for w,b,in d.iteritems():
-            p_file.write(w.encode('utf-8') + ' '+str(b)+'\t')
+            if type(w) is not types.TupleType:
+                p_file.write(w.encode('utf-8') +'\t')
+            else:
+                for x in w:
+                    p_file.write(x.encode('utf-8') + '_')
         p_file.write('\n')
     p_file.close()
     end=time.clock()
@@ -173,7 +182,7 @@ def predDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,she
     #提取待分类数据特征
     review_feature = extract_features(sentiment_review, best_words)
     #classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
-    classifierPath='D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+best_classifier+'.pkl'
+    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + str(best_classifier)[0:15] + '.pkl'
     #装载分类器
     clf = pickle.load(open(classifierPath))
     #分类之预测数据类标签
@@ -209,7 +218,7 @@ def predTxtDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,
     # 提取待分类数据特征
     review_feature = extract_features(sentiment_review, best_words)
     # classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
-    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + best_classifier + '.pkl'
+    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + str(best_classifier)[0:15] + '.pkl'
     # 装载分类器
     clf = pickle.load(open(classifierPath))
     # 分类之预测数据类标签
@@ -260,7 +269,7 @@ def predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSe
     #提取待分类数据特征
     review_feature = extract_features(sentiment_review, best_words)
     #classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
-    classifierPath='D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+best_classifier+'.pkl'
+    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + str(best_classifier)[0:15] + '.pkl'
     #装载分类器
     clf = pickle.load(open(classifierPath))
     dataItemCount=len(sentiment_review)
