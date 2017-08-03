@@ -14,6 +14,8 @@ import chardet
 import xlwt
 from random import shuffle
 import types
+from matplotlib import pyplot as plt
+from matplotlib import animation
 
 import nltk
 from nltk.collocations import BigramCollocationFinder
@@ -257,9 +259,108 @@ def predTxtDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,
 # desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
 # recordNum,runningTime=predTxtDataSentPro(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir)
 # print 'handle sentences num:',recordNum,' running time:',runningTime
+'''原始数据格式为txt或log,将原始数据 类标签 分类概率 原始数据特征写入txt文件中'''
+'''返回：评论的积极可能性列表'''
+def predictTxtDataSentTagProToTxt(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir):
+    reviewDataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
+    preDataResPath = desDir + '/' + reviewDataSetName + 'RawDataTagProFea.txt'
+    start = time.clock()
+    review = tp.get_txt_data(reviewDataSetPath, "lines")  # 读取待分类数据
+    # 将待分类数据进行分词以及去停用词处理
+    sentiment_review = tp.seg_fil_txt(reviewDataSetPath,'lines')
+    # 提取待分类数据特征
+    review_feature = extract_features(sentiment_review, best_words)
+    # classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
+    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + str(best_classifier)[0:15] + '.pkl'
+    # 装载分类器
+    clf = pickle.load(open(classifierPath))
+    dataItemCount = len(sentiment_review)
+    # 分类之预测数据类标签
+    data_tag = clf.batch_classify(review_feature)
+    # 分类之预测数据积极、消极可能性
+    res_pro = clf.batch_prob_classify(review_feature)
+    preResFile = open(preDataResPath,'w')
+    posProbility = []
+    for rowPos in range(dataItemCount):
+        posProbility.append(res_pro[rowPos].prob('pos'))
+        feature = ''
+        # 特征里面可能出现二元词的情况
+        for x in review_feature[rowPos].keys():
+            if type(x) is not nltk.types.TupleType:
+                feature += x
+            else:
+                feature += '_'.join(x)
+            feature += ' '
+        # preResFile.write(
+        #         review[rowPos].encode('utf-8') + '\t' + str(data_tag[rowPos]))
+        preResFile.write(
+            review[rowPos].encode('utf-8')  + '\t' + str(data_tag[rowPos]) + '\t' + str(res_pro[rowPos].prob('pos')) + '\t' + str(
+                res_pro[rowPos].prob('neg'))+'\t'+feature.encode('utf-8')+'\n')
+    preResFile.close()
+    end = time.clock()
+    print 'handle sentences num:', dataItemCount, ' classify time:', end - start
+    return posProbility,preDataResPath
 
-'''输出类标签 分类概率 原始数据 原始数据特征 将结果保存在excel文件中'''
-def predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,sheetNum,colNum,desDir):
+
+'''原始数据格式为txt或log,将原始数据 类标签 分类概率 原始数据特征写入excel文件中'''
+'''返回：评论的积极可能性列表'''
+def predictTxtDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir):
+    reviewDataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
+    preDataResPath = desDir + '/' + reviewDataSetName + 'RawDataTagProFea.xls'
+    start = time.clock()
+    review = tp.get_txt_data(reviewDataSetPath, "lines")  # 读取待分类数据
+    # 将待分类数据进行分词以及去停用词处理
+    sentiment_review = tp.seg_fil_txt(reviewDataSetPath,'lines')
+    # 提取待分类数据特征
+    review_feature = extract_features(sentiment_review, best_words)
+    # classifierPath = 'D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\MachineLearningFeature/sentiment_classifier.pkl'
+    classifierPath = 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + str(best_classifier)[0:15] + '.pkl'
+    # 装载分类器
+    clf = pickle.load(open(classifierPath))
+    dataItemCount = len(sentiment_review)
+    # 分类之预测数据类标签
+    data_tag = clf.batch_classify(review_feature)
+    # 分类之预测数据积极、消极可能性
+    res_pro = clf.batch_prob_classify(review_feature)
+    preResFile = xlwt.Workbook(encoding='utf-8')
+    sheetName='RawDataTagProFea'
+    sheetPos=0
+    preResSheet = preResFile.add_sheet(sheetName+str(sheetPos))
+    posProbility = []
+    excelRowPos=0
+    for rowPos in range(dataItemCount):
+        if excelRowPos==65536:
+            sheetPos+=1
+            preResSheet=preResFile.add_sheet(sheetName+str(sheetPos))
+            excelRowPos=0
+        preResSheet.write(excelRowPos, 0, review[rowPos])  # 原始数据
+        preResSheet.write(excelRowPos, 1, data_tag[rowPos])  # 类标签
+        preResSheet.write(excelRowPos, 2, str(res_pro[rowPos].prob('pos')))  # 积极概率
+        posProbility.append(res_pro[rowPos].prob('pos'))
+        preResSheet.write(excelRowPos, 3, str(res_pro[rowPos].prob('neg')))  # 消极概率
+        feature = ''
+        # 特征里面可能出现二元词的情况
+        for x in review_feature[rowPos].keys():
+            if type(x) is not nltk.types.TupleType:
+                feature += x
+            else:
+                feature += '_'.join(x)
+            feature += ' '
+        preResSheet.write(excelRowPos, 4, feature)  # 特征
+        excelRowPos+=1
+    preResFile.save(preDataResPath)
+    end = time.clock()
+    print 'handle sentences num:', dataItemCount, ' classify time:', end - start
+    return posProbility,preDataResPath
+reviewDataSetDir='D:/ReviewHelpfulnessPrediction\BulletData'
+reviewDataSetName='lsj'
+reviewDataSetFileType='.log'
+desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+posProbility,resSavePath=predictTxtDataSentTagProToTxt(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir)
+
+'''原始数据格式为excel,将原始数据 类标签 分类概率 原始数据特征写入excel文件中'''
+'''返回：评论的积极可能性列表'''
+def predictExcelDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,sheetNum,colNum,desDir):
     reviewDataSetPath=reviewDataSetDir+'/'+reviewDataSetName+reviewDataSetFileType
     preDataResPath=desDir+'/'+reviewDataSetName+'RawDataTagProFea.xls'
     start=time.clock()
@@ -287,10 +388,12 @@ def predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSe
     # p_file.close()
     preResFile=xlwt.Workbook(encoding='utf-8')
     preResSheet=preResFile.add_sheet('RawDataTagProFea')
+    posProbility=[]
     for rowPos in range(dataItemCount):
         preResSheet.write(rowPos,0,review[rowPos])#原始数据
         preResSheet.write(rowPos,1,data_tag[rowPos])#类标签
         preResSheet.write(rowPos,2,str(res_pro[rowPos].prob('pos')))#积极概率
+        posProbility.append(res_pro[rowPos].prob('pos'))
         preResSheet.write(rowPos, 3, str(res_pro[rowPos].prob('neg')))#消极概率
         feature=''
         #feature='_'.join(review_feature[rowPos].keys())
@@ -305,12 +408,208 @@ def predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSe
         preResSheet.write(rowPos, 4, feature)#特征
     preResFile.save(preDataResPath)
     end=time.clock()
-    return dataItemCount,end-start
+    print 'handle sentences num:', dataItemCount, ' classify time:', end-start
+    return posProbility,preDataResPath
 
-reviewDataSetDir='D:/ReviewHelpfulnessPrediction\LabelReviewData'
-reviewDataSetName='pdd_label_data'
-reviewDataSetFileType='.xls'
-desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
-recordNum,runningTime=predictDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,1,desDir)
-print 'handle sentences num:',recordNum,' classify time:',runningTime
+# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\LabelReviewData'
+# reviewDataSetName='test'
+# reviewDataSetFileType='.xls'
+# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# posProbility,resSavePath=predictExcelDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,2,1,desDir)
+
+'''绘制积极可能性波动动态曲线图 参数：积极可能性列表 时间间隔 窗口大小'''
+def drawPosProbilityChangeLine(posProbility,timeInterval,windowSize):
+    posProbilityLen=len(posProbility)
+    fig = plt.figure()
+    ax = plt.axes(xlim=(0, windowSize+1), ylim=(0, 1))
+    line, = ax.plot([], [], lw=2)
+    # initialization function: plot the background of each frame
+    def init():
+        line.set_data([], [])
+        return line,
+    # animation function. This is called sequentially
+    # note: i is framenumber
+    def animate(i):
+        x = range(1, windowSize+1)
+        y = posProbility[i:i + windowSize]
+        line.set_data(x, y)
+        return line,
+
+    # call the animator. blit=True means only re-draw the parts that have changed.
+    anim = animation.FuncAnimation(fig, animate, init_func=init,
+                                   frames=posProbilityLen - windowSize, interval=timeInterval, blit=False)
+    # anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+    plt.show()
+'''绘制情感波动动态曲线图 参数：积极可能性列表 时间间隔 窗口大小 最小的情感值 最大的情感值'''
+def drawSentimentChangeLine(posProbility,timeInterval,windowSize,minSentimentValue,maxSentimentValue):
+    posProbilityLen=len(posProbility)
+    fig = plt.figure()
+    ax = plt.axes(xlim=(0, windowSize+1), ylim=(minSentimentValue, maxSentimentValue))
+    line, = ax.plot([], [], lw=2)
+    # initialization function: plot the background of each frame
+    def init():
+        line.set_data([], [])
+        return line,
+    # animation function. This is called sequentially
+    # note: i is framenumber
+    def animate(i):
+        x = range(1, windowSize+1)
+        y = posProbility[i:i + windowSize]
+        line.set_data(x, y)
+        return line,
+
+    # call the animator. blit=True means only re-draw the parts that have changed.
+    anim = animation.FuncAnimation(fig, animate, init_func=init,
+                                   frames=posProbilityLen - windowSize, interval=timeInterval, blit=False)
+    # anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+    plt.show()
+'''分析下积极情感可能性数据 '''
+'''将数据拆分成windowSize片段，分析每一片段的总体情感，积极比率，消极比率'''
+'''参数：积极可能性列表 窗口大小 积极边界 消极边界 异常情感得分边界'''
+'''返回 情感得分列表 积极所占比率列表 消极所占比率列表 异常话语所在位置列表'''
+def analyzeSentimentProList(posProbility,windowSize,posBounder,negBounder,strangeSentValueBounder):
+    posProbilityLen=len(posProbility)
+    posRatioList=[]
+    negRatioList=[]
+    sentimentValueList=[]
+    strangeWordPos=[]
+    if posProbility>windowSize:
+        upBounder=posProbilityLen-windowSize
+        posNum = 0
+        negNum = 0
+        sentimentValue = 0
+        for pos in range(0,windowSize):
+            if posProbility[pos] <= negBounder:
+                negNum += 1
+                # sentimentValue-=1
+                sentimentValue -= (negBounder - posProbility[pos]) / negBounder  # 根据消极可能性设置得分权重
+            elif posProbility[pos] >= posBounder:
+                posNum += 1
+                # sentimentValue+=1
+                sentimentValue += (posProbility[pos] - posBounder) / (1 - posBounder)
+        posRatio=float(posNum)/float(windowSize)
+        negRatio=float(negNum)/float(windowSize)
+        posRatioList.append(posRatio)
+        negRatioList.append(negRatio)
+        sentimentValueList.append(sentimentValue)
+        if sentimentValue<strangeSentValueBounder:
+            strangeWordPos.append([0,windowSize-1,sentimentValue])
+        for pos in range(windowSize,posProbilityLen):
+            frontProbility=posProbility[pos-windowSize]
+            '''减去最前面一个数'''
+            if frontProbility <= negBounder:
+                negNum -= 1
+                # sentimentValue-=1
+                sentimentValue += (negBounder - frontProbility) / negBounder  # 根据消极可能性设置得分权重
+            elif frontProbility >= posBounder:
+                posNum -= 1
+                # sentimentValue+=1
+                sentimentValue -= (frontProbility - posBounder) / (1 - posBounder)
+            '''加上当前数'''
+            if posProbility[pos] <= negBounder:
+                negNum += 1
+                # sentimentValue-=1
+                sentimentValue -= (negBounder - posProbility[pos]) / negBounder  # 根据消极可能性设置得分权重
+            elif posProbility[pos] >= posBounder:
+                posNum += 1
+                # sentimentValue+=1
+                sentimentValue += (posProbility[pos] - posBounder) / (1 - posBounder)
+            posRatio = float(posNum)/float(windowSize)
+            negRatio = float(negNum)/float(windowSize)
+            posRatioList.append(posRatio)
+            negRatioList.append(negRatio)
+            sentimentValueList.append(sentimentValue)
+            if sentimentValue < strangeSentValueBounder:
+                strangeWordPos.append([pos-windowSize+1, pos,sentimentValue])
+    else:
+        posNum = 0
+        negNum = 0
+        sentimentValue = 0
+        for pos in range(posProbilityLen):
+            if posProbility[pos] <= negBounder:
+                negNum += 1
+                # sentimentValue-=1
+                sentimentValue -= (negBounder - posProbility[pos]) / negBounder  # 根据消极可能性设置得分权重
+            elif posProbility[pos] >= posBounder:
+                posNum += 1
+                # sentimentValue+=1
+                sentimentValue += (posProbility[pos] - posBounder) / (1 - posBounder)
+        posRatio = float(posNum) / float(posProbilityLen)
+        negRatio = float(negNum) / float(posProbilityLen)
+        posRatioList.append(posRatio)
+        negRatioList.append(negRatio)
+        sentimentValueList.append(sentimentValue)
+        if sentimentValue < strangeSentValueBounder:
+            strangeWordPos.append([0, posProbilityLen-1,sentimentValue])
+    return sentimentValueList,posRatioList,negRatioList,strangeWordPos
+
+'''得到情感积极可能性平均子 数据可能会越界'''
+def getMeanSentimentValue(posProbility):
+    begin=time.clock()
+    sentimentValue=0
+    for x in posProbility:
+        sentimentValue+=x
+    end=time.clock()
+    print 'calculate mean sentiment postive probility time is:',end-begin
+    return sentimentValue/len(posProbility)
+'''绘制情感曲线图'''
+def drawSentimentLine(sentimentValueList):
+    plt.figure()
+    x=range(1,len(sentimentValueList)+1)
+    plt.plot(x,sentimentValueList)
+    plt.show()
+sentimentValueList,posRatioList,negRatioList,strangeWordPos=analyzeSentimentProList(posProbility,100,0.6,0.4,-40)
+meanSentPosPro=getMeanSentimentValue(posProbility)
+print 'mean sentiment postive probility',meanSentPosPro
+'''合并异常情感'''
+def unionStrangeWordPos(strangeWordPos):
+    finalStrangeWordPos=[]
+    if len(strangeWordPos)<=0:
+        return finalStrangeWordPos
+    else:
+        lastWordPos=strangeWordPos[0]
+        count=1
+        for pos in range(1,len(strangeWordPos)):
+            if(strangeWordPos[pos][0]<=lastWordPos[1]):
+                lastWordPos[1]=strangeWordPos[pos][1]
+                lastWordPos[2]=(lastWordPos[2]*count+strangeWordPos[pos][2])/(count+1)
+                count+=1
+            else:
+                finalStrangeWordPos.append(lastWordPos)
+                lastWordPos=strangeWordPos[pos]
+                count=1
+        finalStrangeWordPos.append(lastWordPos)
+        return finalStrangeWordPos
+'''输出异常话语所在的位置 原始数据保存在excel文件中'''
+def outputStrangeWordPosInExcel(finalStrangeWordPos,resSavePath):
+    if len(finalStrangeWordPos)==0:
+        print 'no strange sentences or strange sentences sentiment value set too low'
+    else:
+        print 'save path:',resSavePath
+        for x in finalStrangeWordPos:
+            startSheetNum = x[0] / 65536
+            startRowNum = x[0] % 65536 + 1
+            endSheetNum = x[1] / 65536
+            endRowNum = x[1] % 65536 + 1
+            print 'sheet ',startSheetNum,' row ',startRowNum,'-- sheet ',endSheetNum,' row ',endRowNum,'(',x[2],')','may have some strange sentences'
+'''输出异常话语所在的位置 原始数据保存在txt文件中'''
+def outputStrangeWordPosInTxt(finalStrangeWordPos,resSavePath):
+    if len(finalStrangeWordPos)==0:
+        print 'no strange sentences or strange sentences sentiment value set too low'
+    else:
+        print 'save path:',resSavePath
+        for x in finalStrangeWordPos:
+            print 'row ',x[0],'-- row ',x[1],'(',x[2],')','may have some strange sentences'
+finalStrangeWordPos=unionStrangeWordPos(strangeWordPos)
+outputStrangeWordPosInTxt(finalStrangeWordPos,resSavePath)
+drawSentimentLine(sentimentValueList)
+drawSentimentChangeLine(sentimentValueList,20,100,-40,40)
+#drawPosProbilityChangeLine(posProbility,20,100)
+
+""" 
+    通过一系列函数设置当前Axes对象的各个属性： 
+    xlabel、ylabel：分别设置X、Y轴的标题文字。 
+    title：设置子图的标题。 
+    xlim、ylim：分别设置X、Y轴的显示范围。 
+"""
 

@@ -7,7 +7,7 @@ Chinese word segmentation, postagger, sentence cutting and stopwords filtering f
 """
 '''
 从excel文件和txt文件中读取数据
-中文分词 词性标注 句子切割 停用词过滤
+中文分词 词性标注 句子切割 停用词过滤 将txt文件数据转化为excel文件数据
 '''
 
 import xlrd
@@ -321,8 +321,6 @@ def save_txt_to_excel(txtpath,excelpath,col_pos):
             row_pos=0
             excel_sheet.write(row_pos,col_pos,'review_data')
             row_pos=1
-            excel_sheet.write(row_pos, col_pos, x)
-            row_pos+=1
         excel_sheet.write(row_pos,col_pos,x)
         row_pos+=1
 
@@ -331,85 +329,6 @@ def save_txt_to_excel(txtpath,excelpath,col_pos):
 #save_txt_to_excel('D:/ReviewHelpfulnessPrediction\ReviewDataFeature/newoutOriData.txt','D:/ReviewHelpfulnessPrediction\LabelReviewData/test.xls',1)
 #save_txt_to_excel('D:/ReviewHelpfulnessPrediction\ReviewDataFeature/FiltnewoutOriData.txt','D:/ReviewHelpfulnessPrediction\LabelReviewData/FiltData.xls',1)
 
-'''检查标记数据 看看是否出现格式错误，如出现，显示出现错误的行数,并返回正确标记的数据'''
-'''参数 labelRowNum为已标记的行数量'''
-'''将标记数据按照主客观 积消极 鉴黄 分类存储在labelDataDir目录下'''
-def judge_label_data(labelDataPath, labelRowNum, labelDataDir):
-	table = xlrd.open_workbook(labelDataPath)
-	sheet = table.sheets()[0]
-	errorRow = []  # 错误行
-	subjectiveSubDataItem = []  # 主观数据项
-	subjectiveObjDataItem = []  # 客观数据项
-	sentimentPosDataItem = []  # 积极数据项
-	sentimentNegDataItem = []  # 消极数据项
-	eroticEroDataItem = []  # 鉴黄
-	eroticNorDataItem = []
-	srcDataColPos = 0
-	subjectiveColPos = 2
-	sentimentColPos = 3
-	eroticColPos = 4
-	excelData = []
-	for rowPos in range(1, labelRowNum):
-		excelData.append(sheet.row_values(rowPos))
-	for rowPos in range(0, labelRowNum - 1):
-		if excelData[rowPos][subjectiveColPos] == 1:
-			if excelData[rowPos][sentimentColPos] == 0:
-				sentimentNegDataItem.append(excelData[rowPos][srcDataColPos])
-			elif excelData[rowPos][sentimentColPos] == 1:
-				sentimentPosDataItem.append(excelData[rowPos][srcDataColPos])
-			else:
-				errorRow.append([rowPos + 2, 'sentiment_tendency value error'])
-			subjectiveSubDataItem.append(excelData[rowPos][srcDataColPos])
-		elif excelData[rowPos][subjectiveColPos] == 0:
-			subjectiveObjDataItem.append(excelData[rowPos][srcDataColPos])
-		else:
-			errorRow.append([rowPos + 2, 'is_subjective value error'])
-		if excelData[rowPos][eroticColPos] == 1:
-			eroticEroDataItem.append(excelData[rowPos][srcDataColPos])
-		elif excelData[rowPos][eroticColPos] == 0:
-			eroticNorDataItem.append(excelData[rowPos][srcDataColPos])
-		else:
-			errorRow.append([rowPos + 2, 'is_erotic value error'])
-	for x in errorRow:
-		print x
-	print 'subjective and objective num:', len(subjectiveSubDataItem), len(subjectiveObjDataItem)
-	print 'postive and negtive num:', len(sentimentPosDataItem), len(sentimentNegDataItem)
-	print 'erotic and normal num:', len(eroticEroDataItem), len(eroticNorDataItem)
-	colPos = 0
-	'''存储主客观标注的数据'''
-	subObjFile = xlwt.Workbook(encoding='utf-8')
-	subjectiveSheet = subObjFile.add_sheet('subjective_data')
-	for rowPos in range(len(subjectiveSubDataItem)):
-		subjectiveSheet.write(rowPos, colPos, subjectiveSubDataItem[rowPos])
-	objectiveSheet = subObjFile.add_sheet('objective_data')
-	for rowPos in range(len(subjectiveObjDataItem)):
-		objectiveSheet.write(rowPos, colPos, subjectiveObjDataItem[rowPos])
-	subObjFile.save(labelDataDir + '/' + 'subObjLabelData.xls')
-
-	'''存储积消极标注的数据'''
-	posNegFile = xlwt.Workbook(encoding='utf-8')
-	postiveSheet = posNegFile.add_sheet('postive_data')
-	for rowPos in range(len(sentimentPosDataItem)):
-		postiveSheet.write(rowPos, colPos, sentimentPosDataItem[rowPos])
-	negtiveSheet = posNegFile.add_sheet('negtive_data')
-	for rowPos in range(len(sentimentNegDataItem)):
-		negtiveSheet.write(rowPos, colPos, sentimentNegDataItem[rowPos])
-	posNegFile.save(labelDataDir + '/' + 'posNegLabelData.xls')
-
-	'''存储鉴黄标注数据'''
-	eroNorFile=xlwt.Workbook(encoding='utf-8')
-	eroticSheet=eroNorFile.add_sheet('erotic_data')
-	for rowPos in range(len(eroticEroDataItem)):
-		eroticSheet.write(rowPos,colPos,eroticEroDataItem[rowPos])
-	normalSheet=eroNorFile.add_sheet('normal_data')
-	for rowPos in range(len(eroticNorDataItem)):
-		normalSheet.write(rowPos,colPos,eroticNorDataItem[rowPos])
-	eroNorFile.save(labelDataDir + '/' + 'eroNorLabelData.xls')
-
-
-
-
-#judge_label_data('D:/ReviewHelpfulnessPrediction\LabelReviewData/label_review_count_data.xls',1200,'D:/ReviewHelpfulnessPrediction\LabelReviewData')
 
 
 

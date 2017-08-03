@@ -293,7 +293,6 @@ def get_trainset(dimension):
     return train_set
 
 
-
 '''4 训练分类器，并且评估分类效果'''
 
 # train_set,test,tag_test=get_trainset_testset_testtag(1500)
