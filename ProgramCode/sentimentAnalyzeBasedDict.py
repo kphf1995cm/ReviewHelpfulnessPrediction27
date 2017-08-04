@@ -26,9 +26,12 @@ import numpy as np
 import time
 import xlwt
 import xlrd
+from matplotlib import pyplot as plt
+from matplotlib import animation
 
-'''1 导入情感词典以及数据集'''
+'''1 导入情感词典'''
 '''导入情感词典'''
+begin=time.clock()
 posdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/posdict.txt","lines")
 negdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/negdict.txt","lines")
 
@@ -39,10 +42,8 @@ moredict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModu
 ishdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/ish.txt', 'lines')
 insufficientdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/insufficiently.txt', 'lines')
 inversedict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/inverse.txt', 'lines')
-
-'''导入数据集'''
-review = tp.get_excel_data("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4, "data")
-
+end=time.clock()
+print 'load dictionary time:',end-begin
 '''2 基于字典的情感分析 基本功能'''
 
 '''匹配程度词并设置权重'''
@@ -154,6 +155,8 @@ def sentence_sentiment_score(dataset):
     all_review_count = []
     for review in cuted_review:
         single_review_count=[]
+        if len(review)==0:#出现空行时
+			single_review_count.append(transform_to_positive_num(0, 0))
         for sent in review:
             seg_sent = tp.segmentation(sent, 'list')
             i = 0 #word position counter
@@ -189,85 +192,26 @@ def sentence_sentiment_score(dataset):
     return all_review_count
 
 '''计算全部评论的特征列表'''
-'''返回[[Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg],[],]'''
+'''返回[[PosSum, NegSum],[],]'''
 def all_review_sentiment_score(senti_score_list):
     score = []
     for review in senti_score_list:
         score_array = np.array(review)
         Pos = np.sum(score_array[:,0])
         Neg = np.sum(score_array[:,1])
-        AvgPos = np.mean(score_array[:,0])
-        AvgNeg = np.mean(score_array[:,1])
-        StdPos = np.std(score_array[:,0])
-        StdNeg = np.std(score_array[:,1])
-        score.append([Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg])
+        score.append([Pos, Neg])
     return score
 
-
-'''4 存储情感字典特征'''
-
-'''parm@review_set; 评论列表，每条评论可以含有多个句子 '''
-def store_sentiment_dictionary_score(review_set, storepath):
-	score_list=sentence_sentiment_score(review_set)
-	sentiment_score = all_review_sentiment_score(score_list)
-
-	f = open(storepath,'w')
-	reviewCount=0
-	for i in sentiment_score:
-		f.write(str(i[0])+'\t'+str(i[1])+'\t'+str(i[2])+'\t'+str(i[3])+'\t'+str(i[4])+'\t'+str(i[5])+'\n')
-		reviewCount+=1
-	f.close()
-	return reviewCount
-'''
-function: read review data set and store score data
-test code:
-read_review_set_and_store_score("D:/ReviewHelpfulnessPrediction/ReviewSet/HTC_Z710t_review_2013.6.5.xlsx", 1,4,'D:/ReviewHelpfulnessPrediction\ReviewSetScore/HTC.txt')
-'''
-def read_review_set_and_store_score(dataSetDir,dataSetName,dataSetFileType,sheetNum,colNum,dstDir):
-	start=time.clock()
-	dataSetPath=dataSetDir+'/'+dataSetName+dataSetFileType
-	dstPath=dstDir+'/'+dataSetName+'SentiDictFea.txt'
-	review = tp.get_excel_data(dataSetPath, sheetNum, colNum, "data")
-	# for x in review:
-	# 	print x
-	res=store_sentiment_dictionary_score(review,dstPath)
-	end=time.clock()
-	return res,end-start
-
-# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewSet'
-# reviewDataSetName='HTC_Z710t_review_2013.6.5'
-# reviewDataSetFileType='.xlsx'
-# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
-# recordNum,runningTime=read_review_set_and_store_score(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,1,4,desDir)
-# print 'handle sentences num:',recordNum,' running time:',runningTime
-
-def read_txt_review_set_and_store_score(dataSetDir,dataSetName,dataSetFileType,dstDir):
-	start=time.clock()
-	dataSetPath=dataSetDir+'/'+dataSetName+dataSetFileType
-	dstPath=dstDir+'/'+dataSetName+'SentiDictFea.txt'
-	review = tp.get_txt_data(dataSetPath,"lines")
-	# for x in review:
-	# 	print x
-	res=store_sentiment_dictionary_score(review,dstPath)
-	end=time.clock()
-	return res,end-start
-
-# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
-# reviewDataSetName='FiltnewoutOriData'
-# reviewDataSetFileType='.txt'
-# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
-# recordNum,runningTime=read_txt_review_set_and_store_score(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir)
-# print 'handle sentences num:',recordNum,' running time:',runningTime
-def get_txt_review_set_sentiement_score(dataSetDir,dataSetName,dataSetFileType):
+'''返回所有评论的情感得分列表 形式如：[[PosSum, NegSum],[],]'''
+def get_review_set_sentiement_score(review):
 	start = time.clock()
-	dataSetPath = dataSetDir + '/' + dataSetName + dataSetFileType
-	review = tp.get_txt_data(dataSetPath, "lines")
-	sentiment_score_list =  all_review_sentiment_score(review)
+	pos_neg_score_list = sentence_sentiment_score(review)
+	sentiment_score_list =  all_review_sentiment_score(pos_neg_score_list)
 	end = time.clock()
 	print 'get sentiment score list time is:',end-start,'handle review num is:',len(review)
 	return sentiment_score_list
 
-pos_neg_num_score={0:0,1:0.7,2:0.78,3:0.83,4:0.85,5:0.87}
+pos_neg_num_score={0:0.5,1:0.7,2:0.78,3:0.83,4:0.85,5:0.87}
 def get_score(num):
 	int_num=int(num)
 	if int_num>=6:
@@ -275,31 +219,287 @@ def get_score(num):
 	else:
 		return pos_neg_num_score[int_num]
 '''pos_score/(pos_score+neg_score)'''
-def get_sentiment_overall_score(sentiment_score_list):
+'''得到一句话的整体情感得分，取值在0至1之间 也可看做积极可能性 并将其存储到txt文件中 原始数据 情感得分'''
+def get_sentiment_overall_score_to_txt(sentiment_score_list,review,dstpath):
+	begin=time.clock()
 	sentiment_overall_score=[]
 	for x in sentiment_score_list:
 		score=0.0
 		if x[0]==x[1]:
 			score=0.5
 		elif x[0]==0 or x[1]==0:
-			score=pos_neg_num_score(x[0])-pos_neg_num_score(x[1])
+			if x[0]==0:
+				score=1-get_score(x[1])
+			else:
+				score=get_score(x[0])
 		else:
 			score=float(x[0])/(float(x[0])+float(x[1]))
 		sentiment_overall_score.append(score)
+	dataItemNum=len(review)
+	f=open(dstpath,'w')
+	for pos in range(dataItemNum):
+		f.write(review[pos].encode('utf-8')+'\t'+str(sentiment_overall_score[pos])+'\n')
+	f.close()
+	end=time.clock()
+	print 'get overall score time is:',end-begin,'handle data item num is:',dataItemNum
+
 
 
 
 	return sentiment_overall_score
-reviewDataSetDir='D:/ReviewHelpfulnessPrediction\BulletData'
-reviewDataSetName='pdd'
-reviewDataSetFileType='.txt'
-sentiment_score_list=get_txt_review_set_sentiement_score(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType)
-sentiment_overall_score=get_sentiment_overall_score(sentiment_score_list)
+'''绘制积极可能性波动动态曲线图 参数：积极可能性列表 时间间隔 窗口大小'''
+def drawPosProbilityChangeLine(posProbility,timeInterval,windowSize):
+    posProbilityLen=len(posProbility)
+    fig = plt.figure()
+    ax = plt.axes(xlim=(0, windowSize+1), ylim=(0, 1))
+    line, = ax.plot([], [], lw=2)
+    # initialization function: plot the background of each frame
+    def init():
+        line.set_data([], [])
+        return line,
+    # animation function. This is called sequentially
+    # note: i is framenumber
+    def animate(i):
+        x = range(1, windowSize+1)
+        y = posProbility[i:i + windowSize]
+        line.set_data(x, y)
+        return line,
 
-for pos in range(len(sentiment_score_list)):
-	print sentiment_score_list[pos],'.....',sentiment_overall_score[pos]
+    # call the animator. blit=True means only re-draw the parts that have changed.
+    anim = animation.FuncAnimation(fig, animate, init_func=init,
+                                   frames=posProbilityLen - windowSize, interval=timeInterval, blit=False)
+    # anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+    plt.show()
+'''绘制情感波动动态曲线图 参数：积极可能性列表 时间间隔 窗口大小 最小的情感值 最大的情感值'''
+def drawSentimentChangeLine(posProbility,timeInterval,windowSize,minSentimentValue,maxSentimentValue):
+    posProbilityLen=len(posProbility)
+    fig = plt.figure()
+    ax = plt.axes(xlim=(0, windowSize+1), ylim=(minSentimentValue, maxSentimentValue))
+    line, = ax.plot([], [], lw=2)
+    # initialization function: plot the background of each frame
+    def init():
+        line.set_data([], [])
+        return line,
+    # animation function. This is called sequentially
+    # note: i is framenumber
+    def animate(i):
+        x = range(1, windowSize+1)
+        y = posProbility[i:i + windowSize]
+        line.set_data(x, y)
+        return line,
 
+    # call the animator. blit=True means only re-draw the parts that have changed.
+    anim = animation.FuncAnimation(fig, animate, init_func=init,
+                                   frames=posProbilityLen - windowSize, interval=timeInterval, blit=False)
+    # anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+    plt.show()
+'''绘制情感曲线图'''
+def drawSentimentLine(sentimentValueList,dstpath):
+    plt.figure()
+    x=range(1,len(sentimentValueList)+1)
+    plt.plot(x,sentimentValueList)
+    plt.title('Sentiment Curve Figure')
+    plt.xlabel('Sentence Number')
+    plt.ylabel('Sentiment Score')
+    plt.savefig(dstpath)
+'''分析下积极情感可能性数据 '''
+'''将数据拆分成windowSize片段，分析每一片段的总体情感，积极比率，消极比率'''
+'''参数：积极可能性列表 窗口大小 积极边界 消极边界 异常情感得分边界'''
+'''返回 情感得分列表 积极所占比率列表 消极所占比率列表 异常话语所在位置列表'''
+def analyzeSentimentProList(posProbility,windowSize,posBounder,negBounder,strangeSentValueBounder):
+    begin=time.clock()
+    posProbilityLen=len(posProbility)
+    posRatioList=[]
+    negRatioList=[]
+    sentimentValueList=[]
+    strangeWordPos=[]
+    if posProbility>windowSize:
+        upBounder=posProbilityLen-windowSize
+        posNum = 0
+        negNum = 0
+        sentimentValue = 0
+        for pos in range(0,windowSize):
+            if posProbility[pos] <= negBounder:
+                negNum += 1
+                # sentimentValue-=1
+                sentimentValue -= (negBounder - posProbility[pos]) / negBounder  # 根据消极可能性设置得分权重
+            elif posProbility[pos] >= posBounder:
+                posNum += 1
+                # sentimentValue+=1
+                sentimentValue += (posProbility[pos] - posBounder) / (1 - posBounder)
+        posRatio=float(posNum)/float(windowSize)
+        negRatio=float(negNum)/float(windowSize)
+        posRatioList.append(posRatio)
+        negRatioList.append(negRatio)
+        sentimentValueList.append(sentimentValue)
+        if sentimentValue<strangeSentValueBounder:
+            strangeWordPos.append([0,windowSize-1,sentimentValue])
+        for pos in range(windowSize,posProbilityLen):
+            frontProbility=posProbility[pos-windowSize]
+            '''减去最前面一个数'''
+            if frontProbility <= negBounder:
+                negNum -= 1
+                # sentimentValue-=1
+                sentimentValue += (negBounder - frontProbility) / negBounder  # 根据消极可能性设置得分权重
+            elif frontProbility >= posBounder:
+                posNum -= 1
+                # sentimentValue+=1
+                sentimentValue -= (frontProbility - posBounder) / (1 - posBounder)
+            '''加上当前数'''
+            if posProbility[pos] <= negBounder:
+                negNum += 1
+                # sentimentValue-=1
+                sentimentValue -= (negBounder - posProbility[pos]) / negBounder  # 根据消极可能性设置得分权重
+            elif posProbility[pos] >= posBounder:
+                posNum += 1
+                # sentimentValue+=1
+                sentimentValue += (posProbility[pos] - posBounder) / (1 - posBounder)
+            posRatio = float(posNum)/float(windowSize)
+            negRatio = float(negNum)/float(windowSize)
+            posRatioList.append(posRatio)
+            negRatioList.append(negRatio)
+            sentimentValueList.append(sentimentValue)
+            if sentimentValue < strangeSentValueBounder:
+                strangeWordPos.append([pos-windowSize+1, pos,sentimentValue])
+    else:
+        posNum = 0
+        negNum = 0
+        sentimentValue = 0
+        for pos in range(posProbilityLen):
+            if posProbility[pos] <= negBounder:
+                negNum += 1
+                # sentimentValue-=1
+                sentimentValue -= (negBounder - posProbility[pos]) / negBounder  # 根据消极可能性设置得分权重
+            elif posProbility[pos] >= posBounder:
+                posNum += 1
+                # sentimentValue+=1
+                sentimentValue += (posProbility[pos] - posBounder) / (1 - posBounder)
+        posRatio = float(posNum) / float(posProbilityLen)
+        negRatio = float(negNum) / float(posProbilityLen)
+        posRatioList.append(posRatio)
+        negRatioList.append(negRatio)
+        sentimentValueList.append(sentimentValue)
+        if sentimentValue < strangeSentValueBounder:
+            strangeWordPos.append([0, posProbilityLen-1,sentimentValue])
+    end=time.clock()
+    print 'analyze sentiment value list time is:',end-begin
+    return sentimentValueList,posRatioList,negRatioList,strangeWordPos
+'''得到情感积极可能性平均子 数据可能会越界'''
+def getMeanSentimentValue(posProbility):
+    begin=time.clock()
+    sentimentValue=0
+    for x in posProbility:
+        sentimentValue+=x
+    end=time.clock()
+    print 'calculate mean sentiment postive probility time is:',end-begin
+    return sentimentValue/len(posProbility)
+'''合并异常情感'''
+def unionStrangeWordPos(strangeWordPos):
+    finalStrangeWordPos=[]
+    if len(strangeWordPos)<=0:
+        return finalStrangeWordPos
+    else:
+        lastWordPos=strangeWordPos[0]
+        count=1
+        for pos in range(1,len(strangeWordPos)):
+            if(strangeWordPos[pos][0]<=lastWordPos[1]):
+                lastWordPos[1]=strangeWordPos[pos][1]
+                lastWordPos[2]=(lastWordPos[2]*count+strangeWordPos[pos][2])/(count+1)
+                count+=1
+            else:
+                finalStrangeWordPos.append(lastWordPos)
+                lastWordPos=strangeWordPos[pos]
+                count=1
+        finalStrangeWordPos.append(lastWordPos)
+        return finalStrangeWordPos
+'''输出异常话语所在的位置 原始数据保存在txt文件中'''
+def outputStrangeWordPosInTxt(finalStrangeWordPos,resSavePath):
+    if len(finalStrangeWordPos)==0:
+        print 'no strange sentences or strange sentences sentiment value set too low'
+    else:
+        print 'save path:',resSavePath
+        for x in finalStrangeWordPos:
+            print 'row ',x[0],'-- row ',x[1],'(',x[2],')','may have some strange sentences'
+'''输出异常话语'''
+def outputStrangeWords(finalStrangeWordPos,rawReview):
+    for x in finalStrangeWordPos:
+        for pos in range(x[0],x[1]+1):
+            print rawReview[pos],'\t',
+        print ''
+'''得到基于词典情感分析精度'''
+def getAccuracy(sentimentValueList,labelClass):
+	diffNum=0
+	for pos in range(len(sentimentValueList)):
+		if sentimentValueList[pos]>0.5 and labelClass[pos]!=1:
+			diffNum+=1
+		if sentimentValueList[pos]<0.5 and labelClass[pos]!=0:
+			diffNum+=1
+	return 1-float(diffNum)/float(len(sentimentValueList))
+'''测试下标记数据精度'''
+def testLabelDataAcc():
+	begin=time.clock()
+	'''获得原始数据路径'''
+	reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\LabelReviewData'
+	reviewDataSetName = 'posNegLabelData'
+	reviewDataSetFileType = '.xls'
+	dataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
+	'''获得目标数据路径'''
+	dstSavePath = reviewDataSetDir + '/' + reviewDataSetName + 'BasedDictSentimentScore.txt'
+	'''获得原始数据'''
+	posreview = tp.get_excel_data(dataSetPath,1,1,"data")
+	negreview = tp.get_excel_data(dataSetPath, 2, 1, "data")
+	review=posreview+negreview
+	'''得到每句评论[[PosSum, NegSum],[],]'''
+	sentiment_score_list = get_review_set_sentiement_score(review)
+	'''得到每句评论的整体得分'''
+	sentiment_overall_score = get_sentiment_overall_score_to_txt(sentiment_score_list, review, dstSavePath)
+	labelClass=[]
+	for pos in range(len(posreview)):
+		labelClass.append(1)
+	for pos in range(len(negreview)):
+		labelClass.append(0)
+	# for pos in range(len(sentiment_overall_score)):
+	# 	print sentiment_score_list[pos],sentiment_overall_score[pos],labelClass[pos]
+	print 'sentiment Analyze Based Dictionary Accuracy:',getAccuracy(sentiment_overall_score,labelClass)
 
+'''基于字典情感分析 时间性能上 running time: 130.669673332 handle review num: 87641 精度上'''
+def sentiAnalyzeBaseDict():
+	begin=time.clock()
+	'''获得原始数据路径'''
+	reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\BulletData'
+	reviewDataSetName = 'lsj'
+	reviewDataSetFileType = '.log'
+	dataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
+	figDir = 'D:/ReviewHelpfulnessPrediction\SentimentLineFig'
+	'''获得目标数据路径'''
+	dstSavePath = reviewDataSetDir + '/' + reviewDataSetName + 'BasedDictSentimentScore.txt'
+	'''获得原始数据'''
+	review = tp.get_txt_data(dataSetPath, "lines")
+	'''得到每句评论[[PosSum, NegSum],[],]'''
+	sentiment_score_list = get_review_set_sentiement_score(review)
+	'''得到每句评论的整体得分'''
+	sentiment_overall_score = get_sentiment_overall_score_to_txt(sentiment_score_list, review, dstSavePath)
+	'''分析评论情感得分数据 按照窗口迭代 获得 情感值 积极比率 消极比率 异常话语位置'''
+	sentimentValueList, posRatioList, negRatioList, strangeWordPos = analyzeSentimentProList(sentiment_overall_score,
+																							 100, 0.6, 0.4, -7)
+	'''合并重叠区间'''
+	finalStrangeWordPos = unionStrangeWordPos(strangeWordPos)
+	'''获得平均情感值'''
+	meanSentPosPro = getMeanSentimentValue(sentiment_overall_score)
+	print 'mean sentiment postive probility', meanSentPosPro
+	'''输出异常话语位置'''
+	outputStrangeWordPosInTxt(finalStrangeWordPos, dstSavePath)
+	'''绘制情感曲线图'''
+	drawSentimentLine(sentimentValueList,figDir+'/'+reviewDataSetName+'DA.png')
+	'''输出异常话语'''
+	outputStrangeWords(finalStrangeWordPos, review)
+	'''绘制情感波动动态图'''
+	drawSentimentChangeLine(sentimentValueList, 20, 100, -20, 20)
+	end=time.clock()
+	print 'sentiment Analyze based dict running time:',end-begin,'handle review num:',len(review)
+
+sentiAnalyzeBaseDict()
+#testLabelDataAcc()
 
 
 

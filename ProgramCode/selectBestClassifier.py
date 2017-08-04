@@ -27,7 +27,10 @@ from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 from sklearn.linear_model import LogisticRegression
 from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.metrics import accuracy_score
-
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import RadiusNeighborsClassifier
+from sklearn.neighbors import KNeighborsRegressor, RadiusNeighborsRegressor
+from sklearn.neural_network import MLPClassifier
 
 
 '''1 导入数据模块'''
@@ -330,7 +333,7 @@ def get_best_classfier_and_dimention():
     bestClassfier = ''
     bestDimention = '0'
     curAccuracy = 0.0
-    dimention = ['500', '1000','1300', '1500','1700', '2000','2200', '2500', '3000']
+    dimention = range(500, 3100, 200)
     for d in dimention:
         train_set_pos, train_set_neg, test_fea, test_tag=get_trainset_testset_testtag(int(d))
         trainset,test,tag_test=get_dev_train_test_data(train_set_pos,train_set_neg)
@@ -339,7 +342,7 @@ def get_best_classfier_and_dimention():
         LogisticRegressionScore=get_accuracy_score(LogisticRegression(),trainset,test,tag_test)
         SVCScore=get_accuracy_score(SVC(),trainset,test,tag_test)
         LinearSVCScore=get_accuracy_score(LinearSVC(),trainset,test,tag_test)
-        NuSVCScore=get_accuracy_score(NuSVC(),trainset,test,tag_test)
+        NuSVCScore=get_accuracy_score(NuSVC(probability=True),trainset,test,tag_test)
         if BernoulliNBScore>curAccuracy:
             curAccuracy=BernoulliNBScore
             bestClassfier=BernoulliNB()
@@ -381,7 +384,74 @@ def get_best_classfier_and_dimention():
 
     return bestClassfier,bestDimention,curAccuracy
 
-bestClassfier,bestDimention,bestAccuracy=get_best_classfier_and_dimention()
+
+'''
+  挑选出最佳分类器以及最优特征维度
+  返回分类器 维度 精度
+  分类结果保存在 'D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + 'classifierDimenAcc.txt'
+'''
+def get_best_classfier_and_dimention_2():
+    bestClassfier = ''
+    bestDimention = '0'
+    curAccuracy = 0.0
+    dimention = range(500,3100,200)
+    classifierMethodList=[BernoulliNB(alpha=0.1),MultinomialNB(alpha=0.1),LogisticRegression(intercept_scaling=0.1),NuSVC(probability=True),KNeighborsClassifier(n_neighbors=6,p=1),MLPClassifier()]
+    for d in dimention:
+        train_set_pos, train_set_neg, test_fea, test_tag=get_trainset_testset_testtag(int(d))
+        trainset,test,tag_test=get_dev_train_test_data(train_set_pos,train_set_neg)
+        classifierAccList=[]
+        for classifierMethod in classifierMethodList:
+            accuracyScore=get_accuracy_score(classifierMethod,trainset,test,tag_test)
+            classifierAccList.append(accuracyScore)
+            if accuracyScore>curAccuracy:
+                curAccuracy=accuracyScore
+                bestClassfier=classifierMethod
+                bestDimention=d
+        classifierNameList=['BernoulliNB()','MultinomialNB()','LogisticRegression()','NuSVC()','KNeighborsClassifier()','MLPClassifier()']
+        f = open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + 'classifierDimenAcc.txt', 'a')
+        for pos in range(len(classifierAccList)):
+            f.write(str(classifierNameList[pos])+'\t'+str(d)+'\t'+str(classifierAccList[pos])+'\n')
+        f.close()
+        print 'dimension is',int(d)
+        for pos in range(len(classifierNameList)):
+            print classifierNameList[pos],'accuracy is:',classifierAccList[pos]
+    return bestClassfier,bestDimention,curAccuracy
+
+def get_best_parm_of_classifier():
+    bestClassfier = ''
+    bestDimention = '0'
+    curAccuracy = 0.0
+    bestParm=0.0
+    #dimention = ['500',700, '1000','1300', '1500','1700', '2000','2200', '2500', '3000']
+    dimention=range(500,3000,200)
+    classifierMethod='KNeighborsClassifier()'
+    for d in dimention:
+        train_set_pos, train_set_neg, test_fea, test_tag=get_trainset_testset_testtag(int(d))
+        trainset,test,tag_test=get_dev_train_test_data(train_set_pos,train_set_neg)
+        classifierAccList=[]
+        classifierMethodList=[]
+        for alphaValue in range(1,3):
+            #alphaValue=float(alphaValue)/10
+            accuracyScore=get_accuracy_score(KNeighborsClassifier(n_neighbors=6,p=alphaValue),trainset,test,tag_test)
+            classifierMethodList.append(KNeighborsClassifier(n_neighbors=6,p=alphaValue))
+            classifierAccList.append(accuracyScore)
+            if accuracyScore>curAccuracy:
+                curAccuracy=accuracyScore
+                bestClassfier=KNeighborsClassifier(n_neighbors=6,p=alphaValue)
+                bestDimention=d
+                bestParm=alphaValue
+        f = open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/' +classifierMethod+ 'classifierDimenAcc.txt', 'a')
+        for pos in range(len(classifierAccList)):
+            f.write(str(classifierMethodList[pos])+'\t'+str(d)+'\t'+str(classifierAccList[pos])+'\n')
+        f.close()
+        print 'dimension is',int(d)
+        for pos in range(len(classifierMethodList)):
+            print classifierMethodList[pos],'accuracy is:',classifierAccList[pos]
+    print 'best parm is',bestParm
+    return bestClassfier,bestDimention,curAccuracy
+
+
+bestClassfier,bestDimention,bestAccuracy=get_best_classfier_and_dimention_2()
 print str(bestClassfier),bestDimention,bestAccuracy
 '''存储最佳分类器 最优维度 相应精度'''
 '''D:/ReviewHelpfulnessPrediction\BuildedClassifier/'+'bestClassifierDimenAcc.txt'''
@@ -390,7 +460,7 @@ def storeClassifierDimenAcc(classifier,dimen,acc):
     f.write(classifier+'$'+dimen+'$'+acc+'\n');
     f.close()
 
-storeClassifierDimenAcc(str(bestClassfier).decode('utf-8'),bestDimention.decode('utf-8'),str(bestAccuracy).decode('utf-8'))
+storeClassifierDimenAcc(str(bestClassfier).decode('utf-8'),str(bestDimention).decode('utf-8'),str(bestAccuracy).decode('utf-8'))
 
 '''存储分类器'''
 def store_classifier(clf, trainset, filepath):
