@@ -628,27 +628,55 @@ def outputStrangeWords(finalStrangeWordPos,rawReview):
             print rawReview[pos],'\t',
         print ''
 
+'''基于机器学习的情感分析 sentiment Analyze based machine learning running time: 17.5400478691 handle review num: 87642'''
+'''参数：原始数据名称 原始数据文件格式 窗口大小 积极边界 消极边界 情感得分边界'''
+def sentiAnalyzeBaseML(reviewDataSetName,reviewDataSetFileType,windowSize,posBounder,negBounder,sentScoreBounder,timeInterval=20):
+    begin=time.clock()
+    reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\BulletData'
+    #reviewDataSetName = 'lsj'
+    #reviewDataSetFileType = '.log'
+    desDir = 'D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+    figDir = 'D:/ReviewHelpfulnessPrediction\SentimentLineFig'
+    posProbility, resSavePath, rawReview = predictTxtDataSentTagProToExcel(reviewDataSetDir, reviewDataSetName,
+                                                                           reviewDataSetFileType, desDir)
+    sentimentValueList, posRatioList, negRatioList, strangeWordPos = analyzeSentimentProList(posProbility, windowSize,
+                                                                                             posBounder, negBounder,
+                                                                                             sentScoreBounder)
+    meanSentPosPro = getMeanSentimentValue(posProbility)
+    overallPosRatio = getOverallPosRatio(posProbility, posBounder)
+    overallNegRatio = getOverallNegRatio(posProbility, negBounder)
+    print 'mean sentiment postive probility', meanSentPosPro
+    finalStrangeWordPos = unionStrangeWordPos(strangeWordPos)
+    outputStrangeWordPosInExcel(finalStrangeWordPos, resSavePath)
+    drawSentimentLine(sentimentValueList, figDir + '/' + reviewDataSetName + 'SentCurveML.png')
+    drawPosNegRatioPie(overallPosRatio, overallNegRatio, figDir + '/' + reviewDataSetName + 'PosNegRatioML.png')
+    outputStrangeWords(finalStrangeWordPos, rawReview)
+    #drawSentimentChangeLine(sentimentValueList, timeInterval, windowSize, -60, 60)
+    end=time.clock()
+    print 'sentiment Analyze based machine learning running time:',end-begin,'handle review num:',len(rawReview)
 
-reviewDataSetDir='D:/ReviewHelpfulnessPrediction\BulletData'
-reviewDataSetName='lsj'
-reviewDataSetFileType='.log'
-desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
-figDir='D:/ReviewHelpfulnessPrediction\SentimentLineFig'
-posProbility,resSavePath,rawReview=predictTxtDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir)
-posBounder=0.6
-negBounder=0.4
-sentimentValueList,posRatioList,negRatioList,strangeWordPos=analyzeSentimentProList(posProbility,100,posBounder,negBounder,-40)
-meanSentPosPro=getMeanSentimentValue(posProbility)
-overallPosRatio=getOverallPosRatio(posProbility,posBounder)
-overallNegRatio=getOverallNegRatio(posProbility,negBounder)
-print 'mean sentiment postive probility',meanSentPosPro
-finalStrangeWordPos=unionStrangeWordPos(strangeWordPos)
-outputStrangeWordPosInExcel(finalStrangeWordPos,resSavePath)
-drawSentimentLine(sentimentValueList,figDir+'/'+reviewDataSetName+'SentCurveML.png')
-drawPosNegRatioPie(overallPosRatio,overallNegRatio,figDir+'/'+reviewDataSetName+'PosNegRatioML.png')
-outputStrangeWords(finalStrangeWordPos,rawReview)
-drawSentimentChangeLine(sentimentValueList,20,100,-60,60)
-#drawPosProbilityChangeLine(posProbility,20,100)
+
+sentiAnalyzeBaseML('lsj','.log',100,0.6,0.4,-40)
+# reviewDataSetDir='D:/ReviewHelpfulnessPrediction\BulletData'
+# reviewDataSetName='lsj'
+# reviewDataSetFileType='.log'
+# desDir='D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+# figDir='D:/ReviewHelpfulnessPrediction\SentimentLineFig'
+# posProbility,resSavePath,rawReview=predictTxtDataSentTagProToExcel(reviewDataSetDir,reviewDataSetName,reviewDataSetFileType,desDir)
+# posBounder=0.6
+# negBounder=0.4
+# sentimentValueList,posRatioList,negRatioList,strangeWordPos=analyzeSentimentProList(posProbility,80,posBounder,negBounder,-40)
+# meanSentPosPro=getMeanSentimentValue(posProbility)
+# overallPosRatio=getOverallPosRatio(posProbility,posBounder)
+# overallNegRatio=getOverallNegRatio(posProbility,negBounder)
+# print 'mean sentiment postive probility',meanSentPosPro
+# finalStrangeWordPos=unionStrangeWordPos(strangeWordPos)
+# outputStrangeWordPosInExcel(finalStrangeWordPos,resSavePath)
+# drawSentimentLine(sentimentValueList,figDir+'/'+reviewDataSetName+'SentCurveML.png')
+# drawPosNegRatioPie(overallPosRatio,overallNegRatio,figDir+'/'+reviewDataSetName+'PosNegRatioML.png')
+# outputStrangeWords(finalStrangeWordPos,rawReview)
+# drawSentimentChangeLine(sentimentValueList,20,80,-60,60)
+# #drawPosProbilityChangeLine(posProbility,20,100)
 
 '''整体评价 正确率较高 运行速度较快 handle sentences num: 87641  classify time: 17.0658787015'''
 

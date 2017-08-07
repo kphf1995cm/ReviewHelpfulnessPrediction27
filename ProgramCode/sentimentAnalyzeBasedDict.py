@@ -302,6 +302,16 @@ def drawSentimentLine(sentimentValueList,dstpath):
     plt.xlabel('Sentence Number')
     plt.ylabel('Sentiment Score')
     plt.savefig(dstpath)
+'''绘制积极比率、消极比率饼状图'''
+def drawPosNegRatioPie(posRatio,negRatio,dstpath):
+    labels = 'Postive Ratio', 'Negtive Ratio', 'Objective Ratio'
+    fracs = [posRatio, negRatio, 1-posRatio-negRatio]
+    explode = [0, 0.1, 0]  # 0.1 凸出这部分，
+    plt.axes(aspect=1)  # set this , Figure is round, otherwise it is an ellipse
+    # autopct ，show percet
+    plt.pie(x=fracs, labels=labels, explode=explode, autopct='%3.1f %%',
+            shadow=True, labeldistance=1.1, startangle=90, pctdistance=0.6)
+    plt.savefig(dstpath)
 '''分析下积极情感可能性数据 '''
 '''将数据拆分成windowSize片段，分析每一片段的总体情感，积极比率，消极比率'''
 '''参数：积极可能性列表 窗口大小 积极边界 消极边界 异常情感得分边界'''
@@ -393,6 +403,26 @@ def getMeanSentimentValue(posProbility):
     end=time.clock()
     print 'calculate mean sentiment postive probility time is:',end-begin
     return sentimentValue/len(posProbility)
+'''得到整体积极比率'''
+def getOverallPosRatio(posProbility,posBounder):
+    begin=time.clock()
+    posNum=0
+    for x in posProbility:
+        if x>=posBounder:
+            posNum+=1
+    end=time.clock()
+    print 'calculate overall postive ratio time is:',end-begin
+    return float(posNum)/len(posProbility)
+'''得到整体消极比率'''
+def getOverallNegRatio(posProbility,negBounder):
+    begin=time.clock()
+    negNum=0
+    for x in posProbility:
+        if x<=negBounder:
+            negNum+=1
+    end=time.clock()
+    print 'calculate overall negtive ratio time is:',end-begin
+    return float(negNum)/len(posProbility)
 '''合并异常情感'''
 def unionStrangeWordPos(strangeWordPos):
     finalStrangeWordPos=[]
@@ -461,14 +491,14 @@ def testLabelDataAcc():
 	# for pos in range(len(sentiment_overall_score)):
 	# 	print sentiment_score_list[pos],sentiment_overall_score[pos],labelClass[pos]
 	print 'sentiment Analyze Based Dictionary Accuracy:',getAccuracy(sentiment_overall_score,labelClass)
-
-'''基于字典情感分析 时间性能上 running time: 130.669673332 handle review num: 87641 精度上'''
-def sentiAnalyzeBaseDict():
+'''基于字典情感分析 时间性能：'''
+'''参数：原始数据名称 原始数据文件格式 窗口大小 积极边界 消极边界 情感得分边界'''
+def sentiAnalyzeBaseDict(reviewDataSetName,reviewDataSetFileType,windowSize,posBounder,negBounder,sentScoreBounder,timeInterval=20):
 	begin=time.clock()
 	'''获得原始数据路径'''
 	reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\BulletData'
-	reviewDataSetName = 'lsj'
-	reviewDataSetFileType = '.log'
+	# reviewDataSetName = 'lsj'
+	# reviewDataSetFileType = '.log'
 	dataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
 	figDir = 'D:/ReviewHelpfulnessPrediction\SentimentLineFig'
 	'''获得目标数据路径'''
@@ -480,25 +510,30 @@ def sentiAnalyzeBaseDict():
 	'''得到每句评论的整体得分'''
 	sentiment_overall_score = get_sentiment_overall_score_to_txt(sentiment_score_list, review, dstSavePath)
 	'''分析评论情感得分数据 按照窗口迭代 获得 情感值 积极比率 消极比率 异常话语位置'''
+	# posBounder=0.6
+	# negBounder=0.4
 	sentimentValueList, posRatioList, negRatioList, strangeWordPos = analyzeSentimentProList(sentiment_overall_score,
-																							 100, 0.6, 0.4, -7)
+																							 windowSize, posBounder, negBounder, sentScoreBounder)
 	'''合并重叠区间'''
 	finalStrangeWordPos = unionStrangeWordPos(strangeWordPos)
 	'''获得平均情感值'''
 	meanSentPosPro = getMeanSentimentValue(sentiment_overall_score)
 	print 'mean sentiment postive probility', meanSentPosPro
+	overallPosRatio=getOverallPosRatio(sentiment_overall_score,posBounder)
+	overallNegRatio=getOverallNegRatio(sentiment_overall_score,negBounder)
 	'''输出异常话语位置'''
 	outputStrangeWordPosInTxt(finalStrangeWordPos, dstSavePath)
 	'''绘制情感曲线图'''
-	drawSentimentLine(sentimentValueList,figDir+'/'+reviewDataSetName+'DA.png')
+	drawSentimentLine(sentimentValueList,figDir+'/'+reviewDataSetName+'SentCurveDA.png')
+	drawPosNegRatioPie(overallPosRatio,overallNegRatio,figDir+'/'+reviewDataSetName+'PosNegRatioDA.png')
 	'''输出异常话语'''
 	outputStrangeWords(finalStrangeWordPos, review)
 	'''绘制情感波动动态图'''
-	drawSentimentChangeLine(sentimentValueList, 20, 100, -20, 20)
+	#drawSentimentChangeLine(sentimentValueList, timeInterval, windowSize, -30, 30)
 	end=time.clock()
 	print 'sentiment Analyze based dict running time:',end-begin,'handle review num:',len(review)
 
-sentiAnalyzeBaseDict()
+sentiAnalyzeBaseDict('lsj','.log',100,0.6,0.4,-8)
 #testLabelDataAcc()
 
 

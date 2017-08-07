@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e9ae536d-8024-4564-9fd2-744297cdc5cf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/TestModel/drawPie.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProgramCode/predictDataPosNegProbility.py" afterPath="$PROJECT_DIR$/ProgramCode/predictDataPosNegProbility.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProgramCode/selectBestClassifier.py" afterPath="$PROJECT_DIR$/ProgramCode/selectBestClassifier.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProgramCode/sentimentAnalyzeBasedDict.py" afterPath="$PROJECT_DIR$/ProgramCode/sentimentAnalyzeBasedDict.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProgramCode/textProcessing.py" afterPath="$PROJECT_DIR$/ProgramCode/textProcessing.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,7 +23,7 @@
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$posNegMlFeature__1_.coverage" NAME="posNegMlFeature (1) Coverage Results" MODIFIED="1500945502109" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/MachineLearningFeature" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$wordSentenceLengthFeature.coverage" NAME="wordSentenceLengthFeature Coverage Results" MODIFIED="1501203170992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$posNegSentiDictFeature.coverage" NAME="posNegSentiDictFeature Coverage Results" MODIFIED="1501811325468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
-    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$sentimentAnalyzeBasedDict.coverage" NAME="sentimentAnalyzeBasedDict Coverage Results" MODIFIED="1501838487505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$sentimentAnalyzeBasedDict.coverage" NAME="sentimentAnalyzeBasedDict Coverage Results" MODIFIED="1502092226974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$extractFeaturePredictUnlabedData.coverage" NAME="extractFeaturePredictUnlabedData Coverage Results" MODIFIED="1501669064140" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction$posNegSentiDictFeature.coverage" NAME="posNegSentiDictFeature Coverage Results" MODIFIED="1500778077543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FeatureExtractionModule/SentimentFeature/SentimentDictionaryFeatures" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$scikitlearn.coverage" NAME="scikitlearn Coverage Results" MODIFIED="1500953567540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="D:/ProgramFiles/python-2.7.12/Lib/site-packages/nltk/classify" />
@@ -41,10 +39,10 @@
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$nltk_usage.coverage" NAME="nltk_usage Coverage Results" MODIFIED="1500870938477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestModel" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$unlabelDataProcessToLabel.coverage" NAME="unlabelDataProcessToLabel Coverage Results" MODIFIED="1501750300407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$drawPie.coverage" NAME="drawPie Coverage Results" MODIFIED="1501832706210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestModel" />
-    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$predictDataPosNegProbility.coverage" NAME="predictDataPosNegProbility Coverage Results" MODIFIED="1501837956985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$predictDataPosNegProbility.coverage" NAME="predictDataPosNegProbility Coverage Results" MODIFIED="1502098895023" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$zhongwen.coverage" NAME="zhongwen Coverage Results" MODIFIED="1500866938340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestModel" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$helpfulnessPrediction.coverage" NAME="helpfulnessPrediction Coverage Results" MODIFIED="1501667817400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
-    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$selectBestClassifier.coverage" NAME="selectBestClassifier Coverage Results" MODIFIED="1501840951615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
+    <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$selectBestClassifier.coverage" NAME="selectBestClassifier Coverage Results" MODIFIED="1502066537440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$review_similarity_feature.coverage" NAME="review similarity feature Coverage Results" MODIFIED="1501146040389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FeatureExtractionModule/InformativeFeature" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$classify.coverage" NAME="classify Coverage Results" MODIFIED="1500953089738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TestModel" />
     <SUITE FILE_PATH="coverage/ReviewHelpfulnessPrediction27$reviewSimilarityFeature.coverage" NAME="reviewSimilarityFeature Coverage Results" MODIFIED="1501146149099" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProgramCode" />
@@ -74,11 +72,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="predictDataPosNegProbility.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="predictDataPosNegProbility.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ProgramCode/predictDataPosNegProbility.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1368">
-              <caret line="302" column="19" lean-forward="false" selection-start-line="302" selection-start-column="19" selection-end-line="302" selection-end-column="19" />
+            <state relative-caret-position="239">
+              <caret line="631" column="46" lean-forward="true" selection-start-line="631" selection-start-column="46" selection-end-line="631" selection-end-column="46" />
               <folding>
                 <element signature="n#!!doc" expanded="false" />
                 <element signature="e#41#137#1" expanded="false" />
@@ -96,6 +94,7 @@
                 <element signature="e#10442#10511#0" expanded="false" />
                 <element signature="e#10997#12865#0" expanded="false" />
                 <element signature="e#12194#12346#0" expanded="false" />
+                <element signature="e#13045#15249#0" expanded="false" />
                 <element signature="e#14831#14983#0" expanded="false" />
                 <element signature="e#15445#17771#0" expanded="false" />
                 <element signature="e#16463#16483#0" expanded="false" />
@@ -120,6 +119,8 @@
                 <element signature="e#26290#26808#0" expanded="false" />
                 <element signature="e#26909#27205#0" expanded="false" />
                 <element signature="e#27278#27402#0" expanded="false" />
+                <element signature="e#27698#29404#0" expanded="false" />
+                <element signature="e#29456#29518#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -138,11 +139,10 @@
       <file leaf-file-name="sentimentAnalyzeBasedDict.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ProgramCode/sentimentAnalyzeBasedDict.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="912">
-              <caret line="149" column="38" lean-forward="false" selection-start-line="149" selection-start-column="38" selection-end-line="149" selection-end-column="38" />
+            <state relative-caret-position="155">
+              <caret line="493" column="17" lean-forward="false" selection-start-line="493" selection-start-column="17" selection-end-line="493" selection-end-column="17" />
               <folding>
                 <element signature="e#41#313#1" expanded="false" />
-                <element signature="e#332#545#1" expanded="false" />
                 <element signature="e#2545#2885#0" expanded="false" />
                 <element signature="e#3002#3444#0" expanded="false" />
                 <element signature="e#3636#4113#0" expanded="false" />
@@ -150,6 +150,8 @@
                 <element signature="e#4402#5691#0" expanded="false" />
                 <element signature="e#5795#7445#0" expanded="false" />
                 <element signature="e#6360#7155#0" expanded="false" />
+                <element signature="e#7550#7763#0" expanded="false" />
+                <element signature="e#7858#8143#0" expanded="false" />
                 <element signature="e#8226#8312#0" expanded="false" />
                 <element signature="e#8490#9121#0" expanded="false" />
                 <element signature="e#9238#10098#0" expanded="false" />
@@ -157,29 +159,66 @@
                 <element signature="e#10259#11151#0" expanded="false" />
                 <element signature="e#10526#10568#0" expanded="false" />
                 <element signature="e#11221#11442#0" expanded="false" />
-                <element signature="e#11700#15174#0" expanded="false" />
-                <element signature="e#12976#13117#0" expanded="false" />
-                <element signature="e#13181#13311#0" expanded="false" />
-                <element signature="e#13400#13544#0" expanded="false" />
-                <element signature="e#13611#13744#0" expanded="false" />
-                <element signature="e#14146#15022#0" expanded="false" />
-                <element signature="e#15247#15478#0" expanded="false" />
-                <element signature="e#15537#16189#0" expanded="false" />
-                <element signature="e#16290#16586#0" expanded="false" />
-                <element signature="e#16659#16783#0" expanded="false" />
-                <element signature="e#16852#17103#0" expanded="false" />
-                <element signature="e#17145#18251#0" expanded="false" />
-                <element signature="e#18360#19894#0" expanded="false" />
+                <element signature="e#11519#11955#0" expanded="false" />
+                <element signature="e#12213#15687#0" expanded="false" />
+                <element signature="e#12398#14640#0" expanded="false" />
+                <element signature="e#13489#13630#0" expanded="false" />
+                <element signature="e#13694#13824#0" expanded="false" />
+                <element signature="e#13913#14057#0" expanded="false" />
+                <element signature="e#14124#14257#0" expanded="false" />
+                <element signature="e#14659#15535#0" expanded="false" />
+                <element signature="e#15760#15991#0" expanded="false" />
+                <element signature="e#16060#16293#0" expanded="false" />
+                <element signature="e#16362#16595#0" expanded="false" />
+                <element signature="e#16654#17306#0" expanded="false" />
+                <element signature="e#17407#17703#0" expanded="false" />
+                <element signature="e#17776#17900#0" expanded="false" />
+                <element signature="e#17969#18220#0" expanded="false" />
+                <element signature="e#18262#19368#0" expanded="false" />
+                <element signature="e#19571#21453#0" expanded="false" />
+                <element signature="e#19671#19698#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="selectBestClassifier.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="textProcessing.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ProgramCode/textProcessing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="271" column="25" lean-forward="true" selection-start-line="271" selection-start-column="25" selection-end-line="271" selection-end-column="25" />
+              <folding>
+                <element signature="e#41#178#1" expanded="false" />
+                <element signature="e#439#816#1" expanded="false" />
+                <element signature="e#875#1105#0" expanded="false" />
+                <element signature="e#1107#1483#1" expanded="false" />
+                <element signature="e#1522#2026#0" expanded="false" />
+                <element signature="e#2296#2599#0" expanded="false" />
+                <element signature="e#2660#3016#1" expanded="false" />
+                <element signature="e#3052#3530#0" expanded="false" />
+                <element signature="e#3532#4127#1" expanded="false" />
+                <element signature="e#4160#4750#0" expanded="false" />
+                <element signature="e#4872#5497#0" expanded="false" />
+                <element signature="e#5500#5917#1" expanded="false" />
+                <element signature="e#5969#6694#0" expanded="false" />
+                <element signature="e#6695#7205#1" expanded="false" />
+                <element signature="e#7291#8027#0" expanded="false" />
+                <element signature="e#7815#7955#0" expanded="false" />
+                <element signature="e#8028#8122#1" expanded="false" />
+                <element signature="e#8159#8745#0" expanded="false" />
+                <element signature="e#8746#8974#1" expanded="false" />
+                <element signature="e#9022#9643#0" expanded="false" />
+                <element signature="e#9801#10567#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="selectBestClassifier.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ProgramCode/selectBestClassifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="409" column="136" lean-forward="false" selection-start-line="409" selection-start-column="136" selection-end-line="409" selection-end-column="136" />
+            <state relative-caret-position="2524">
+              <caret line="469" column="47" lean-forward="true" selection-start-line="469" selection-start-column="47" selection-end-line="469" selection-end-column="47" />
               <folding>
                 <element signature="e#47#94#1" expanded="false" />
                 <element signature="e#338#365#0" expanded="true" />
@@ -209,10 +248,27 @@
                 <element signature="e#12213#12447#0" expanded="false" />
                 <element signature="e#12448#12577#1" expanded="false" />
                 <element signature="e#12622#15509#0" expanded="false" />
+                <element signature="e#15688#17198#0" expanded="false" />
                 <element signature="e#17239#18872#0" expanded="false" />
                 <element signature="e#19169#19323#0" expanded="false" />
                 <element signature="e#19518#19669#0" expanded="false" />
                 <element signature="e#19944#20203#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="unlabelDataProcessToLabel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ProgramCode/unlabelDataProcessToLabel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="528">
+              <caret line="215" column="0" lean-forward="true" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
+              <folding>
+                <element signature="e#968#1192#0" expanded="false" />
+                <element signature="e#1302#1661#0" expanded="false" />
+                <element signature="e#1952#3034#0" expanded="false" />
+                <element signature="e#3413#6658#0" expanded="false" />
+                <element signature="e#7127#8319#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -274,12 +330,12 @@
         <option value="$PROJECT_DIR$/ProgramCode/extractFeaturePredictUnlabedData.py" />
         <option value="$PROJECT_DIR$/TestModel/dfig.py" />
         <option value="$PROJECT_DIR$/ProgramCode/unlabelDataProcessToLabel.py" />
-        <option value="$PROJECT_DIR$/ProgramCode/textProcessing.py" />
         <option value="$PROJECT_DIR$/ProgramCode/posNegSentiDictFeature.py" />
         <option value="$PROJECT_DIR$/TestModel/drawPie.py" />
+        <option value="$PROJECT_DIR$/ProgramCode/selectBestClassifier.py" />
+        <option value="$PROJECT_DIR$/ProgramCode/textProcessing.py" />
         <option value="$PROJECT_DIR$/ProgramCode/predictDataPosNegProbility.py" />
         <option value="$PROJECT_DIR$/ProgramCode/sentimentAnalyzeBasedDict.py" />
-        <option value="$PROJECT_DIR$/ProgramCode/selectBestClassifier.py" />
       </list>
     </option>
   </component>
@@ -290,10 +346,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="683" />
+    <option name="height" value="728" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -352,8 +406,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -383,7 +437,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.selectBestClassifier">
+  <component name="RunManager" selected="Python.predictDataPosNegProbility">
     <configuration default="false" name="selectBestClassifier" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -670,9 +724,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.selectBestClassifier" />
+        <item index="0" class="java.lang.String" itemvalue="Python.predictDataPosNegProbility" />
         <item index="1" class="java.lang.String" itemvalue="Python.sentimentAnalyzeBasedDict" />
-        <item index="2" class="java.lang.String" itemvalue="Python.predictDataPosNegProbility" />
+        <item index="2" class="java.lang.String" itemvalue="Python.selectBestClassifier" />
         <item index="3" class="java.lang.String" itemvalue="Python.drawPie" />
         <item index="4" class="java.lang.String" itemvalue="Python.posNegSentiDictFeature" />
       </list>
@@ -721,19 +775,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="0" y="0" width="683" height="728" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21331316" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.49919742" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31587562" sideWeight="0.5030257" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7234042" sideWeight="0.4969743" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38487396" sideWeight="0.4969743" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39831933" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39831933" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -778,18 +832,11 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="11" />
+      <option name="time" value="12" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://D:/ProgramFiles/python-2.7.12/Lib/site-packages/sklearn/tests/test_cross_validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HelpfulnessPredictionModule/FeatureSetWithDifferentThreshold/f5.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -1059,48 +1106,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ProgramCode/textProcessing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="90" column="58" lean-forward="false" selection-start-line="90" selection-start-column="58" selection-end-line="90" selection-end-column="58" />
-          <folding>
-            <element signature="e#41#178#1" expanded="false" />
-            <element signature="e#419#796#1" expanded="false" />
-            <element signature="e#855#1085#0" expanded="false" />
-            <element signature="e#1087#1463#1" expanded="false" />
-            <element signature="e#1502#2006#0" expanded="false" />
-            <element signature="e#2009#2237#1" expanded="false" />
-            <element signature="e#2276#2579#0" expanded="false" />
-            <element signature="e#2640#2996#1" expanded="false" />
-            <element signature="e#3032#3510#0" expanded="false" />
-            <element signature="e#3512#4107#1" expanded="false" />
-            <element signature="e#4140#4730#0" expanded="false" />
-            <element signature="e#4852#5477#0" expanded="false" />
-            <element signature="e#5480#5897#1" expanded="false" />
-            <element signature="e#5949#6674#0" expanded="false" />
-            <element signature="e#6675#7185#1" expanded="false" />
-            <element signature="e#7271#8007#0" expanded="false" />
-            <element signature="e#7795#7935#0" expanded="false" />
-            <element signature="e#8008#8102#1" expanded="false" />
-            <element signature="e#8139#8725#0" expanded="false" />
-            <element signature="e#8726#8954#1" expanded="false" />
-            <element signature="e#9002#9623#0" expanded="false" />
-            <element signature="e#9781#10547#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ProgramCode/centroidScoreFeature.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ProgramCode/unlabelDataProcessToLabel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="26" column="20" lean-forward="false" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -1118,105 +1127,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ProgramCode/adjAdvVFeature.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TestModel/drawPie.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
           <caret line="14" column="9" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="14" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ProgramCode/predictDataPosNegProbility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1368">
-          <caret line="302" column="19" lean-forward="false" selection-start-line="302" selection-start-column="19" selection-end-line="302" selection-end-column="19" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#41#137#1" expanded="false" />
-            <element signature="e#139#166#0" expanded="true" />
-            <element signature="e#717#809#0" expanded="false" />
-            <element signature="e#1075#2728#0" expanded="false" />
-            <element signature="e#2806#2964#0" expanded="false" />
-            <element signature="e#3058#3125#0" expanded="false" />
-            <element signature="e#3176#3363#0" expanded="false" />
-            <element signature="e#3484#3589#0" expanded="false" />
-            <element signature="e#3667#4013#0" expanded="false" />
-            <element signature="e#4486#6789#0" expanded="false" />
-            <element signature="e#6922#8235#0" expanded="false" />
-            <element signature="e#8329#10441#0" expanded="false" />
-            <element signature="e#10442#10511#0" expanded="false" />
-            <element signature="e#10997#12865#0" expanded="false" />
-            <element signature="e#12194#12346#0" expanded="false" />
-            <element signature="e#14831#14983#0" expanded="false" />
-            <element signature="e#15445#17771#0" expanded="false" />
-            <element signature="e#16463#16483#0" expanded="false" />
-            <element signature="e#16869#17589#0" expanded="false" />
-            <element signature="e#17772#17839#0" expanded="false" />
-            <element signature="e#18216#19076#0" expanded="false" />
-            <element signature="e#18451#18493#0" expanded="false" />
-            <element signature="e#19237#20129#0" expanded="false" />
-            <element signature="e#19504#19546#0" expanded="false" />
-            <element signature="e#20215#20436#0" expanded="false" />
-            <element signature="e#20513#20949#0" expanded="false" />
-            <element signature="e#21208#24578#0" expanded="false" />
-            <element signature="e#22461#22602#0" expanded="false" />
-            <element signature="e#22666#22796#0" expanded="false" />
-            <element signature="e#22885#23029#0" expanded="false" />
-            <element signature="e#23096#23229#0" expanded="false" />
-            <element signature="e#23631#24507#0" expanded="false" />
-            <element signature="e#24651#24870#0" expanded="false" />
-            <element signature="e#24939#25172#0" expanded="false" />
-            <element signature="e#25241#25474#0" expanded="false" />
-            <element signature="e#25533#26185#0" expanded="false" />
-            <element signature="e#26290#26808#0" expanded="false" />
-            <element signature="e#26909#27205#0" expanded="false" />
-            <element signature="e#27278#27402#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ProgramCode/sentimentAnalyzeBasedDict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="912">
-          <caret line="149" column="38" lean-forward="false" selection-start-line="149" selection-start-column="38" selection-end-line="149" selection-end-column="38" />
-          <folding>
-            <element signature="e#41#313#1" expanded="false" />
-            <element signature="e#332#545#1" expanded="false" />
-            <element signature="e#2545#2885#0" expanded="false" />
-            <element signature="e#3002#3444#0" expanded="false" />
-            <element signature="e#3636#4113#0" expanded="false" />
-            <element signature="e#4115#4151#0" expanded="false" />
-            <element signature="e#4402#5691#0" expanded="false" />
-            <element signature="e#5795#7445#0" expanded="false" />
-            <element signature="e#6360#7155#0" expanded="false" />
-            <element signature="e#8226#8312#0" expanded="false" />
-            <element signature="e#8490#9121#0" expanded="false" />
-            <element signature="e#9238#10098#0" expanded="false" />
-            <element signature="e#9473#9515#0" expanded="false" />
-            <element signature="e#10259#11151#0" expanded="false" />
-            <element signature="e#10526#10568#0" expanded="false" />
-            <element signature="e#11221#11442#0" expanded="false" />
-            <element signature="e#11700#15174#0" expanded="false" />
-            <element signature="e#12976#13117#0" expanded="false" />
-            <element signature="e#13181#13311#0" expanded="false" />
-            <element signature="e#13400#13544#0" expanded="false" />
-            <element signature="e#13611#13744#0" expanded="false" />
-            <element signature="e#14146#15022#0" expanded="false" />
-            <element signature="e#15247#15478#0" expanded="false" />
-            <element signature="e#15537#16189#0" expanded="false" />
-            <element signature="e#16290#16586#0" expanded="false" />
-            <element signature="e#16659#16783#0" expanded="false" />
-            <element signature="e#16852#17103#0" expanded="false" />
-            <element signature="e#17145#18251#0" expanded="false" />
-            <element signature="e#18360#19894#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1235,10 +1149,70 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://D:/ProgramFiles/python-2.7.12/Lib/site-packages/jieba/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="500" column="0" lean-forward="false" selection-start-line="500" selection-start-column="0" selection-end-line="500" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProgramCode/adjAdvVFeature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProgramCode/sentimentAnalyzeBasedDict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="493" column="17" lean-forward="false" selection-start-line="493" selection-start-column="17" selection-end-line="493" selection-end-column="17" />
+          <folding>
+            <element signature="e#41#313#1" expanded="false" />
+            <element signature="e#2545#2885#0" expanded="false" />
+            <element signature="e#3002#3444#0" expanded="false" />
+            <element signature="e#3636#4113#0" expanded="false" />
+            <element signature="e#4115#4151#0" expanded="false" />
+            <element signature="e#4402#5691#0" expanded="false" />
+            <element signature="e#5795#7445#0" expanded="false" />
+            <element signature="e#6360#7155#0" expanded="false" />
+            <element signature="e#7550#7763#0" expanded="false" />
+            <element signature="e#7858#8143#0" expanded="false" />
+            <element signature="e#8226#8312#0" expanded="false" />
+            <element signature="e#8490#9121#0" expanded="false" />
+            <element signature="e#9238#10098#0" expanded="false" />
+            <element signature="e#9473#9515#0" expanded="false" />
+            <element signature="e#10259#11151#0" expanded="false" />
+            <element signature="e#10526#10568#0" expanded="false" />
+            <element signature="e#11221#11442#0" expanded="false" />
+            <element signature="e#11519#11955#0" expanded="false" />
+            <element signature="e#12213#15687#0" expanded="false" />
+            <element signature="e#12398#14640#0" expanded="false" />
+            <element signature="e#13489#13630#0" expanded="false" />
+            <element signature="e#13694#13824#0" expanded="false" />
+            <element signature="e#13913#14057#0" expanded="false" />
+            <element signature="e#14124#14257#0" expanded="false" />
+            <element signature="e#14659#15535#0" expanded="false" />
+            <element signature="e#15760#15991#0" expanded="false" />
+            <element signature="e#16060#16293#0" expanded="false" />
+            <element signature="e#16362#16595#0" expanded="false" />
+            <element signature="e#16654#17306#0" expanded="false" />
+            <element signature="e#17407#17703#0" expanded="false" />
+            <element signature="e#17776#17900#0" expanded="false" />
+            <element signature="e#17969#18220#0" expanded="false" />
+            <element signature="e#18262#19368#0" expanded="false" />
+            <element signature="e#19571#21453#0" expanded="false" />
+            <element signature="e#19671#19698#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ProgramCode/selectBestClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="409" column="136" lean-forward="false" selection-start-line="409" selection-start-column="136" selection-end-line="409" selection-end-column="136" />
+        <state relative-caret-position="2524">
+          <caret line="469" column="47" lean-forward="true" selection-start-line="469" selection-start-column="47" selection-end-line="469" selection-end-column="47" />
           <folding>
             <element signature="e#47#94#1" expanded="false" />
             <element signature="e#338#365#0" expanded="true" />
@@ -1268,10 +1242,107 @@
             <element signature="e#12213#12447#0" expanded="false" />
             <element signature="e#12448#12577#1" expanded="false" />
             <element signature="e#12622#15509#0" expanded="false" />
+            <element signature="e#15688#17198#0" expanded="false" />
             <element signature="e#17239#18872#0" expanded="false" />
             <element signature="e#19169#19323#0" expanded="false" />
             <element signature="e#19518#19669#0" expanded="false" />
             <element signature="e#19944#20203#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProgramCode/unlabelDataProcessToLabel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="215" column="0" lean-forward="true" selection-start-line="215" selection-start-column="0" selection-end-line="215" selection-end-column="0" />
+          <folding>
+            <element signature="e#968#1192#0" expanded="false" />
+            <element signature="e#1302#1661#0" expanded="false" />
+            <element signature="e#1952#3034#0" expanded="false" />
+            <element signature="e#3413#6658#0" expanded="false" />
+            <element signature="e#7127#8319#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProgramCode/textProcessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="271" column="25" lean-forward="true" selection-start-line="271" selection-start-column="25" selection-end-line="271" selection-end-column="25" />
+          <folding>
+            <element signature="e#41#178#1" expanded="false" />
+            <element signature="e#439#816#1" expanded="false" />
+            <element signature="e#875#1105#0" expanded="false" />
+            <element signature="e#1107#1483#1" expanded="false" />
+            <element signature="e#1522#2026#0" expanded="false" />
+            <element signature="e#2296#2599#0" expanded="false" />
+            <element signature="e#2660#3016#1" expanded="false" />
+            <element signature="e#3052#3530#0" expanded="false" />
+            <element signature="e#3532#4127#1" expanded="false" />
+            <element signature="e#4160#4750#0" expanded="false" />
+            <element signature="e#4872#5497#0" expanded="false" />
+            <element signature="e#5500#5917#1" expanded="false" />
+            <element signature="e#5969#6694#0" expanded="false" />
+            <element signature="e#6695#7205#1" expanded="false" />
+            <element signature="e#7291#8027#0" expanded="false" />
+            <element signature="e#7815#7955#0" expanded="false" />
+            <element signature="e#8028#8122#1" expanded="false" />
+            <element signature="e#8159#8745#0" expanded="false" />
+            <element signature="e#8746#8974#1" expanded="false" />
+            <element signature="e#9022#9643#0" expanded="false" />
+            <element signature="e#9801#10567#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ProgramCode/predictDataPosNegProbility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="631" column="46" lean-forward="true" selection-start-line="631" selection-start-column="46" selection-end-line="631" selection-end-column="46" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#41#137#1" expanded="false" />
+            <element signature="e#139#166#0" expanded="true" />
+            <element signature="e#717#809#0" expanded="false" />
+            <element signature="e#1075#2728#0" expanded="false" />
+            <element signature="e#2806#2964#0" expanded="false" />
+            <element signature="e#3058#3125#0" expanded="false" />
+            <element signature="e#3176#3363#0" expanded="false" />
+            <element signature="e#3484#3589#0" expanded="false" />
+            <element signature="e#3667#4013#0" expanded="false" />
+            <element signature="e#4486#6789#0" expanded="false" />
+            <element signature="e#6922#8235#0" expanded="false" />
+            <element signature="e#8329#10441#0" expanded="false" />
+            <element signature="e#10442#10511#0" expanded="false" />
+            <element signature="e#10997#12865#0" expanded="false" />
+            <element signature="e#12194#12346#0" expanded="false" />
+            <element signature="e#13045#15249#0" expanded="false" />
+            <element signature="e#14831#14983#0" expanded="false" />
+            <element signature="e#15445#17771#0" expanded="false" />
+            <element signature="e#16463#16483#0" expanded="false" />
+            <element signature="e#16869#17589#0" expanded="false" />
+            <element signature="e#17772#17839#0" expanded="false" />
+            <element signature="e#18216#19076#0" expanded="false" />
+            <element signature="e#18451#18493#0" expanded="false" />
+            <element signature="e#19237#20129#0" expanded="false" />
+            <element signature="e#19504#19546#0" expanded="false" />
+            <element signature="e#20215#20436#0" expanded="false" />
+            <element signature="e#20513#20949#0" expanded="false" />
+            <element signature="e#21208#24578#0" expanded="false" />
+            <element signature="e#22461#22602#0" expanded="false" />
+            <element signature="e#22666#22796#0" expanded="false" />
+            <element signature="e#22885#23029#0" expanded="false" />
+            <element signature="e#23096#23229#0" expanded="false" />
+            <element signature="e#23631#24507#0" expanded="false" />
+            <element signature="e#24651#24870#0" expanded="false" />
+            <element signature="e#24939#25172#0" expanded="false" />
+            <element signature="e#25241#25474#0" expanded="false" />
+            <element signature="e#25533#26185#0" expanded="false" />
+            <element signature="e#26290#26808#0" expanded="false" />
+            <element signature="e#26909#27205#0" expanded="false" />
+            <element signature="e#27278#27402#0" expanded="false" />
+            <element signature="e#27698#29404#0" expanded="false" />
+            <element signature="e#29456#29518#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -15,7 +15,7 @@ import jieba
 import jieba.posseg
 import xlwt
 
-'''导入用户词典增加中文分词的准确性'''
+'''导入用户词典增加中文分词的准确性 词典格式为：词语 词频（可以适时更新）'''
 jieba.load_userdict('D:/ReviewHelpfulnessPrediction/PreprocessingModule/userdict.txt')
 
 """
