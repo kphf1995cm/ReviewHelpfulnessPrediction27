@@ -19,8 +19,9 @@ import xlwt
 import xlrd
 
 '''导入情感词典'''
-posdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/posdict.txt","lines")
-negdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/negdict.txt","lines")
+dictDir='D:/ReviewHelpfulnessPrediction\SentimentDict'
+posdict = tp.get_txt_data(dictDir+"/posdict.txt","lines")
+negdict = tp.get_txt_data(dictDir+"/negdict.txt","lines")
 
 '''过滤器 过滤掉不含主观情感的语句 客观语句'''
 

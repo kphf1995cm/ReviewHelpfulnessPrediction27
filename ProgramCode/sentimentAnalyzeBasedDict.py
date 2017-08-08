@@ -1,12 +1,7 @@
 #! /usr/bin/env python2.7
 #coding=utf-8
-
-"""
-Compute a review's positive and negative score, their average score and standard deviation.
-This module aim to extract review positive/negative score, average score and standard deviation features (all 6 features).
-Sentiment analysis based on sentiment dictionary.
-"""
-'''基于情感词典的情感分析'''
+''''''
+'''基于词典的情感分析'''
 '''
 基于词典的情感分析大致步骤如下：
 ·分解文章段落
@@ -32,16 +27,17 @@ from matplotlib import animation
 '''1 导入情感词典'''
 '''导入情感词典'''
 begin=time.clock()
-posdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/posdict.txt","lines")
-negdict = tp.get_txt_data("D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\PositiveAndNegativeDictionary/negdict.txt","lines")
+dictDir='D:/ReviewHelpfulnessPrediction\SentimentDict'
+posdict = tp.get_txt_data(dictDir+"/posdict.txt","lines")
+negdict = tp.get_txt_data(dictDir+"/negdict.txt","lines")
 
 '''导入形容词、副词、否定词等程度词字典'''
-mostdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/most.txt', 'lines')
-verydict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/very.txt', 'lines')
-moredict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/more.txt', 'lines')
-ishdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/ish.txt', 'lines')
-insufficientdict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/insufficiently.txt', 'lines')
-inversedict = tp.get_txt_data('D:/ReviewHelpfulnessPrediction\FeatureExtractionModule\SentimentFeature\SentimentDictionaryFeatures\SentimentDictionary\AdverbsOfDegreeDictionary/inverse.txt', 'lines')
+mostdict = tp.get_txt_data(dictDir+'/most.txt', 'lines')
+verydict = tp.get_txt_data(dictDir+'/very.txt', 'lines')
+moredict = tp.get_txt_data(dictDir+'/more.txt', 'lines')
+ishdict = tp.get_txt_data(dictDir+'/ish.txt', 'lines')
+insufficientdict = tp.get_txt_data(dictDir+'/insufficiently.txt', 'lines')
+inversedict = tp.get_txt_data(dictDir+'/inverse.txt', 'lines')
 end=time.clock()
 print 'load dictionary time:',end-begin
 '''2 基于字典的情感分析 基本功能'''
@@ -85,16 +81,16 @@ def transform_to_positive_num(poscount, negcount):
 '''3 计算评论的情感特征'''
 
 '''计算单条评论的情感特征，单条评论可能还有多个句子 score_list=[[pos1,neg1],[pos2,neg2],]'''
-'''返回 [Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg]'''
+'''返回 [PosSum, NegSum]'''
 def sumup_sentence_sentiment_score(score_list):
 	score_array = np.array(score_list) # Change list to a numpy array
 	Pos = np.sum(score_array[:,0]) # Compute positive score
 	Neg = np.sum(score_array[:,1])
-	AvgPos = np.mean(score_array[:,0]) # Compute review positive average score, average score = score/sentence number
-	AvgNeg = np.mean(score_array[:,1])
-	StdPos = np.std(score_array[:,0]) # Compute review positive standard deviation score
-	StdNeg = np.std(score_array[:,1])
-	return [Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg]
+	# AvgPos = np.mean(score_array[:,0]) # Compute review positive average score, average score = score/sentence number
+	# AvgNeg = np.mean(score_array[:,1])
+	# StdPos = np.std(score_array[:,0]) # Compute review positive standard deviation score
+	# StdNeg = np.std(score_array[:,1])
+	return [Pos, Neg]
 
 # 代码有问题,它是按照情感词个数来计算的，它更强调的是位于后面的情感词
 # 计算单条评论情感得分
@@ -102,7 +98,7 @@ def sumup_sentence_sentiment_score(score_list):
 # output:[1.5, 0.0, 0.75, 0.0, 0.75, 0.0]
 # test code:print(single_review_sentiment_score(review[1]))
 '''计算单条评论的得分列表 '''
-'''返回 [Pos, Neg, AvgPos, AvgNeg, StdPos, StdNeg]'''
+'''返回 [PosSum, NegSum]'''
 def single_review_sentiment_score(review):
 	single_review_senti_score = []
 	cuted_review = tp.cut_sentence_2(review)# 将评论切割成句子
@@ -211,13 +207,8 @@ def get_review_set_sentiement_score(review):
 	print 'get sentiment score list time is:',end-start,'handle review num is:',len(review)
 	return sentiment_score_list
 
-pos_neg_num_score={0:0.5,1:0.7,2:0.78,3:0.83,4:0.85,5:0.87}
 def get_score(num):
-	int_num=int(num)
-	if int_num>=6:
-		return 1
-	else:
-		return pos_neg_num_score[int_num]
+    return float(num+1)/float(num+2)
 '''pos_score/(pos_score+neg_score)'''
 '''得到一句话的整体情感得分，取值在0至1之间 也可看做积极可能性 并将其存储到txt文件中 原始数据 情感得分'''
 def get_sentiment_overall_score_to_txt(sentiment_score_list,review,dstpath):
@@ -229,9 +220,9 @@ def get_sentiment_overall_score_to_txt(sentiment_score_list,review,dstpath):
 			score=0.5
 		elif x[0]==0 or x[1]==0:
 			if x[0]==0:
-				score=1-get_score(x[1])
+				score=float((1-get_score(x[1])+1-get_score(x[1]+1)))/2.0
 			else:
-				score=get_score(x[0])
+				score=float(get_score(x[0])+get_score(x[0])+1)/2.0
 		else:
 			score=float(x[0])/(float(x[0])+float(x[1]))
 		sentiment_overall_score.append(score)
@@ -490,19 +481,20 @@ def testLabelDataAcc():
 		labelClass.append(0)
 	# for pos in range(len(sentiment_overall_score)):
 	# 	print sentiment_score_list[pos],sentiment_overall_score[pos],labelClass[pos]
-	print 'sentiment Analyze Based Dictionary Accuracy:',getAccuracy(sentiment_overall_score,labelClass)
+	print 'sentiment Analyze Based Dictionary Accuracy:',getAccuracy(sentiment_overall_score,labelClass),'data item num:',len(review)
 '''基于字典情感分析 时间性能：'''
 '''参数：原始数据名称 原始数据文件格式 窗口大小 积极边界 消极边界 情感得分边界'''
+'''sentiment Analyze based dict running time: 146.88193332 handle review num: 87642'''
+
 def sentiAnalyzeBaseDict(reviewDataSetName,reviewDataSetFileType,windowSize,posBounder,negBounder,sentScoreBounder,timeInterval=20):
 	begin=time.clock()
 	'''获得原始数据路径'''
 	reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\BulletData'
-	# reviewDataSetName = 'lsj'
-	# reviewDataSetFileType = '.log'
+	saveResPath='D:/ReviewHelpfulnessPrediction/PredictClassRes'
 	dataSetPath = reviewDataSetDir + '/' + reviewDataSetName + reviewDataSetFileType
 	figDir = 'D:/ReviewHelpfulnessPrediction\SentimentLineFig'
 	'''获得目标数据路径'''
-	dstSavePath = reviewDataSetDir + '/' + reviewDataSetName + 'BasedDictSentimentScore.txt'
+	dstSavePath = saveResPath + '/' + reviewDataSetName + 'BasedDictSentimentScore.txt'
 	'''获得原始数据'''
 	review = tp.get_txt_data(dataSetPath, "lines")
 	'''得到每句评论[[PosSum, NegSum],[],]'''

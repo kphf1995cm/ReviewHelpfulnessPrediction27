@@ -6,8 +6,7 @@ Read data from excel file and txt file.
 Chinese word segmentation, postagger, sentence cutting and stopwords filtering function.
 """
 '''
-从excel文件和txt文件中读取数据
-中文分词 词性标注 句子切割 停用词过滤 将txt文件数据转化为excel文件数据
+数据读取、中文分词 词性标注 句子切割 停用词过滤 格式转换
 '''
 
 import xlrd

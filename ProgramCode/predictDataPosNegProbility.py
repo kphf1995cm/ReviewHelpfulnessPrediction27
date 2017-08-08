@@ -635,7 +635,7 @@ def sentiAnalyzeBaseML(reviewDataSetName,reviewDataSetFileType,windowSize,posBou
     reviewDataSetDir = 'D:/ReviewHelpfulnessPrediction\BulletData'
     #reviewDataSetName = 'lsj'
     #reviewDataSetFileType = '.log'
-    desDir = 'D:/ReviewHelpfulnessPrediction\ReviewDataFeature'
+    desDir = 'D:/ReviewHelpfulnessPrediction\PredictClassRes'
     figDir = 'D:/ReviewHelpfulnessPrediction\SentimentLineFig'
     posProbility, resSavePath, rawReview = predictTxtDataSentTagProToExcel(reviewDataSetDir, reviewDataSetName,
                                                                            reviewDataSetFileType, desDir)
@@ -678,5 +678,5 @@ sentiAnalyzeBaseML('lsj','.log',100,0.6,0.4,-40)
 # drawSentimentChangeLine(sentimentValueList,20,80,-60,60)
 # #drawPosProbilityChangeLine(posProbility,20,100)
 
-'''整体评价 正确率较高 运行速度较快 handle sentences num: 87641  classify time: 17.0658787015'''
+'''整体评价 正确率较高 运行速度较快 handle sentences num: 87642  classify time: 18.191449251'''
 

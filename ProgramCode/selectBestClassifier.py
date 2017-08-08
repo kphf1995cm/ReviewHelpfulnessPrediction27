@@ -395,7 +395,7 @@ def get_best_classfier_and_dimention_2():
     bestDimention = '0'
     curAccuracy = 0.0
     dimention = range(500,3100,200)
-    classifierMethodList=[BernoulliNB(alpha=0.1),MultinomialNB(alpha=0.1),LogisticRegression(intercept_scaling=0.1),NuSVC(probability=True),KNeighborsClassifier(n_neighbors=6,p=1),MLPClassifier()]
+    classifierMethodList=[BernoulliNB(alpha=0.1),MultinomialNB(alpha=0.1),LogisticRegression(intercept_scaling=0.1),NuSVC(probability=True),KNeighborsClassifier(n_neighbors=6,p=1)]#,MLPClassifier()
     for d in dimention:
         train_set_pos, train_set_neg, test_fea, test_tag=get_trainset_testset_testtag(int(d))
         trainset,test,tag_test=get_dev_train_test_data(train_set_pos,train_set_neg)
@@ -407,7 +407,7 @@ def get_best_classfier_and_dimention_2():
                 curAccuracy=accuracyScore
                 bestClassfier=classifierMethod
                 bestDimention=d
-        classifierNameList=['BernoulliNB()','MultinomialNB()','LogisticRegression()','NuSVC()','KNeighborsClassifier()','MLPClassifier()']
+        classifierNameList=['BernoulliNB()','MultinomialNB()','LogisticRegression()','NuSVC()','KNeighborsClassifier()']#,'MLPClassifier()
         f = open('D:/ReviewHelpfulnessPrediction\BuildedClassifier/' + 'classifierDimenAcc.txt', 'a')
         for pos in range(len(classifierAccList)):
             f.write(str(classifierNameList[pos])+'\t'+str(d)+'\t'+str(classifierAccList[pos])+'\n')
