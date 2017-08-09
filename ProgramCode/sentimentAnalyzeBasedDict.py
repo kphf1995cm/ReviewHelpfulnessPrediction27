@@ -222,7 +222,7 @@ def get_sentiment_overall_score_to_txt(sentiment_score_list,review,dstpath):
 			if x[0]==0:
 				score=float((1-get_score(x[1])+1-get_score(x[1]+1)))/2.0
 			else:
-				score=float(get_score(x[0])+get_score(x[0])+1)/2.0
+				score=float(get_score(x[0])+get_score(x[0]+1))/2.0
 		else:
 			score=float(x[0])/(float(x[0])+float(x[1]))
 		sentiment_overall_score.append(score)
